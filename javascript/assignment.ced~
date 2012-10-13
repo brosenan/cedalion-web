@@ -1,0 +1,8 @@
+'/bootstrap':signature(var(Symbol,Value)::statement,[Symbol::symbol,Value::expr]).
+'/bootstrap':projection(var(Symbol,Value)::statement,'/bootstrap':horiz(['/bootstrap':label(!var),'/bootstrap':vis(Symbol::symbol),'/bootstrap':label(! (=)),'/bootstrap':vis(Value::expr),'/bootstrap':label(! (;))])).
+'/bootstrap':signature(const(Number)::expr,[Number::'/bootstrap':number]).
+'/bootstrap':projection(const(Number)::expr,'/bootstrap':lineBorder('/bootstrap':vis(Number::'/bootstrap':number),1,cpi:rgb(192,192,192))).
+'/bootstrap':adapter(Number::'/bootstrap':number,const(Number)::expr).
+'/bootstrap':signature(assign(LVal,Value)::statement,[LVal::expr,Value::expr]).
+'/bootstrap':projection(assign(LVal,Value)::statement,'/bootstrap':horiz(['/bootstrap':vis(varExpr(LVal)::expr),'/bootstrap':label(! (=)),'/bootstrap':vis(Value::expr),'/bootstrap':label(! (;))])).
+javascript([var(a,const(2)),var(b,str(!'Hello')),assign(a,const(3)),assign(foo,function([a],[return(varExpr(b))]))]).

@@ -1,0 +1,16 @@
+(\b def \a def
+	a b plus) \calc def
+1 2 calc
+
+
+==========
+(a b) \calc (a b plus) function
+1 2 calc
+
+
+==========
+(\FALSE def \TRUE def \cond def cond) \if def
+((nil) () (extract \arg def \args def arg def args functionDefArgs) if) \functionDefArgs def
+(\body def \name def () cons \args def
+	(args functionDefArgs body) name def) \function def
+

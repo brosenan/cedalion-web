@@ -1,0 +1,7 @@
+'/bootstrap':signature(array(List)::expr, [List::'/bootstrap':list(expr)]).
+'/bootstrap':projection(array(List)::expr, '/bootstrap':lineBorder('/bootstrap':vis(List::'/bootstrap':list(expr)), 1, cpi:rgb(192, 192, 192))).
+'/bootstrap':adapter(List::'/bootstrap':list(expr), array(List)::expr).
+'/bootstrap':signature(arrayElement(Array, Index)::expr, [Array::expr, Index::expr]).
+'/bootstrap':projection(arrayElement(Array, Index)::expr, '/bootstrap':horiz(['/bootstrap':vis(Array::expr), '/bootstrap':brackets('/bootstrap':vis(Index::expr), 91, 93)])).
+'/bootstrap':alias(arrayElement(Array, Index)::expr, ![]).
+javascript([var(a, array([const(1), const(2)])), var(b, arrayElement(varExpr(a), const(1)))]).

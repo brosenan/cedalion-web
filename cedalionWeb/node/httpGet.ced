@@ -1,0 +1,7 @@
+'/bootstrap':signature(badResponse(X)::'/javascript/jsLogic':exception,[X::'/bootstrap':number]).
+'/bootstrap':defAtom(stream::'/bootstrap':type).
+'/bootstrap':signature(connectionError(E)::'/javascript/jsLogic':exception,[E::'/bootstrap':string]).
+'/bootstrap':signature(getContent(URL,Content)::'/javascript/statepred':statePred,[URL::'/bootstrap':string,Content::'/bootstrap':string]).
+'/bootstrap':signature(get(URL)::'/javascript/statepred':stateExpr('/bootstrap':string),[URL::'/javascript/statepred':stateExpr('/bootstrap':string)]).
+'/bootstrap':projection(get(URL)::'/javascript/statepred':stateExpr('/bootstrap':string),'/bootstrap':horiz(['/bootstrap':label(!'GET'),'/bootstrap':vis(URL::'/javascript/statepred':stateExpr('/bootstrap':string))])).
+'/javascript/statepred':stateExprDef(get(URL),'/javascript/statepred':where('/javascript/statepred':expr('/Functional':const(Str)),http(!'GET',URL,'/javascript/jsLogic':jsExpr('/javascript':json([])),'/javascript/statepred':expr('/Functional':const(!'')),200,_,Str)),'/bootstrap':string).

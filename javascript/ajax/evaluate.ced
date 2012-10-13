@@ -1,0 +1,2 @@
+'/bootstrap':contextMenuEntry(Expr::ajaxExpr(T),VNs,Path,!'Evaluate','/bootstrap':where('/bootstrap':doProc(cpi:edit(Path,ajaxExpr(E,Cond)::ajaxExpr(T),VNs)),cjs:ajaxEval(Expr,T,E,Cond))).
+'/bootstrap':contextMenuEntry(Expr::ajaxExpr(T),VNs,Path,!'Evaluate Fully','/bootstrap':where('/bootstrap':doProc(cpi:edit(Path,ajaxExpr('/Functional':const(V),[])::ajaxExpr(T),VNs)), (cjs:ajaxEval(Expr,T,E,[]),'/Functional':eval(E,T,V)))).

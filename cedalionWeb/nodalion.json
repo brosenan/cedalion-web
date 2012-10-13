@@ -1,0 +1,7 @@
+{
+	"couchURL":"http://localhost:5984", 
+	"frontend": {
+		"listen": 80
+	}
+}
+

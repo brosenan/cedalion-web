@@ -1,0 +1,8 @@
+'/bootstrap':defAtom(dataStatement::'/bootstrap':type).
+'/bootstrap':signature(implies(X,Y)::'/bootstrap':pred,[X::dataStatement,Y::dataStatement]).
+'/bootstrap':projection(implies(X,Y)::'/bootstrap':pred,'/bootstrap':horiz(['/bootstrap':vis(X::dataStatement),'/bootstrap':label(!implies),'/bootstrap':vis(Y::dataStatement)])).
+implies(X,X):-builtin:true.
+'/bootstrap':signature(rewrite(X,Y)::'/bootstrap':statement,[X::dataStatement,Y::dataStatement]).
+'/bootstrap':projection(rewrite(X,Y)::'/bootstrap':statement,'/bootstrap':horiz(['/bootstrap':vis(X::dataStatement),'/bootstrap':symbol(10547),'/bootstrap':vis(Y::dataStatement)])).
+'/bootstrap':alias(rewrite(X,Y)::'/bootstrap':statement,! (~>)).
+rewrite(X,Y)~>implies(X,Z):-implies(Y,Z).

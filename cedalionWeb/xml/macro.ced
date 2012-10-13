@@ -1,0 +1,3 @@
+'/bootstrap':signature(macro(Macro,Body)::'/bootstrap':statement,[Macro::xml,Body::xml]).
+'/bootstrap':projection(macro(Macro,Body)::'/bootstrap':statement,'/bootstrap':horiz(['/bootstrap':label(!'xml macro'),'/bootstrap':vis(Macro::xml),'/bootstrap':label(! (=)),'/bootstrap':vis(Body::xml)])).
+macro(Macro,Body)~>'/javascript/statepred':clause(generates(Macro,Str),generates(Body,Str)).

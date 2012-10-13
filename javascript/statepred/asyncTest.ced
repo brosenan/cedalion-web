@@ -1,0 +1,11 @@
+'/bootstrap':signature(countToThree(X)::statePred,[X::'/bootstrap':number]).
+def(countToThree(X),Action,Finally,'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/jsLogic':foreach('/bootstrap':listMember(X,'/bootstrap':number,[1,2,3]),Action)),'/javascript/jsLogic':runProcedure('/javascript/jsLogic':do(Finally))])).
+unitTest(findall(X,'/bootstrap':number,countToThree(X),[1,2,3])).
+'/bootstrap':signature('countToThree1'(X)::statePred,[X::'/bootstrap':number]).
+def('countToThree1'(X),Action,Finally,'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/jsLogic':foreach('/bootstrap':listMember(X,'/bootstrap':number,[1,2,3]),'/javascript/jsLogic':jsCommand(['/javascript':exprStatement('/javascript':call('/javascript':varExpr('/cedalionWeb/jquery':setTimeout),[async(annotation:shrink('/javascript':function([],['/javascript/jsLogic':runProcedure('/javascript/jsLogic':do(Action))]))),'/javascript':op('/javascript/jsLogic':inlineTerm(X::'/bootstrap':number),'/javascript':times,'/javascript':const(100))]))]))),'/javascript':exprStatement('/javascript':call('/javascript':varExpr('/cedalionWeb/jquery':setTimeout),[async(annotation:shrink('/javascript':function([],['/javascript/jsLogic':runProcedure('/javascript/jsLogic':do(Finally))]))),'/javascript':const(500)]))])).
+unitTest(findall(X,'/bootstrap':number,'countToThree1'(X),[1,2,3])).
+'/bootstrap':signature(doAll(Actions)::'/javascript/jsLogic':procedure,[Actions::'/bootstrap':list('/javascript/jsLogic':jsCommand)]).
+'/javascript/jsLogic':procedure(doAll([First|Rest]),'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/jsLogic':do(First)),'/javascript/jsLogic':runProcedure(doAll(Rest))])).
+'/bootstrap':signature('countToThree2'(X)::statePred,[X::'/bootstrap':number]).
+def('countToThree2'(X),Action,Finally,'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/asyncproc':andThen('for (s)'(findall(Action,'/javascript/jsLogic':jsCommand,'countToThree1'(X),Actions),'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure(doAll(Actions))])),'/javascript/jsLogic':do(Finally)))])).
+unitTest(findall(X,'/bootstrap':number,'countToThree2'(X),[1,2,3])).

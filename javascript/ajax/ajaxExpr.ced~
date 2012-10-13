@@ -1,0 +1,10 @@
+'/bootstrap':signature(ajaxExpr(T)::'/bootstrap':type,[T::'/bootstrap':type]).
+'/bootstrap':defAtom(request::'/bootstrap':type).
+'/bootstrap':signature(cjs:get(URI,Target)::request,[URI::'/bootstrap':string,Target::'/bootstrap':typedTerm]).
+'/bootstrap':projection(cjs:get(URI,Target)::request,'/bootstrap':horiz(['/bootstrap':label(!'GET'),'/bootstrap':vis(URI::'/bootstrap':string),'/bootstrap':symbol(8658),'/bootstrap':vis(Target::'/bootstrap':typedTerm)])).
+'/bootstrap':signature(ajaxExpr(Expr,Reqs)::ajaxExpr(T),[Expr::'/Functional':expr(T),Reqs::'/bootstrap':list(request)]).
+'/bootstrap':projection(ajaxExpr(Expr,Reqs)::ajaxExpr(T),'/bootstrap':horiz(['/bootstrap':vis(Expr::'/Functional':expr(T)),'/bootstrap':label(!where),cpi:vis(Reqs::'/bootstrap':list(request),'/bootstrap':vert)])).
+'/bootstrap':sandbox(ajaxExpr('/Functional':mult('/Functional':wrap(X),'/Functional':wrap(2)),[cjs:get(!'/x',X::'/bootstrap':number)])::ajaxExpr('/bootstrap':number)).
+'/bootstrap':signature(cjs:ajaxEval(AjaxExpr,T,Expr,Reqs)::'/bootstrap':pred,[AjaxExpr::ajaxExpr(T),T::'/bootstrap':type,Expr::'/Functional':expr(T),Reqs::'/bootstrap':list(request)]).
+'/bootstrap':projection(cjs:ajaxEval(AjaxExpr,T,Expr,Reqs)::'/bootstrap':pred,'/bootstrap':horiz(['/bootstrap':vis(AjaxExpr::ajaxExpr(T)),'/bootstrap':halfSize('/bootstrap':horiz(['/bootstrap':label(! (::)),'/bootstrap':vis(T::'/bootstrap':type)])),'/bootstrap':label(!'evaluates to'),'/bootstrap':vis(Expr::'/Functional':expr(T)),'/bootstrap':label(!where),cpi:vis('/bootstrap':vis(Reqs::'/bootstrap':list(request)),'/bootstrap':vert)])).
+cjs:ajaxEval(ajaxExpr(Expr,Reqs),T,Expr,Reqs):-builtin:true.

@@ -1,0 +1,1130 @@
+==General==
+Basic information about each framework.
+
+===PHP===
+{{see also|PHP}}
+<!-- In each table, link 1st instance of terms, remove later WP:REPEATLINK(s); add ONLY entries that have an article or supply a reliable source for notability. -->
+{| class="wikitable sortable" style="font-size: 90%"
+|-
+! width="140pt" | Project
+! Start date
+! width="90pt" | Current stable version
+! Release date
+! Framework type
+! [[software license|License]]
+|-
+!{{rh}}| [[ActiveWAFL]]
+| 2009-01
+| 0.1.339
+| 2012-06-28
+| [[Web application framework]]
+| [[GNU Lesser General Public License|LGPL]]
+|-
+|-
+!{{rh}}| [[Agavi]]
+| 2005-05
+| 1.0.7
+| 2011-12-22
+| [[Web application framework]]
+| [[GNU Lesser General Public License|LGPL]]
+|-
+!{{rh}}| [[Agile Toolkit]]
+| 2002-06
+| 4.1.3
+| 2011-10-25
+| Web application framework
+| [[Affero General Public License|AGPL]], [[proprietary software|proprietary]]
+|-
+!{{rh}}| [[Aiki Framework]]
+| 2009-09
+| 0.8
+| 2011-03-21
+| Web application framework
+| [[AGPLv3]]
+|-
+!{{rh}}| [[Alloy (PHP framework)|Alloy]]
+| 2009-10
+| 0.7.2
+| 2011-04-12
+| Lightweight web application framework
+| [[New BSD License|New BSD]]
+|-
+!{{rh}}| [[AppFlower]]
+| 2009-02
+| 1.0
+| 2011-03-30
+| Web application framework
+| [[GPLv3]]
+|-
+!{{rh}}| [[AtomPHP|Atom]]
+| 2011-06
+| Alpha
+| TBD
+| Lightweight web framework, Components, Skeleton application
+| [[MIT license|MIT]]
+|-
+!{{rh}}| [[Aura Project for PHP|AuraPHP]]
+| 2011-02
+| Beta2
+| 2012-02-13
+| Web application framework, Components
+| [[BSD licenses|BSD]]
+|-
+!{{rh}}| [[CakePHP]]
+| 2005-08
+| 2.1.3
+| 2012-05-23<ref>http://bakery.cakephp.org/articles/markstory/2012/05/23/cakephp_2_1_3_2_2_0-rc1_released</ref>
+| Web application framework
+| [[MIT License|MIT]]
+|-
+!{{rh}}| [[CodeIgniter]]
+| 2006-01
+| 2.1.1
+| 2012-06-13<ref>http://codeigniter.com/news/codeigniter_2.1.1_released</ref>
+| Web application framework
+| [[Open Software License|OSLv3]]
+|-
+!{{rh}}| [[Cotonti]]
+| 2009-02
+| 0.9.7
+| 2012-02-01
+| [[list of content management frameworks|Content management framework]]
+| [[BSD licenses|BSD]]
+|-
+!{{rh}}| [[DooPHP]]
+| 2009-07
+| 1.4.1
+| 2011-02-23<ref>http://www.doophp.com/blog/article/doophp-1.4.1-release</ref>
+| Lightweight web application framework
+| [[New BSD License|New BSD]]
+|-
+!{{rh}}| [[Drupal]]
+| 2001-01
+| 7.14
+| 2012-05-02
+| [[list of content management frameworks|Content management framework]]
+| [[GPLv2]] or later
+|-
+!{{rh}}| [[e107 (CMS)|e107]]
+| 2004-11
+| 0.7.26
+| 2011-09-14
+| Web application framework
+| [[GPLv2]]
+|-
+!{{rh}}| [[Fat-Free Framework]]
+| 2009-11
+| 2.0.12
+| 2012-07-04
+| Web application framework
+| [[GPLv3]]
+|-
+!{{rh}}| [[Flow3]]
+| 2007-01
+| 1.0
+| 2011-10-20
+| Web application framework
+| [[GNU Lesser General Public License|LGPLv3]]
+|-
+!{{rh}}| [[FuelPHP]]
+| 2010-10
+| 1.2.1
+| 2012-06-03
+| Web application framework
+| [[MIT License|MIT]]
+|-
+!{{rh}}| [[Fusebox_(programming)|Fusebox]]
+| 1997-11
+| 5.5.1
+| 2008-03-01
+| Web application framework
+| [[Apache License|Apache]]
+|-
+!{{rh}}| [[Helium (framework)|Helium]]
+| 2012-03
+| 2.0
+| 2012-06-15
+| Lightweight web application framework
+| [[GPLv3]]
+|-
+!{{rh}}| [[Horde (software)|Horde]]
+| 2002-02
+| 4.0
+| 2011-12-13<ref>http://www.horde.org/download/horde</ref>
+| Web application framework
+| [[GPL]], [[GNU Lesser General Public License|LGPL]], [[BSD licenses|BSD]], [[Apache License|Apache]]
+|-
+!{{rh}}| [[Joomla|Joomla! Platform]]
+| 2005-09
+| 11.4
+| 2012-01-04
+| Content management framework
+| [[GPLv2]]
+|-
+!{{rh}}| [[Kajona]]
+| 2004-06
+| 3.4.1
+| 2011-11-08<ref>http://www.kajona.de/newsdetails.Kajona-V3-4-1-is-completed.newsDetail.0dbe0484eb6ba3555b72.en.html</ref>
+| Web application framework
+| [[GNU Lesser General Public License|LGPL]]
+|-
+!{{rh}}| [[Laravel]]
+| 2011-06
+| 3.2.3
+| 2012-06-16<ref>http://forums.laravel.com/viewtopic.php?pid=9624#p9624</ref>
+| Web application framework
+| [[MIT License|MIT]]
+|-
+!{{rh}}| [[Lithium (PHP framework)|Lithium]]
+| 2009-10
+| 0.10
+| 2011-06-18
+| Web application framework
+| [[BSD licenses|BSD]]
+|-
+!{{rh}}| [[MicroMVC]]
+| 2009-02
+| 4.0.0
+| 2012-05-23
+| Web application framework
+| [[MIT License|MIT]]
+|-
+!{{rh}}| [[Midgard (software)|Midgard]]
+| 1999-05
+| 10.05.06
+| 2012-03-06<ref>http://www.midgard-project.org/updates/midgard_10-05-6_ratatoskr_lts_released/</ref>
+| Content management framework
+| [[GNU Lesser General Public License|LGPL]]
+|-
+!{{rh}}| [[MODX]]
+| 2005-03
+| 2.2.2-pl
+| 2012-05-02<ref>http://modx.com/download/distribution/revolution-2.2.2-pl-standard</ref>
+| Content management framework
+| [[GNU General Public License|GPL]]
+|-
+!{{rh}}| [[Movicon]]
+| 2009-09
+| 1.0
+| 2011-12-09<ref>http://movicon.ath.cx/news/movicon-10</ref>
+| Lightweight web application framework
+| [[GNU Lesser General Public License|LGPLv3]]
+|-
+!{{rh}}| [[:cs:Nette Framework|Nette Framework]]
+| 2008-04
+| 2.0
+| 2012-02-02<ref>http://nette.org/en/download#toc-version-2-0</ref>
+| Web application framework
+| [[New BSD License|New BSD]], [[GPLv2]], [[GPLv3]]
+|-
+!{{rh}}| [[Openbiz_Cubi]]
+| 2003-06
+| 0.5.0
+| 2011-10-26<ref>http://code.google.com/p/openbiz-cubi/</ref>
+| Web application framework
+| [[New BSD License|New BSD]]
+|-
+!{{rh}}| [[Outglow]]
+| 2010-06
+| 2.1.6
+| 2011-06-05<ref>http://code.google.com/p/outglow/downloads/list</ref>
+| Lightweight web application framework
+| [[GPLv3]]
+|-
+!{{rh}}| [[PRADO Framework|PRADO]]
+| 2004-07
+| 3.1.10
+| 2011-07-28<ref>http://www.pradosoft.com</ref>
+| Web application framework
+| [[New BSD License|New BSD]]
+|-
+!{{rh}}| [[Qcodo]]
+| 2005-10
+| 0.4.22
+| 2011-08-15<ref>http://www.qcodo.com/forums/forum.php/5/4377/</ref>
+| Web application framework
+| [[MIT License|MIT]]
+|-
+!{{rh}}| [[Rain Framework]]
+| 2009-02
+| 2.3.1
+| 2011-05-03
+| Web application framework
+| [[MIT License|MIT]]
+|-
+!{{rh}}| [[SilverStripe]] ([[SilverStripe#Software design and Sapphire|Sapphire]])
+| 2005-11
+| 2.4.5
+| 2011-02-02
+| Content management framework
+| [[BSD licenses|BSD]]
+|-
+!{{rh}}| [[Seagull PHP Framework|Seagull]]
+| 2003-10
+| 0.6.8
+| 2010-12-03
+| Web application framework
+| [[BSD licenses|BSD]]
+|-
+!{{rh}}| [[Solar (PHP Framework)|Solar]]
+| 2009-11
+| 1.1.2
+| 2011-02-04
+| Web application framework
+| [[New BSD License|New BSD]]
+|-
+!{{rh}}| [[Symfony]]
+| 2005-10
+| 2.0.11
+| 2012-02-24
+| Web application framework
+| [[MIT License|MIT]]
+|-
+!{{rh}}| [[Vae Soli!]]
+| 2006-04
+| 5.0.0002
+| 2012-06-07<ref>http://www.vaesoli.org/downloads.php</ref>
+| Web application framework
+| free
+|-
+!{{rh}}| [[Xyster Framework]]
+| 2007-09
+| 02 Build 01
+| 2010-10-18
+| Web application framework
+| [[BSD licenses|BSD]]
+|-
+!{{rh}}| [[Yii]]
+| 2008-01
+| 1.1.10
+| 2012-02-12
+| Web application framework
+| [[New BSD License|New BSD]]
+|-
+!{{rh}}| [[Zend Framework]]
+| 2006-03
+| 1.11.11
+| 2011-08-03<ref>[http://devzone.zend.com/article/16343-Zend-Framework-1.11.9-Released]</ref>
+| Web application framework
+| [[New BSD License|New BSD]]
+|-
+!{{rh}}| [[Zeta Components]] (formerly [[eZ Components]])
+| 2005-11
+| eZ Components 2009.2.1
+| 2010-03-22<ref>[http://ezcomponents.org/resources/news/news-2010-03-22]</ref>
+| Web application framework
+| [[Apache License|Apache]] 
+|-
+!{{rh}}| [[Zikula]]
+| 2008-06
+| 1.3.3
+| 2012-05-08
+| Web application framework
+| [[GNU Lesser General Public License|LGPLv3]] or later
+|-class="sortbottom"
+! Project
+! Start date
+! Current stable version
+! Release date
+! Framework type
+! License
+|}
+
+===ASP.NET===
+{{see also|ASP.NET|List of CLI languages}}
+<!-- In each table, link 1st instance of terms, remove later WP:REPEATLINK(s); add ONLY entries that have an article or supply a reliable source for notability. -->
+{| class="wikitable sortable" style="font-size: 90%"
+|-
+! Project
+! [[programming language|Language]]
+! Current stable version
+! Release date
+! [[software license|License]]
+|-
+!{{rh}}| [[ASP.NET MVC Framework]] (ASP.NET MVC)
+| [[ASP.NET]]
+| 4.0 Beta
+| 2012-02-15
+| [[Apache License|Apache]] v2<ref>http://weblogs.asp.net/scottgu/archive/2012/03/27/asp-net-mvc-web-api-razor-and-open-source.aspx</ref>
+|-
+!{{rh}}| [[Base One Foundation Component Library]] (BFC)
+| ASP.NET
+| 7.43
+| 2011-01-15
+| [[proprietary software|Proprietary]]
+|-
+!{{rh}}| [[Component-based Scalable Logical Architecture]] (CSLA)
+| [[C Sharp (programming language)|C#]], [[Visual Basic .NET]]
+| 4.3.10
+| 2012-03-04
+| Proprietary [[freeware]], no limit on use type
+|-
+!{{rh}}| [[DotNetNuke]]
+| ASP.NET
+| 6.01.02
+| 2011-07-25
+| [[MIT License|MIT]]
+|-
+!{{rh}}| [[Kentico]]
+| ASP.NET
+| 6.0
+| 2011-10-10
+| [[Proprietary]]
+|-
+!{{rh}}| [[MonoRail (software)|MonoRail]]
+| ASP.NET
+| 2.1 RC
+| 2011-03-17
+| [[Apache License|Apache]]
+|-
+!{{rh}}| [[OpenRasta]]
+| ASP.NET
+| 2.0 RC
+| 2009-11-04
+| MIT
+|-
+!{{rh}}| [[Sinatra (software)#Frameworks inspired by Sinatra|Nancy]]
+| C#, Visual Basic .NET
+| 0.6.0
+| 2011-06
+| MIT
+|-
+!{{rh}}| Web Forms MVP
+| ASP.NET
+| 1.4
+| 2011-09
+| Ms-PL
+|}
+
+===C++===
+{{see also|C++}}
+<!-- In each table, link 1st instance of terms, remove later WP:REPEATLINK(s); add ONLY entries that have an article or supply a reliable source for notability. -->
+{| class="wikitable sortable" style="font-size: 90%"
+|-
+! Project
+! Current stable version
+! Release date
+! [[software license|License]]
+|-
+!{{rh}}| [[CppCMS]]
+| 1.0.1
+| 2012-03-14
+| [[GNU Lesser General Public License|LGPL]], [[proprietary software|proprietary]]
+|-
+!{{rh}}| [[Tntnet]]
+| 2.1
+| 2012-05-19
+| LGPL
+|-
+!{{rh}}| [[TreeFrog Framework]]
+| 1.0
+| 2012-07-16
+| [[New BSD License|New BSD]]
+|-
+!{{rh}}| [[Wt (web toolkit)|Wt]]
+| 3.2.2
+| 2012-07-04
+| [[GNU General Public License|GPL]], proprietary
+|-
+|}
+
+===ColdFusion Markup Language (CFML)===
+{{see also|ColdFusion Markup Language|ColdFusion}}
+<!-- In each table, link 1st instance of terms, remove later WP:REPEATLINK(s); add ONLY entries that have an article or supply a reliable source for notability. -->
+{| class="wikitable sortable" style="font-size: 90%"
+|-
+! Project
+! Current stable version
+! Release date
+! [[software license|License]]
+|-
+!{{rh}}| [[ColdBox Platform]]
+| 3.5.0 beta
+| 2011-11-28
+| [[Apache License|Apache]] v2
+|-
+!{{rh}}| [[WireBox]]
+| 1.3.0
+| 2011-11-28
+| Apache v2
+|-
+!{{rh}}| [[ColdFusion on Wheels]]
+| 1.1.7
+| 2011-12-14
+| Apache v2
+|-
+!{{rh}}| [[ColdSpring]]
+| 1.2
+| 2008-09-12
+| Apache v2
+|-
+!{{rh}}| [[Fusebox (programming)|Fusebox]]
+| 5.5.1
+| 2008-03-08
+| Apache
+|-
+!{{rh}}| [[Framework One|FW/1]]
+| 1.2
+| 2010-10-18
+| Apache v2
+|-
+!{{rh}}| [[Mach-II]]
+| 1.8.1
+| 2010-09-20
+| [[GPLv3]] with [[Classpath exception]]
+|-
+!{{rh}}| [[Model-Glue]]
+| 3.1.185
+| 2009-08-11
+| Apache
+|-
+!{{rh}}| [[onTap]]
+| 3.3
+| 2009-11-07
+| [[BSD licenses|BSD]]
+|-
+|}
+
+===ECMAScript===
+{{see also|ECMAScript}}
+<!-- In each table, link 1st instance of terms, remove later WP:REPEATLINK(s); add ONLY entries that have an article or supply a reliable source for notability. -->
+{| class="wikitable sortable" style="font-size: 90%"
+|-
+! Project
+! [[programming language|Language]]
+! Current stable version
+! Release date
+! [[software license|License]]
+|-
+!{{rh}}| [[Adobe Flex|Flex]]
+| [[ActionScript]], [[MXML]]
+| 4.6
+| 2011-11-29
+| [[Mozilla Public License|MPL]]
+|-
+!{{rh}}| [[Helma]]
+| [[JavaScript]]
+| 1.6.3
+| ?
+| Helma License version 2.0
+|-
+!{{rh}}| [[qooxdoo]]
+| JavaScript
+| 1.5
+| 2011-07-13
+| [[GNU Lesser General Public License|LGPL]] or [[Eclipse Public License|Eclipse]]
+|-
+!{{rh}}| [[SproutCore]]
+| JavaScript
+| 1.8 (beta 2.0)
+| 2012-03-07
+| [[MIT License|MIT]]
+|-
+!{{rh}}| [[WaveMaker]]
+| [[Java (programming language)|Java]] (server), JavaScript (client)
+| 6.3.3
+| 2011-09-22
+| [[Apache License|Apache]]
+|-
+|}
+
+===Java===
+{{see also|Java (programming language)|Java (software platform)}}
+<!-- In each table, link 1st instance of terms, remove later WP:REPEATLINK(s); add ONLY entries that have an article or supply a reliable source for notability. -->
+{| class="wikitable sortable" style="font-size: 90%"
+|-
+! Project
+! Current stable version
+! Release date
+! [[License]]
+|-
+!{{rh}}| [[Apache OFBiz]]
+| 10.04.02
+| 2010-04-30
+| Apache Software License 2.0 (ASL 2.0)
+|-
+!{{rh}}| [[Shale Framework (software)|Apache Shale]]
+| 1.0.4
+| 2007-12-19
+| Apache
+|-
+!{{rh}}| [[Apache Sling]]
+| 6
+| 2011-04-18
+| Apache 2.0
+|-
+!{{rh}}| [[Apache Struts]]
+| 2.3.3
+| 2012-05-03
+| Apache 2.0
+|-
+!{{rh}}| [[Tapestry (programming)|Apache Tapestry]]
+| 5.3.3
+| 2012-04-23
+| [[Apache License|Apache]]
+|-
+!{{rh}}| [[Apache Wicket]]
+| 1.5.5
+| 2012-03-12
+| Apache
+|-
+!{{rh}}| [[AppFuse]]
+| 2.1
+| 2011-04-04
+| Apache
+|-
+!{{rh}}| [[Aranea framework|Aranea]]
+| 1.2.2
+| 2009-06-18
+| Apache
+|-
+!{{rh}}| [[Context Framework]]
+| 0.8.5
+| 2012-03-17
+| Apache
+|-
+!{{rh}}| [[Rich Ajax Platform|Eclipse RAP]]
+| 1.4.1
+| 2011-09-23
+| [[Eclipse Public License|Eclipse]]
+|-
+!{{rh}}| [[FormEngine]]
+| 2.0.1
+| 2012-05-08
+| [[MIT License|MIT]], [[proprietary software|proprietary]]
+|-
+!{{rh}}| [[Grails (framework)|Grails]]
+| 2.0.3
+| 2012-04-03
+| Apache
+|-
+!{{rh}}| [[Google Web Toolkit]]
+| 2.4.0
+| 2011-09-08
+| Apache
+|-
+!{{rh}}| [[Hamlets]]
+| 1.7
+| 2011-03-11
+| [[BSD licenses|BSD]]
+|-
+!{{rh}}| [[IceFaces]]
+| 3.0.1
+| 2012-03-27
+| [[Apache License|Apache]]
+|-
+!{{rh}}| [[ItsNat]]
+| 1.2
+| 2011-05-24
+| [[GNU Lesser General Public License|LGPL]], proprietary
+|-
+!{{rh}}| [[JavaServer Faces]]
+| 2.1
+|2010-10-22
+| Implementation dependent
+|-
+!{{rh}}| [[JBoss Seam]]
+| 3.1.0 final
+| 2012-01-13
+| LGPL
+|-
+!{{rh}}| [[Jspx-bay]]
+| 1.1.0
+| 2011-02-17
+| Apache 2.0
+|-
+!{{rh}}| [[JVx (Framework)|JVx WebUI]]
+| 0.9
+| 2011-04-01
+| Apache 2.0
+|-
+!{{rh}}| [[ManyDesigns Portofino]]
+| 3.1.10
+| 2011-03-22
+| [[GPLv3]]
+|-
+!{{rh}}| [[OpenLaszlo]]
+| 4.9.0
+| 2010-10-21
+| [[Common Public License|CPL]]
+|-
+!{{rh}}| [[OpenXava]]
+| 4.3
+| 2011-12-14
+| LGPL
+|-
+!{{rh}}| [[Oracle Application Development Framework|Oracle ADF]]
+| 11.1.1.5
+| 2011-05-06
+| Oracle Technology Network Developer License
+|-
+!{{rh}}| [[Play Framework|Play!]]
+| 2.0.1
+| 2012-05-02
+| Apache 2.0
+|-
+!{{rh}}| [[PrimeFaces]]
+| 3.3
+| 2012-05-29
+| Apache 2.0
+|-
+!{{rh}}| [[Richfaces]]
+| 4.2.1.Final
+| 2012-04-16
+| [[GNU General Public License|GPL]]
+|-
+!{{rh}}| [[RIFE]]
+| 1.6.1
+| 2007-07-14
+| [[Common Development and Distribution License|CDDL]], LGPL
+|-
+!{{rh}}| [[SmartClient]]
+| 8.0
+| 2011-01-05
+| LGPL
+|-
+!{{rh}}| [[Spring Framework|Spring]]
+| 3.1.1
+| 2012-02-17
+| Apache
+|-
+!{{rh}}| [[Stripes (framework)|Stripes]]
+| 1.5.7
+| 2012-05-17
+| Apache
+|-
+!{{rh}}| [[ThinWire]]
+| 1.2
+| 2007-09-17
+| GPL
+|-
+!{{rh}}| [[Vaadin]]
+| 6.7.6
+| 2012-03-06
+| Apache
+|-
+!{{rh}}| [[Wavemaker]]
+| 6.3.3
+| 2011-09-22
+| Apache
+|-
+!{{rh}}| [[WebObjects]]
+| 5.4.3
+| 2008-09-15
+| Proprietary
+|-
+!{{rh}}| [[WebWork]]
+| 2.2.6
+| 2007-07-21
+| Apache
+|-
+!{{rh}}| [[ZK (framework)|ZK]]
+| 6.0.1
+| 2012-05-02
+| LGPL, ZOL
+|-
+!{{rh}}| [[ztemplates]]
+| 2.4.0
+| 2011-09-11
+| Apache
+|}
+
+===Scala===
+{{see also|Scala (programming language)}}
+<!-- In each table, link 1st instance of terms, remove later WP:REPEATLINK(s); add ONLY entries that have an article or supply a reliable source for notability. -->
+{| class="wikitable sortable" style="font-size: 90%"
+|-
+! Project
+! Current stable version
+! Release date
+! [[License]]
+|-
+!{{rh}}| [[Play Framework|Play!]]
+| 2.0.1
+| 2012-05-02
+| Apache 2.0
+|-
+!{{rh}}| [[Lift (web framework)|Lift]]
+| 2.4
+| 2012-01-12
+| Apache 2.0
+|}
+
+===Pascal===
+{{see also|Pascal (programming language)}}
+<!-- In each table, link 1st instance of terms, remove later WP:REPEATLINK(s); add ONLY entries that have an article or supply a reliable source for notability. -->
+{| class="wikitable sortable" style="font-size: 90%"
+|-
+! width="140pt" | Project
+! Start date
+! width="90pt" | Current stable version
+! Release date
+! Framework type
+! [[software license|License]]
+|-
+!{{rh}}| [http://wiki.freepascal.org/fcl-web fpWeb *]
+| -
+| -
+| -
+| [[Web application framework]]
+| [[GNU Lesser General Public License|LGPL]]
+|-
+!{{rh}}| [http://services.cnoc.nl/lazarus/index/fclweb WebDesign **]
+| Unknown
+| Unknown
+| Unknown
+| [[Web application framework]]
+| [[GNU Lesser General Public License|LGPL]]
+|-
+!{{rh}}| [http://code.sd/freespider.htm FreeSpider]
+| 2009-10
+| 1.2.5
+| 2012-02-09
+| [[Web application framework]]
+| [[GNU Lesser General Public License|LGPL]]
+|-
+!{{rh}}| [http://code.google.com/p/extpascal/ ExtPascal]
+| 2008
+| 0.9.8
+| 2010-05
+| [[Web application framework]]
+| [[New BSD License]]
+|-
+!{{rh}}| [http://www.atozed.com/intraWeb/ IntraWeb]
+| Unknown
+| Unknown
+| Unknown
+| [[Web application framework]]
+| [[Proprietary]]
+|-
+!{{rh}}| [http://code.google.com/p/delphionrails/ Delphi on Rails]
+| 2009
+| -
+| Unknown
+| [[Web application framework]]
+| [[GNU Lesser General Public License|LGPL]]
+|-
+!{{rh}}| [http://www.href.com/ WebHub]
+| Unknown
+| Unknown
+| Unknown
+| [[Web application framework]]
+| [[Proprietary]]
+|-
+!{{rh}}| [http://code.google.com/p/kitto/ Kitto]
+| 2012-02
+| -
+| Unknown
+| [[Web application framework]]
+| [[Apache]]
+|-
+!{{rh}}| [http://www.realthinclient.com/ Real Thin Client]
+| 2004
+| 5.15
+| 2012-04-25
+| [[Web application framework]]
+| [[Proprietary]]
+|-
+!{{rh}}| [http://www.raudus.com/ Raudus]
+| Unknown
+| 0.8.8
+| 2012-03-28
+| [[Web application framework]]
+| [[Freeware]]
+|-
+!{{rh}}| [http://www.unigui.com/ uniGUI]
+| 2009-05
+| 0.89.0
+| 2012-05-22
+| [[Web application framework]]
+| [[GNU Lesser General Public License|LGPL]]
+|-
+!{{rh}}| [http://www.habarisoft.com/habari_webcomponents.html Habari Web Components]
+| Unknown
+| 1.0
+| Unknown
+| [[Web application framework]]
+| [[Proprietary]]
+|}
+* ''* follows FreePascal release''
+* ''** maintained as fppkg package''
+
+===Perl===
+{{see also|Perl}}
+<!-- In each table, link 1st instance of terms, remove later WP:REPEATLINK(s). -->
+{| class="wikitable sortable" style="font-size: 90%"
+|-
+! Project
+! Current stable version
+! Release date
+! [[software license|License]]
+|-
+!{{rh}}| [[Catalyst (software)|Catalyst]]
+| 5.90012
+| 2012-05-19
+| [[Artistic License|Artistic]], [[GNU General Public License|GPL]]
+|-
+!{{rh}}| [[Dancer (software)|Dancer]]
+| 1.3095
+| 2012-04-01
+| Artistic, GPL
+|-
+!{{rh}}| [[Interchange (software)|Interchange]]
+| 5.6.3
+| 2010-03-24
+| GPL
+|-
+!{{rh}}| [[Mason (Perl)|Mason]]
+| 2.19
+| 2012-05-02
+| Artistic, GPL
+|-
+!{{rh}}| [[Maypole framework|Maypole]]
+| 2.13
+| 2008-04-18
+| Artistic, GPL
+|-
+!{{rh}}| [[Mojolicious]]
+| 3.0
+| 2012-06-26
+| Artistic
+|-
+!{{rh}}| [[Reaction (software)|Reaction]]
+| 0.002005
+| 2011-03-08
+| Artistic, GPL
+|-
+|}
+
+===Python===
+{{see also|Python (programming language)}}
+<!-- In each table, link 1st instance of terms, remove later WP:REPEATLINK(s); add ONLY entries that have an article or supply a reliable source for notability. -->
+{| class="wikitable sortable" style="font-size: 90%"
+|-
+! Project
+! Current stable version
+! Release date
+! [[software license|License]]
+|-
+!{{rh}}| [[BlueBream]]
+| 1.0
+| 2011-01-18
+| [[Zope Public License|ZPL]]
+|-
+!{{rh}}| [[CherryPy]]
+| 3.2.2
+| 2011-10-28
+| [[BSD licenses|BSD]]
+|-
+!{{rh}}| [[CubicWeb]]
+| 3.15.1<ref>http://www.cubicweb.org/project/cubicweb/3.15.1</ref>
+| 2012-06-11
+| [[GNU Lesser General Public License|LGPL]]
+|-
+!{{rh}}| [[Django (web framework)|Django]]
+| 1.4
+| 2012-03-23<ref>https://www.djangoproject.com/weblog/2012/mar/23/14/</ref>
+| BSD
+|-
+!{{rh}}| [[Flask (programming)|Flask]]
+| 0.9
+| 2012-07-01<ref>http://flask.pocoo.org/docs/changelog/</ref>
+| BSD
+|-
+!{{rh}}| [[Grok (web framework)|Grok]]
+| 1.4
+| 2011-04-04
+| ZPL
+|-
+!{{rh}}| [[Nagare (web framework)|Nagare]]
+| 0.3.0
+| 2010-12-14
+| BSD
+|-
+!{{rh}}| [[Plone (software)|Plone]]
+| 4.1.3
+| 2011-12-08
+| [[GNU General Public License|GPL]]
+|-
+!{{rh}}| [[Pyjamas (software)|Pyjamas]]
+| 0.7
+| 2010-04-25
+| [[Apache License|Apache]]
+|-
+!{{rh}}| [[Pylons (web framework)|Pylons]]
+| 1.0.0
+| 2010-05-28
+| BSD
+|-
+!{{rh}}| [[Pyramid (web framework)|Pyramid]]
+| 1.2.7
+| 2012-01-20
+| BSD
+|-
+!{{rh}}| [[Tornado (web server)|Tornado]]
+| 2.2
+| 2012-01-30
+| Apache
+|-
+!{{rh}}| [[TurboGears]]
+| 2.1.4
+| 2011-12-12
+| MIT, LGPL
+|-
+!{{rh}}| [[web2py]]
+| 1.99.7
+| 2012-03-04<ref>http://web2py.com/examples/default/download</ref>
+| [[LGPL]]v3
+|-
+!{{rh}}| [[Webware]]
+| 1.0.2
+| 2009-06-07
+| [[Python License|Python]]
+|-
+!{{rh}}| [[Zope]] 2
+| 2.13.6
+| 2011-04-03<ref>http://zope2.zope.org/releases</ref>
+| ZPL
+|-
+!{{rh}}| Zope 3
+| 3.4.1
+| 2010-06-22
+| ZPL
+|}
+
+===Ruby===
+{{see also|Ruby (programming language)}}
+<!-- In each table, link 1st instance of terms, remove later WP:REPEATLINK(s); add ONLY entries that have an article or supply a reliable source for notability. -->
+{| class="wikitable sortable" style="font-size: 90%"
+|-
+! Project
+! Current stable version
+! Release date
+! [[software license|License]]
+|-
+!{{rh}}| [[Camping (microframework)|Camping]]
+| 2.1
+| 2010-08-20
+| [[MIT License|MIT]]
+|-
+!{{rh}}| [[Ruby on Rails]]
+| 3.2.6
+| 2012-06-12
+| MIT, [[Ruby License|Ruby]]
+|-
+!{{rh}}| [[Ramaze]]
+| 2011.07.25
+| 2011-07-25
+| Ruby
+|-
+!{{rh}}| [[Sinatra (software)|Sinatra]]
+| 1.3.1
+| 2011-10-05
+| MIT
+|-
+!{{rh}}| [[Merb]]
+| 1.1.2
+| 2010-06-17
+| MIT
+|-
+!{{rh}}| [[Nitro (web framework)|Nitro]]
+| 0.41
+| 2006-12-12
+| [[BSD licenses|BSD]]
+|-
+!{{rh}}| [[PureMVC]]
+| 2.0.4
+| 2008-08-14
+| [[Creative Commons license|CC]] +Attribution
+|}
+
+===Others===
+<!-- In each table, link 1st instance of terms, remove later WP:REPEATLINK(s); add ONLY entries that have an article or supply a reliable source for notability. -->
+{| class="wikitable sortable" style="font-size: 90%"
+|-
+! Project
+! [[programming language|Language]]
+! Current stable version
+! Release date
+! [[software license|License]]
+|-
+!{{rh}}| [[AIDA/Web]]
+| [[Smalltalk]]
+| 6.4
+| 2012-01-02
+| [[MIT License|MIT]]
+|-
+!{{rh}}| [[Oracle Application Express|Application Express]]
+| [[PL/SQL]]
+| 4.1
+| 2011-08-24
+| [[proprietary software|Proprietary]] [[freeware]]
+|-
+!{{rh}}| [[Grails (framework)|Grails]]
+| [[Groovy (programming language)|Groovy]] (JVM)
+| 2.0.1
+| 2012-02-14
+| [[Apache License|Apache]]
+|-
+!{{rh}}| [[Kepler (software)|Kepler]]
+| [[Lua (programming language)|Lua]]
+| 1.1.1
+| 2009-03-11
+| MIT
+|-
+!{{rh}}| [[Morfik]]
+| [[C Sharp (programming language)|C#]], [[BASIC]], [[Pascal (programming language)|Pascal]], [[Java (programming language)|Java]]
+| 3.0.8.1
+| 2010-12-13
+| Proprietary freeware
+|-
+!{{rh}}| [[Noir (web framework)|Noir]]
+| [[Clojure]]
+| 1.2.2
+| ?
+| [[Eclipse Public License|Eclipse]]
+|-
+!{{rh}}| [[Ocsigen]]
+| [[OCaml]]
+| 2.0.4
+| 2012-03-09
+| [[GNU Lesser General Public License|LGPL]]
+|-
+!{{rh}}| [[Opa (programming language)|Opa]]
+| Opa
+| 0.9.1
+| 2012-03-09
+| [[Affero General Public License|AGPL]]
+|-
+!{{rh}}| [[OpenACS]]
+| [[Tcl]]
+| 5.7.0
+| 2011-07-17
+| [[GNU General Public License|GPL]]
+|-
+!{{rh}}| [[Seaside (software)|Seaside]]
+| Smalltalk
+| 3.0
+| 2010-09-13
+| MIT
+|-
+!{{rh}}| [[Compojure]]
+| Clojure
+| 1.0.1
+| 2012-01-08
+| Eclipse
+|-
+!{{rh}}| [[Zotonic]]
+| [[Erlang]]
+| 0.8.0
+| 2012-04-11
+| Apache
+|-
+|-class="sortbottom"
+! Project
+! Language
+! Current stable version
+! Release date
+! License
+|}
+

@@ -1,0 +1,7 @@
+'/bootstrap':signature(equal(Arg1,Arg2)::expr,[Arg1::expr,Arg2::expr]).
+'/bootstrap':projection(equal(Arg1,Arg2)::expr,'/bootstrap':horiz(['/bootstrap':vis(Arg1::expr),'/bootstrap':label(! (==)),'/bootstrap':vis(Arg2::expr)])).
+'/bootstrap':signature(if(Cond,Then,Else)::statement,[Cond::expr,Then::'/bootstrap':list(statement),Else::'/bootstrap':list(statement)]).
+'/bootstrap':projection(if(Cond,Then,Else)::statement,'/bootstrap':vert(['/bootstrap':horiz(['/bootstrap':label(!if),'/bootstrap':label(!'('),'/bootstrap':vis(Cond::expr),'/bootstrap':label(!')'),'/bootstrap':label(!'{')]),cpi:vis(Then::'/bootstrap':list(statement),'/bootstrap':vertical('/bootstrap':label(!'    '),'/bootstrap':color('/bootstrap':label(!'    // Empty'),cpi:rgb(192,192,192)),'/bootstrap':horiz([]))),'/bootstrap':label(!'} else {'),cpi:vis(Else::'/bootstrap':list(statement),'/bootstrap':vertical('/bootstrap':label(!'    '),'/bootstrap':color('/bootstrap':label(!'    // Empty'),cpi:rgb(192,192,192)),'/bootstrap':horiz([]))),'/bootstrap':label(!'}')])).
+'/bootstrap':defAtom(true::expr).
+'/bootstrap':defAtom(false::expr).
+javascript([if(false,[exprStatement(call(varExpr(foo),[])),exprStatement(call(varExpr(bar),[]))],[])]).

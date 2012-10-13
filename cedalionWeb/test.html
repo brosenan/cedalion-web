@@ -1,0 +1,15 @@
+<html>
+<head>
+<title>Test</title>
+</head>
+<body>
+<script type="text/javascript" src="jquery-1.7.2.js"></script>
+<script type="text/javascript" src="logic.js"></script>
+<script type="text/javascript" src="cedalion.js"></script>
+<script type="text/javascript">
+	logic.ctx("tracing").bind(function(msg) { console.log("TRACE: " + msg); }, logic);
+	logic.ctx("jquery").bind($, logic);
+	logic.runProcedure(['test#testVis']);
+</script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+'/bootstrap':signature(builtin:debug(Name,Value)::'/bootstrap':pred,[Name::'/bootstrap':string,Value::'/bootstrap':typedTerm]).
+'/bootstrap':sandbox(builtin:debug(Name,Value)::'/bootstrap':pred).
+builtin:debug(_,_):-builtin:true.

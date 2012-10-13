@@ -1,0 +1,5 @@
+'/bootstrap':signature(while(Cond,Do)::statement,[Cond::expr,Do::'/bootstrap':list(statement)]).
+'/bootstrap':projection(while(Cond,Do)::statement,'/bootstrap':vert(['/bootstrap':horiz(['/bootstrap':label(!while),'/bootstrap':brackets('/bootstrap':vis(Cond::expr),40,41),'/bootstrap':label(!'{')]),cpi:vis(Do::'/bootstrap':list(statement),'/bootstrap':vertical('/bootstrap':label(!'    '),'/bootstrap':color('/bootstrap':label(!'    // Empty'),cpi:rgb(192,192,192)),'/bootstrap':horiz([]))),'/bootstrap':label(!'}')])).
+'/bootstrap':defAtom(break::statement).
+'/bootstrap':projection(break::statement,'/bootstrap':horiz(['/bootstrap':label(!break),'/bootstrap':label(! (;))])).
+javascript([while(op(varExpr(a),lt,const(3)),[assign(varExpr(a),op(varExpr(a),plus,const(1))),break])]).

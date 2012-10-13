@@ -1,0 +1,8 @@
+'/bootstrap':signature(ul(List)::'/cedalionWeb/xml':xml,[List::'/bootstrap':list('/cedalionWeb/xml':xml)]).
+'/bootstrap':projection(ul(List)::'/cedalionWeb/xml':xml,'/bootstrap':horiz(['/bootstrap':halfSize('/bootstrap':label(!ul)),cpi:vis(List::'/bootstrap':list('/cedalionWeb/xml':xml),'/bootstrap':vert)])).
+'/cedalionWeb/xml':macro(ul(List),'/cedalionWeb/xml':'elem2'('/Functional':const(!ul),[],ulBody(List))).
+'/bootstrap':signature(ulBody(List)::'/cedalionWeb/xml':xml,[List::'/bootstrap':list('/cedalionWeb/xml':xml)]).
+'/cedalionWeb/xml':macro(ulBody([]),'/cedalionWeb/xml':str(!' ')).
+'/cedalionWeb/xml':macro(ulBody([First|Rest]),'/cedalionWeb/xml':list('/cedalionWeb/xml':'elem2'('/Functional':const(!li),[],First),'/cedalionWeb/xml':list(ulBody(Rest),'/cedalionWeb/xml':empty))).
+'/bootstrap':unitTest('/cedalionWeb/xml':'generates2'(ul(['/cedalionWeb/xml':str(!'A'),'/cedalionWeb/xml':str(!'B'),'/cedalionWeb/xml':str(!'C')]),!'<ul><li>A</li><li>B</li><li>C</li> </ul>',[],[])).
+'/javascript/jsLogic':procedure(testUL,'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/statepred':whenever('/cedalionWeb/xml':generates(ul(['/cedalionWeb/xml':str(!'A')]),S),'/javascript/jsLogic':jsCommand(['/javascript':exprStatement('/javascript':call('/javascript':dot('/javascript':varExpr('/javascript/jsLogic':console),!log),['/javascript/jsLogic':inlineTerm(S::'/bootstrap':string)]))])))])).

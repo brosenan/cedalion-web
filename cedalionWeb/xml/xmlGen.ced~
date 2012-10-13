@@ -1,0 +1,17 @@
+'/bootstrap':defAtom(attribute::'/bootstrap':type).
+'/bootstrap':signature('elem2'(Name,Attr,Body)::xml,[Name::'/Functional':expr('/bootstrap':string),Attr::'/bootstrap':list(attribute),Body::xml]).
+'/bootstrap':projection('elem2'(Name,Attr,Body)::xml,'/bootstrap':vert(['/bootstrap':horiz(['/bootstrap':label(! (<)),'/bootstrap':vis(Name::'/Functional':expr('/bootstrap':string)),cpi:vis(Attr::'/bootstrap':list(attribute),'/bootstrap':horizontal(32,32,'/bootstrap':label(!' '),'/bootstrap':label(!' '))),'/bootstrap':label(! (>))]),'/bootstrap':horiz(['/bootstrap':label(!'    '),'/bootstrap':vis(Body::xml)]),'/bootstrap':horiz(['/bootstrap':label(!'</'),'/bootstrap':vis(Name::'/Functional':expr('/bootstrap':string)),'/bootstrap':label(! (>))])])).
+'/bootstrap':alias('elem2'('/Functional':const(!name),[],empty)::xml,!'</>').
+'/bootstrap':signature('generates2'(XML,Str)::'/bootstrap':pred,[XML::xml,Str::'/bootstrap':string]).
+rem(('/bootstrap':projection('generates2'(XML,Str)::'/bootstrap':pred,'/bootstrap':horiz(['/bootstrap':vis(XML::xml),'/bootstrap':label(!generates),'/bootstrap':vis(Str::'/bootstrap':string)])))).
+'/bootstrap':signature(genAttr(Attr)::'/Functional':expr('/bootstrap':string),[Attr::'/bootstrap':list(attribute)]).
+'/Functional':def(genAttr([]),'/bootstrap':string,'/Functional':const(!'')).
+'/bootstrap':signature(attr(Name,Value)::attribute,['/Functional':const(Name)::'/Functional':expr('/bootstrap':string),Value::'/Functional':expr('/bootstrap':string)]).
+'/bootstrap':projection(attr(Name,Value)::attribute,'/bootstrap':horiz(['/bootstrap':vis('/Functional':const(Name)::'/Functional':expr('/bootstrap':string)),'/bootstrap':label(! (=)),'/bootstrap':vis(Value::'/Functional':expr('/bootstrap':string))])).
+'/bootstrap':adapter(Name::'/bootstrap':string,attr('/Functional':const(Name),Value)::attribute).
+'/Functional':def(genAttr([attr(Name,Value)|Rest]),'/bootstrap':string,'/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':const(!' '),'/Functional':concat,'/Functional':const(Name)),'/Functional':concat,'/Functional':const(!'="')),'/Functional':concat,Value),'/Functional':concat,'/Functional':const(!'"')),'/Functional':concat,genAttr(Rest))).
+'/bootstrap':signature(gen(XML)::'/Functional':expr('/bootstrap':string),[XML::xml]).
+'/Functional':def(gen(XML),'/bootstrap':string,'/Functional':where('/Functional':const(Str),generates(XML,Str))).
+generates('elem2'(Name,Attr,Body),Str):-'/Functional':eval('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':const(! (<)),'/Functional':concat,Name),'/Functional':concat,genAttr(Attr)),'/Functional':concat,'/Functional':const(! (>))),'/Functional':concat,gen(Body)),'/Functional':concat,'/Functional':const(!'</')),'/Functional':concat,Name),'/Functional':concat,'/Functional':const(! (>))),'/bootstrap':string,Str).
+generates(empty,!''):-builtin:true.
+'/bootstrap':unitTest(generates('elem2'('/Functional':const(!div),[attr('/Functional':const(!class),'/javascript/statepred':expr('/Functional':const(!myClass))),attr('/Functional':const(!id),'/javascript/statepred':expr('/Functional':const(!myID)))],empty),!'<div class="myClass" id="myID"></div>')).

@@ -1,0 +1,14 @@
+'/bootstrap':defAtom(createJSON::symbol).
+'/bootstrap':defAtom(fieldAssignment::'/bootstrap':type).
+'/bootstrap':signature(json(Fields)::expr,[Fields::'/bootstrap':list(fieldAssignment)]).
+'/bootstrap':projection(json(Fields)::expr,cpi:vis(Fields::'/bootstrap':list(fieldAssignment),'/bootstrap':horizontal(123,125,'/bootstrap':label(! (,)),'/bootstrap':label(!'{}')))).
+'/bootstrap':alias(json(Fields)::expr,!'{}').
+'/bootstrap':signature(bind(Field,Value)::fieldAssignment,[Field::expr,Value::expr]).
+'/bootstrap':projection(bind(Field,Value)::fieldAssignment,'/bootstrap':horiz(['/bootstrap':vis(Field::expr),'/bootstrap':label(! (:)),'/bootstrap':vis(Value::expr)])).
+'/bootstrap':adapter(Field::'/bootstrap':string,bind(str(Field),Value)::fieldAssignment).
+'/bootstrap':signature(str(Str)::expr,[Str::'/bootstrap':string]).
+'/bootstrap':projection(str(Str)::expr,'/bootstrap':horiz(['/bootstrap':brackets('/bootstrap':vis(Str::'/bootstrap':string),34,34)])).
+'/bootstrap':adapter(Str::'/bootstrap':string,str(Str)::expr).
+'/bootstrap':signature(dot(Object,Field)::expr,[Object::expr,Field::'/bootstrap':string]).
+'/bootstrap':projection(dot(Object,Field)::expr,'/bootstrap':horiz(['/bootstrap':vis(Object::expr),'/bootstrap':label(!.),'/bootstrap':vis(Field::'/bootstrap':string)])).
+javascript([assign(createJSON,function([],[return(annotation:parentheses(json([bind(str(!foo),str(!hello)),bind(str(!bar),dot(varExpr(a),!world)),bind(str(!baz),dot(dot(varExpr(b),!bat),!too))])))]))]).

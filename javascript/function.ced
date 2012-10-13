@@ -1,0 +1,31 @@
+'/bootstrap':defAtom(statement::'/bootstrap':type).
+'/bootstrap':defAtom(symbol::'/bootstrap':type).
+'/bootstrap':defAtom(expr::'/bootstrap':type).
+'/bootstrap':signature(return(Expr)::statement,[Expr::expr]).
+'/bootstrap':projection(return(Expr)::statement,'/bootstrap':horiz(['/bootstrap':label(!return),'/bootstrap':vis(Expr::expr),'/bootstrap':label(! (;))])).
+'/bootstrap':signature(varExpr(Var)::expr,[Var::symbol]).
+'/bootstrap':projection(varExpr(Var)::expr,'/bootstrap':lineBorder('/bootstrap':vis(Var::symbol),1,cpi:rgb(192,192,192))).
+'/bootstrap':adapter(Var::symbol,varExpr(Var)::expr).
+'/bootstrap':defAtom(foo::symbol).
+'/bootstrap':defAtom(a::symbol).
+'/bootstrap':defAtom(b::symbol).
+'/bootstrap':signature(call(Func,Args)::expr,[Func::expr,Args::'/bootstrap':list(expr)]).
+'/bootstrap':projection(call(Func,Args)::expr,'/bootstrap':horiz(['/bootstrap':vis(Func::expr),cpi:vis(Args::'/bootstrap':list(expr),'/bootstrap':horizontal(40,41,'/bootstrap':label(! (,)),'/bootstrap':label(!'()')))])).
+'/bootstrap':alias(call(Func,[])::expr,!'f()').
+'/bootstrap':adapter(Func::symbol,call(varExpr(Func),[])::expr).
+'/bootstrap':adapter(Func::symbol,exprStatement(call(varExpr(Func),[]))::statement).
+'/bootstrap':defAtom(bar::symbol).
+'/bootstrap':signature(exprStatement(Expr)::statement,[Expr::expr]).
+'/bootstrap':projection(exprStatement(Expr)::statement,'/bootstrap':horiz(['/bootstrap':vis(Expr::expr),'/bootstrap':label(! (;))])).
+'/bootstrap':adapter(Expr::expr,exprStatement(Expr)::statement).
+'/bootstrap':signature(javascript(Statements)::'/bootstrap':statement,[Statements::'/bootstrap':list(statement)]).
+'/bootstrap':projection(javascript(Statements)::'/bootstrap':statement,'/bootstrap':vert(['/bootstrap':label(!javascript),cpi:vis(Statements::'/bootstrap':list(statement),'/bootstrap':vert)])).
+'/bootstrap':signature(function(Args,Body)::expr,[Args::'/bootstrap':list(symbol),Body::'/bootstrap':list(statement)]).
+'/bootstrap':projection(function(Args,Body)::expr,'/bootstrap':vert(['/bootstrap':horiz(['/bootstrap':label(!function),cpi:vis(Args::'/bootstrap':list(symbol),'/bootstrap':horizontal(40,41,'/bootstrap':label(! (,)),'/bootstrap':label(!'()'))),'/bootstrap':label(!'{')]),cpi:vis(Body::'/bootstrap':list(statement),'/bootstrap':vertical('/bootstrap':label(!'    '),'/bootstrap':color('/bootstrap':label(!'    // Empty'),cpi:rgb(192,192,192)),'/bootstrap':horiz([]))),'/bootstrap':label(!'}')])).
+'/bootstrap':projection(function(Args,Body)::expr,'/bootstrap':shrink,'/bootstrap':horiz(['/bootstrap':italic('/bootstrap':label(!fn)),cpi:vis(Args::'/bootstrap':list(symbol),'/bootstrap':horizontal(40,41,'/bootstrap':label(! (,)),'/bootstrap':label(!'()'))),cpi:vis(Body::'/bootstrap':list(statement),'/bootstrap':horizontal(123,125,'/bootstrap':label(!' '),'/bootstrap':label(!'{}')))])).
+'/bootstrap':alias(annotation:escape(annotation:shrink(function([],[])))::expr,!'fn(){}').
+'/bootstrap':defAtom(return::statement).
+'/bootstrap':projection(return::statement,'/bootstrap':horiz(['/bootstrap':label(!return),'/bootstrap':label(! (;))])).
+'/bootstrap':signature(twoStatements(S1,S2)::statement,[S1::statement,S2::statement]).
+'/bootstrap':projection(twoStatements(S1,S2)::statement,'/bootstrap':vert(['/bootstrap':vis(S1::statement),'/bootstrap':vis(S2::statement)])).
+javascript([assign(foo,function([a,b],[twoStatements(assign(b,call(varExpr(a),[])),exprStatement(call(varExpr(bar),[]))),return]))]).

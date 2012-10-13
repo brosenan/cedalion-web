@@ -1,0 +1,6 @@
+'/bootstrap':signature(new(Class)::expr,[Class::expr]).
+'/bootstrap':projection(new(Class)::expr,'/bootstrap':horiz(['/bootstrap':label(!new),'/bootstrap':vis(Class::expr)])).
+'/bootstrap':defAtom(date::symbol).
+'/bootstrap':projection(date::symbol,'/bootstrap':label(!'Date')).
+hasSpecialRendering(new(Class)::expr,Str):-'/Functional':eval('/Functional':plus('/Functional':applyBinOp('/Functional':const(!'(new '),'/Functional':concat,toString(Class::expr)),'/Functional':const(!')')),'/bootstrap':string,Str).
+javascript([var(Start,new(call(varExpr(date),[])))]).

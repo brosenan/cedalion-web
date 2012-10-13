@@ -1,0 +1,2 @@
+'/bootstrap':signature(openPage(Page)::'/javascript/jsLogic':procedure,[Page::'/cedalionWeb/xml':xml]).
+'/javascript/jsLogic':procedure(openPage(Page),'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure(changeContent('/javascript/jsLogic':jsExpr('/javascript':call('/javascript':varExpr('/javascript/jsLogic':jQuery),['/javascript':str(!'#main')])),Page))])).

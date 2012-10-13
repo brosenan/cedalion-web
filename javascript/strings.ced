@@ -1,0 +1,11 @@
+'/bootstrap':signature(encodeString(Str)::'/Functional':expr('/bootstrap':string), [Str::'/bootstrap':string]).
+'/Functional':def(encodeString(Str), '/bootstrap':string, '/Functional':where('/Functional':const(EncStr), (builtin:charCodes(Str, Codes), encodeCodes(Codes, EncCodes), builtin:charCodes(EncStr, EncCodes)))).
+hasSpecialRendering(str(Str)::expr, StringLiteral):-'/Functional':eval('/Functional':concat('/Functional':wrap(!'"'), '/Functional':concat(encodeString(Str), '/Functional':wrap(!'"'))), '/bootstrap':string, StringLiteral).
+'/bootstrap':signature(encodeCodes(Codes, EncCodes)::'/bootstrap':pred, [Codes::'/bootstrap':list('/bootstrap':number), EncCodes::'/bootstrap':list('/bootstrap':number)]).
+encodeCodes([], []):-builtin:true.
+encodeCodes([Char|Rest], Codes):-encodeCodes(Rest, EncRest), builtin:if(specialChar(Char, Enc), Codes::'/bootstrap':list('/bootstrap':number)=[92, Enc|EncRest]::'/bootstrap':list('/bootstrap':number), Codes::'/bootstrap':list('/bootstrap':number)=[Char|EncRest]::'/bootstrap':list('/bootstrap':number)).
+'/bootstrap':signature(specialChar(Char, Enc)::'/bootstrap':pred, [Char::'/bootstrap':number, Enc::'/bootstrap':number]).
+annotation:comment(specialChar(34, 34), !'" becomes \"'):-builtin:true.
+annotation:comment(specialChar(92, 92), !'\ becomes \\'):-builtin:true.
+annotation:comment(specialChar(10, 110), !'LF becomes \n'):-builtin:true.
+'/bootstrap':sandbox(encodeString(!'"Hello"')::'/Functional':expr('/bootstrap':string)).

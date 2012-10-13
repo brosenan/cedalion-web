@@ -1,0 +1,8 @@
+'/bootstrap':signature(for(Goal,XML)::xml,[Goal::'/bootstrap':pred,XML::xml]).
+'/bootstrap':projection(for(Goal,XML)::xml,'/bootstrap':vert(['/bootstrap':horiz(['/bootstrap':label(!for),'/bootstrap':brackets('/bootstrap':vis(Goal::'/bootstrap':pred),40,41)]),'/bootstrap':horiz(['/bootstrap':label(!'    '),'/bootstrap':vis(XML::xml)])])).
+'/javascript/statepred':def(generates(annotation:parentheses(for(Goal,XML)),Str),Action,Finally,'/javascript/jsLogic':jsCommand(['/javascript':var(S,'/javascript':str(!'')),'/javascript/jsLogic':runProcedure('/javascript/statepred':whenever('/javascript/statepred':conj('/javascript/statepred':pred(Goal),generates(XML,StrPrime)),'/javascript/jsLogic':jsCommand(['/javascript':assign('/javascript':varExpr(S),'/javascript':op('/javascript':varExpr(S),'/javascript':plus,'/javascript/jsLogic':inlineTerm(StrPrime::'/bootstrap':string)))]),'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/jsLogic':foreach(Str::'/bootstrap':string='/javascript/jsLogic':jsExpr('/javascript':varExpr(S))::'/bootstrap':string,Action)),'/javascript/jsLogic':runProcedure('/javascript/jsLogic':do(Finally))])))])).
+'generates2'(for(Goal,XML),Str,Annot1,Annot2):-builtin:findall(XML,xml,Goal,XMLs),'generates2'(xmlList(XMLs),Str,Annot1,Annot2).
+'/bootstrap':signature(xmlList(XMLs)::xml,[XMLs::'/bootstrap':list(xml)]).
+macro(xmlList([]),empty).
+macro(xmlList([First|Rest]),list(First,xmlList(Rest))).
+'/bootstrap':unitTest('generates2'(xmlList(['elem2'('/Functional':const(!a),[],empty),'elem2'('/Functional':const(!b),[],empty)]),!'<a></a><b></b>',[],[])).

@@ -1,0 +1,20 @@
+'/bootstrap':signature(stateExpr(T)::'/bootstrap':type,[T::'/bootstrap':type]).
+'/bootstrap':signature(stateEval(Expr,T,V)::statePred,[Expr::stateExpr(T),T::'/bootstrap':type,V::T]).
+'/bootstrap':projection(stateEval(Expr,T,V)::statePred,'/bootstrap':horiz(['/bootstrap':vis(V::T),'/bootstrap':halfSize('/bootstrap':horiz(['/bootstrap':label(! (::)),'/bootstrap':vis(T::'/bootstrap':type)])),'/bootstrap':symbol(8656),'/bootstrap':vis(Expr::stateExpr(T))])).
+'/bootstrap':alias(stateEval(Expr,T,V)::statePred,!'<= (s)').
+'/bootstrap':signature(stateApplyBinOp(Arg1,Op,Arg2)::stateExpr(T),[Arg1::stateExpr(T),Op::'/Functional':binOp(T),Arg2::stateExpr(T)]).
+'/bootstrap':projection(stateApplyBinOp(Arg1,Op,Arg2)::stateExpr(T),'/bootstrap':horiz(['/bootstrap':vis(Arg1::stateExpr(T)),'/bootstrap':vis(Op::'/Functional':binOp(T)),'/bootstrap':vis(Arg2::stateExpr(T))])).
+'/bootstrap':adapter(Op::'/Functional':binOp(T),stateApplyBinOp(Arg1,Op,Arg2)::stateExpr(T)).
+stateExprDef(stateApplyBinOp(Arg1,Op,Arg2),annotation:shrink(where(expr('/Functional':applyBinOp('/Functional':const(V1),Op,'/Functional':const(V2))),stateEval(annotation:parentheses(pair(Arg1,Arg2)),'/Functional':pairType(T,T),annotation:parentheses('/Functional':pair(V1,V2))))),T).
+'/bootstrap':signature(stateExprDef(Expr,Def,T)::'/bootstrap':statement,[Expr::stateExpr(T),Def::stateExpr(T),T::'/bootstrap':type]).
+'/bootstrap':projection(stateExprDef(Expr,Def,T)::'/bootstrap':statement,'/bootstrap':horiz(['/bootstrap':vis(T::'/bootstrap':type),'/bootstrap':vis(Expr::stateExpr(T)),'/bootstrap':symbol(8797),'/bootstrap':halfSize('/bootstrap':label(!s)),'/bootstrap':vis(Def::stateExpr(T))])).
+'/bootstrap':alias(stateExprDef(Expr,Def,T)::'/bootstrap':statement,!'=def (s)').
+annotation:shrink((stateExprDef(Expr,Def,T)~>annotation:shrink(clause(stateEval(Expr,T,V),stateEval(Def,T,V))))).
+'/bootstrap':signature(expr(Expr)::stateExpr(T),[Expr::'/Functional':expr(T)]).
+'/bootstrap':projection(expr(Expr)::stateExpr(T),'/bootstrap':brackets('/bootstrap':vis(Expr::'/Functional':expr(T)),10216,10217)).
+'/bootstrap':adapter(Expr::'/Functional':expr(T),expr(Expr)::stateExpr(T)).
+'/bootstrap':adapter(Value::T,expr('/Functional':const(Value))::stateExpr(T)).
+clause(stateEval(expr(Expr),T,V),pred('/Functional':eval(Expr,T,V))).
+'/bootstrap':signature(where(Expr,Goal)::stateExpr(T),[Expr::stateExpr(T),Goal::statePred]).
+'/bootstrap':projection(where(Expr,Goal)::stateExpr(T),'/bootstrap':horiz(['/bootstrap':vis(Expr::stateExpr(T)),'/bootstrap':label(!where),'/bootstrap':vis(Goal::statePred)])).
+clause(stateEval(where(Expr,Goal),T,V),conj(Goal,stateEval(Expr,T,V))).

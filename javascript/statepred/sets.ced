@@ -1,0 +1,13 @@
+'/bootstrap':signature(stateSet(T)::'/bootstrap':type,[T::'/bootstrap':type]).
+'/bootstrap':signature(member(M,T,S)::statePred,[M::T,T::'/bootstrap':type,S::stateSet(T)]).
+'/bootstrap':projection(member(M,T,S)::statePred,'/bootstrap':horiz(['/bootstrap':vis(M::T),'/bootstrap':horiz(['/bootstrap':halfSize('/bootstrap':horiz(['/bootstrap':label(! (::)),'/bootstrap':vis(T::'/bootstrap':type)])),'/bootstrap':symbol(8714)]),'/bootstrap':vis(S::stateSet(T))])).
+'/bootstrap':signature(set(M,G)::stateSet(T),[M::T,G::statePred]).
+'/bootstrap':projection(set(M,G)::stateSet(T),'/bootstrap':brackets('/bootstrap':horiz(['/bootstrap':vis(M::T),'/bootstrap':box(1),'/bootstrap':brackets('/bootstrap':vis(G::statePred),0,0)]),123,125)).
+'/bootstrap':alias(set(M,G)::stateSet(T),!'{|}').
+clause(member(M,_,set(M,G)),G).
+'/bootstrap':signature(setDef(S1,T,S2)::'/bootstrap':statement,[S1::stateSet(T),T::'/bootstrap':type,S2::stateSet(T)]).
+'/bootstrap':projection(setDef(S1,T,S2)::'/bootstrap':statement,'/bootstrap':horiz(['/bootstrap':vis(T::'/bootstrap':type),'/bootstrap':vis(S1::stateSet(T)),'/bootstrap':symbol(8839),'/bootstrap':vis(S2::stateSet(T))])).
+setDef(S1,T,S2)~>clause(member(X,T,S1),member(X,T,S2)).
+'/bootstrap':signature(eset(E,G)::stateSet(T),[E::stateExpr(T),G::statePred]).
+'/bootstrap':projection(eset(E,G)::stateSet(T),'/bootstrap':brackets('/bootstrap':horiz(['/bootstrap':vis(E::stateExpr(T)),'/bootstrap':box(2),'/bootstrap':brackets('/bootstrap':vis(G::statePred),0,0)]),123,125)).
+setDef(eset(E,G),T,set(V,conj(G,stateEval(E,T,V)))).

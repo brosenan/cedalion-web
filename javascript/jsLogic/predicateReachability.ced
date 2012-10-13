@@ -1,0 +1,16 @@
+'/bootstrap':defAtom(transition::'/bootstrap':type).
+'/bootstrap':defAtom(t::transition).
+'/bootstrap':disabled(('/CCS':edge(Pred1, predicateID, t, transition, Pred2):-statement((Head:-Body)), '/Functional':eval(predicateID('/Functional':wrap(Head)), predicateID, Pred1), bodyIncludesGoal(Body, Goal), '/Functional':eval(predicateID(Goal), predicateID, Pred2))).
+'/CCS':edge(Pred1, predicateID, t, transition, Pred2):-statement((Head:-Body)), builtin:true.
+'/bootstrap':signature(bodyIncludesGoal(Body, Goal)::'/bootstrap':pred, [Body::'/bootstrap':pred, Goal::'/Functional':expr('/bootstrap':pred)]).
+'/bootstrap':disabled((bodyIncludesGoal(A, '/Functional':wrap(A)):-builtin:true)).
+'/bootstrap':disabled((bodyIncludesGoal(annotation:parentheses((A, B)), APrime):-bodyIncludesGoal(A, APrime))).
+'/bootstrap':disabled((bodyIncludesGoal(annotation:parentheses((A, B)), C):-bodyIncludesGoal(B, C))).
+'/bootstrap':disabled((bodyIncludesGoal(builtin:if(Cond, _, _), X):-bodyIncludesGoal(Cond, X))).
+'/bootstrap':disabled((bodyIncludesGoal(builtin:if(_, Then, _), X):-bodyIncludesGoal(Then, X))).
+'/bootstrap':disabled((bodyIncludesGoal(builtin:if(_, _, Else), X):-bodyIncludesGoal(Else, X))).
+bodyIncludesGoal(\+Goal, '/Functional':wrap(X)):-bodyIncludesGoal(Goal, '/Functional':wrap(X)).
+'/bootstrap':signature(reachableFrom(Pred)::'/Functional':expr('/bootstrap':list(predicateID)), [Pred::predicateID]).
+'/Functional':def(reachableFrom(Pred), '/bootstrap':list(predicateID), '/Functional':where('/Functional':wrap(Preds), builtin:findall(OtherPred, predicateID, '/CCS':path(Pred, predicateID, _, transition, _), Preds))).
+'/bootstrap':sandbox(reachableFrom(pred(!bodyIncludesGoal, 2))::'/Functional':expr('/bootstrap':list(predicateID))).
+'/bootstrap':unitTest('/Functional':eval(predicateID('/Functional':wrap(bodyIncludesGoal(builtin:if(_, _, Else), X))), predicateID, pred(!'/javascript/jsLogic#bodyIncludesGoal', 2))).

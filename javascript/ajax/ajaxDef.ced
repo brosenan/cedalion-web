@@ -1,0 +1,4 @@
+annotation:shrink('/bootstrap':signature(ajaxDef(T,D,E)::'/bootstrap':statement,[T::'/bootstrap':type,D::ajaxExpr(T),E::ajaxExpr(T)])).
+annotation:shrink('/bootstrap':projection(ajaxDef(T,D,E)::'/bootstrap':statement,'/bootstrap':horiz(['/bootstrap':vis(T::'/bootstrap':type),'/bootstrap':vis(D::ajaxExpr(T)),'/bootstrap':halfSize('/bootstrap':label(!ajax)),'/bootstrap':symbol(8797),'/bootstrap':vis(E::ajaxExpr(T))]))).
+'/bootstrap':alias(ajaxDef(T,D,E)::'/bootstrap':statement,!'ajax=').
+ajaxDef(T,D,E)~>cjs:ajaxEval(D,T,V,C):-cjs:ajaxEval(E,T,V,C).

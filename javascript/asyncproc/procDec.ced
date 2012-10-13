@@ -1,0 +1,9 @@
+'/bootstrap':signature(procDef(Proc,Def)::'/bootstrap':statement,[Proc::asyncProc,Def::asyncProc]).
+'/bootstrap':projection(procDef(Proc,Def)::'/bootstrap':statement,'/bootstrap':vert(['/bootstrap':horiz(['/bootstrap':label(!'async procedure'),'/bootstrap':vis(Proc::asyncProc)]),'/bootstrap':horiz(['/bootstrap':label(!'    '),'/bootstrap':vis(Def::asyncProc)])])).
+'/bootstrap':alias(procDef(Proc,Def)::'/bootstrap':statement,!'async procedure').
+procDef(Proc,Def)~>asyncProc(Proc,Next,Cmd):-asyncProc(Def,Next,Cmd).
+'/bootstrap':signature(block(List)::asyncProc,[List::'/bootstrap':list(asyncProc)]).
+'/bootstrap':projection(block(List)::asyncProc,'/bootstrap':vert(['/bootstrap':label(!'{'),'/bootstrap':horiz(['/bootstrap':label(!'    '),cpi:vis(List::'/bootstrap':list(asyncProc),'/bootstrap':vertical('/bootstrap':symbol(9830),'/bootstrap':color('/bootstrap':label(!'<none>'),cpi:rgb(192,192,192)),'/bootstrap':horiz([])))]),'/bootstrap':label(!'}')])).
+'/bootstrap':alias(block([])::asyncProc,!'{}').
+asyncProc(block([]),Next,'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure(Next)])):-builtin:true.
+asyncProc(block([First|Rest]),Next,'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure(andThen(First,andThen(block(Rest),Next)))])):-builtin:true.

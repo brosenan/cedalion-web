@@ -1,0 +1,9 @@
+'/bootstrap':defAtom(queryArg::'/bootstrap':type).
+'/bootstrap':signature(urlQuery(List)::'/javascript/statepred':stateExpr('/bootstrap':string),[List::'/bootstrap':list(queryArg)]).
+'/bootstrap':projection(urlQuery(List)::'/javascript/statepred':stateExpr('/bootstrap':string),'/bootstrap':horiz(['/bootstrap':label(! (?)),cpi:vis(List::'/bootstrap':list(queryArg),'/bootstrap':horizontal(32,32,'/bootstrap':label(!'&'),'/bootstrap':label(!'')))])).
+'/javascript/statepred':stateExprDef(urlQuery([]),'/javascript/statepred':expr('/Functional':const(! (?))),'/bootstrap':string).
+'/bootstrap':defAtom(encodeURIComponent::'/javascript':symbol).
+'/bootstrap':signature(arg(Name,Value)::queryArg,[Name::'/bootstrap':string,Value::'/javascript/statepred':stateExpr('/bootstrap':string)]).
+'/bootstrap':projection(arg(Name,Value)::queryArg,'/bootstrap':horiz(['/bootstrap':vis(Name::'/bootstrap':string),'/bootstrap':label(! (=)),'/bootstrap':vis(Value::'/javascript/statepred':stateExpr('/bootstrap':string))])).
+'/bootstrap':adapter(Name::'/bootstrap':string,arg(Name,Value)::queryArg).
+'/javascript/statepred':stateExprDef(urlQuery([arg(Name,Value)|Query]),'/javascript/statepred':stateApplyBinOp('/javascript/statepred':stateApplyBinOp(urlQuery(Query),'/Functional':concat,'/javascript/statepred':expr('/Functional':const(!'&'))),'/Functional':concat,'/javascript/statepred':stateApplyBinOp('/javascript/statepred':expr('/Functional':applyBinOp('/Functional':const(Name),'/Functional':concat,'/Functional':const(! (=)))),'/Functional':concat,'/javascript/statepred':jsFunction('/javascript/jsLogic':jsExpr('/javascript':varExpr(encodeURIComponent)),Value,'/bootstrap':string))),'/bootstrap':string).

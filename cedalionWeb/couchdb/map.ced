@@ -1,0 +1,3 @@
+'/bootstrap':defAtom(emit::'/javascript':symbol).
+'/bootstrap':signature(cjs:couchdbMap(S)::'/javascript/jsLogic':procedure,[S::'/cedalionWeb':dataStatement]).
+'/javascript/jsLogic':procedure(cjs:couchdbMap(S),'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/statepred':whenever('/javascript/statepred':conj('/javascript/statepred':pred('/cedalionWeb':implies(S,SPrime)),'/cedalionWeb':indexKey(SPrime::'/cedalionWeb':dataStatement,Key)),'/javascript/jsLogic':jsCommand(['/javascript':exprStatement('/javascript':call('/javascript':varExpr(emit),['/javascript/jsLogic':inlineTerm(Key::'/cedalionWeb':key),'/javascript/jsLogic':null]))])))])).

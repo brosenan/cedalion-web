@@ -1,0 +1,26 @@
+'/bootstrap':defAtom(attribute::'/bootstrap':type).
+'/bootstrap':signature('elem2'(Name,Attr,Body)::xml,[Name::'/Functional':expr('/bootstrap':string),Attr::'/bootstrap':list(attribute),Body::xml]).
+'/bootstrap':projection('elem2'(Name,Attr,Body)::xml,'/bootstrap':vert(['/bootstrap':horiz(['/bootstrap':label(! (<)),'/bootstrap':vis(Name::'/Functional':expr('/bootstrap':string)),cpi:vis(Attr::'/bootstrap':list(attribute),'/bootstrap':horizontal(32,32,'/bootstrap':label(!' '),'/bootstrap':label(!' '))),'/bootstrap':label(! (>))]),'/bootstrap':horiz(['/bootstrap':label(!'    '),'/bootstrap':vis(Body::xml)]),'/bootstrap':horiz(['/bootstrap':label(!'</'),'/bootstrap':vis(Name::'/Functional':expr('/bootstrap':string)),'/bootstrap':label(! (>))])])).
+'/bootstrap':alias('elem2'('/Functional':const(!name),[],empty)::xml,!'</>').
+'/bootstrap':defAtom(annotation::'/bootstrap':type).
+'/bootstrap':signature('generates2'(XML,Str,Annot1,Annot2)::'/bootstrap':pred,[XML::xml,Str::'/bootstrap':string,Annot1::'/bootstrap':list(annotation),Annot2::'/bootstrap':list(annotation)]).
+'/bootstrap':projection('generates2'(XML,Str,Annot1,Annot2)::'/bootstrap':pred,'/bootstrap':horiz(['/bootstrap':vis(XML::xml),'/bootstrap':label(!generates),'/bootstrap':vis(Str::'/bootstrap':string),'/bootstrap':label(!annotated),'/bootstrap':vis(Annot1::'/bootstrap':list(annotation)),'/bootstrap':symbol(8594),'/bootstrap':vis(Annot2::'/bootstrap':list(annotation))])).
+'/bootstrap':signature('genAttr2'(Attr)::'/Functional':expr('/bootstrap':string),[Attr::'/bootstrap':list(attribute)]).
+'/Functional':def('genAttr2'([]),'/bootstrap':string,'/Functional':const(!'')).
+'/bootstrap':signature('attr2'(Name,Value)::attribute,[Name::'/Functional':expr('/bootstrap':string),Value::'/Functional':expr('/bootstrap':string)]).
+'/bootstrap':projection('attr2'(Name,Value)::attribute,'/bootstrap':horiz(['/bootstrap':vis(Name::'/Functional':expr('/bootstrap':string)),'/bootstrap':label(! (=)),'/bootstrap':vis(Value::'/Functional':expr('/bootstrap':string))])).
+'/bootstrap':adapter(Name::'/bootstrap':string,'attr2'('/Functional':const(Name),Value)::attribute).
+'/Functional':def('genAttr2'(['attr2'(Name,Value)|Rest]),'/bootstrap':string,'/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':const(!' '),'/Functional':concat,Name),'/Functional':concat,'/Functional':const(!'="')),'/Functional':concat,xmlEncode(Value)),'/Functional':concat,'/Functional':const(!'"')),'/Functional':concat,'genAttr2'(Rest))).
+'/bootstrap':signature('gen2'(XML,Annot1,Annot2)::'/Functional':expr('/bootstrap':string),[XML::xml,Annot1::'/bootstrap':list(annotation),Annot2::'/bootstrap':list(annotation)]).
+'/Functional':def('gen2'(XML,Annot1,Annot2),'/bootstrap':string,'/Functional':where('/Functional':const(Str),'generates2'(XML,Str,Annot1,Annot2))).
+'generates2'('elem2'(Name,Attr,Body),Str,Annot1,Annot2):-'/Functional':eval('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':const(! (<)),'/Functional':concat,Name),'/Functional':concat,'genAttr2'(Attr)),'/Functional':concat,'/Functional':const(! (>))),'/Functional':concat,'gen2'(Body,Annot1,Annot2)),'/Functional':concat,'/Functional':const(!'</')),'/Functional':concat,Name),'/Functional':concat,'/Functional':const(! (>))),'/bootstrap':string,Str).
+'generates2'(empty,!'',Annot,Annot):-builtin:true.
+'/bootstrap':signature(xmlEncode(Str)::'/Functional':expr('/bootstrap':string),[Str::'/Functional':expr('/bootstrap':string)]).
+annotation:comment(('/Functional':eval(xmlEncode(Str),'/bootstrap':string,StrPrime):-'/Functional':eval(Str,'/bootstrap':string,StrPrime)),!'TODO: Add real encoding here').
+'/bootstrap':unitTest('/Functional':eval(xmlEncode('/Functional':const(!'XXX')),'/bootstrap':string,!'XXX')).
+'generates2'(str(Str),StrPrime,Annot,Annot):-'/Functional':eval(xmlEncode('/Functional':const(Str)),'/bootstrap':string,StrPrime).
+'/bootstrap':unitTest('generates2'('elem2'('/Functional':const(!div),['attr2'('/Functional':const(!class),'/Functional':const(!myClass)),'attr2'('/Functional':const(!id),'/Functional':const(!myID))],str(!'Hello')),!'<div class="myClass" id="myID">Hello</div>',[],[])).
+'generates2'(entity(N),Str,Annot,Annot):-'/Functional':eval('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':const(!'&#'),'/Functional':concat,'/Functional':'num2str'(N)),'/Functional':concat,'/Functional':const(! (;))),'/bootstrap':string,Str).
+'/bootstrap':unitTest('generates2'(entity('/Functional':const(123)),!'&#123;',[],[])).
+macro(Macro,Def)~>'generates2'(Macro,Str,Annot1,Annot2):-'generates2'(Def,Str,Annot1,Annot2).
+'/bootstrap':defines(('generates2'(XML,_,_,_):-_),XML::xml,'/bootstrap':semanticDefinition).

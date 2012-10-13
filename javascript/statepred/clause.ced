@@ -1,0 +1,15 @@
+'/bootstrap':signature(clause(H,B)::'/bootstrap':statement,[H::statePred,B::statePred]).
+'/bootstrap':projection(clause(H,B)::'/bootstrap':statement,'/bootstrap':horiz(['/bootstrap':vis(H::statePred),'/bootstrap':horiz(['/bootstrap':label(! (:-)),'/bootstrap':halfSize('/bootstrap':label(!s))],cpi:top),'/bootstrap':vis(B::statePred)])).
+'/bootstrap':alias(clause(H,B)::'/bootstrap':statement,! (:-)).
+'/bootstrap':adapter(H::statePred,clause(H,pred(builtin:true))::'/bootstrap':statement).
+clause(H,B)~>annotation:shrink(('/javascript/asyncproc':asyncProc('for (s)'(H,Action),Next,Cmd):-'/javascript/asyncproc':asyncProc('for (s)'(B,Action),Next,Cmd))).
+'/bootstrap':signature(stateClause(H,B)::'/bootstrap':pred,[H::statePred,B::statePred]).
+clause(H,B)~>stateClause(H,B):-builtin:true.
+'/bootstrap':signature(conj(A,B)::statePred,[A::statePred,B::statePred]).
+'/bootstrap':projection(conj(A,B)::statePred,'/bootstrap':vert(['/bootstrap':horiz(['/bootstrap':vis(A::statePred),'/bootstrap':label(! (,))]),'/bootstrap':vis(B::statePred)])).
+'/bootstrap':alias(conj(A,B)::statePred,! (,)).
+def(conj(A,B),Action,Finally,'/javascript/jsLogic':jsCommand(['/javascript':var(State,'/javascript':json(['/javascript':bind('/javascript':str(!count),'/javascript':const(0))])),'/javascript/jsLogic':runProcedure('/javascript/asyncproc':andThen('for (s)'(A,'/javascript/jsLogic':jsCommand(['/javascript':assign('/javascript':dot('/javascript':varExpr(State),!count),'/javascript':op('/javascript':dot('/javascript':varExpr(State),!count),'/javascript':plus,'/javascript':const(1))),'/javascript/jsLogic':runProcedure('/javascript/asyncproc':andThen('for (s)'(B,Action),'/javascript/jsLogic':do('/javascript/jsLogic':jsCommand(['/javascript':assign('/javascript':dot('/javascript':varExpr(State),!count),'/javascript':op('/javascript':dot('/javascript':varExpr(State),!count),'/javascript':minus,'/javascript':const(1))),'/javascript':if('/javascript':op('/javascript':dot('/javascript':varExpr(State),!atEnd),'/javascript':and,'/javascript':op('/javascript':dot('/javascript':varExpr(State),!count),'/javascript':eq,'/javascript':const(0))),['/javascript/jsLogic':runProcedure('/javascript/jsLogic':do(Finally)),'/javascript':assign('/javascript':dot('/javascript':varExpr(State),!atEnd),'/javascript':const(0))],[])]))))])),'/javascript/jsLogic':do('/javascript/jsLogic':jsCommand(['/javascript':assign('/javascript':dot('/javascript':varExpr(State),!atEnd),'/javascript':const(1)),'/javascript':if('/javascript':op('/javascript':dot('/javascript':varExpr(State),!atEnd),'/javascript':and,'/javascript':op('/javascript':dot('/javascript':varExpr(State),!count),'/javascript':eq,'/javascript':const(0))),['/javascript/jsLogic':runProcedure('/javascript/jsLogic':do(Finally)),'/javascript':assign('/javascript':dot('/javascript':varExpr(State),!atEnd),'/javascript':const(0))],[])]))))])).
+'/bootstrap':signature('test1'(N)::statePred,[N::'/bootstrap':number]).
+clause('test1'(1),pred(builtin:true)).
+clause('test1'(2),pred(builtin:true)).
+unitTest(findall(N,'/bootstrap':number,'test1'(N),[1,2])).

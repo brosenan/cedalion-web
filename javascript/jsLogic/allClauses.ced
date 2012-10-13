@@ -1,0 +1,16 @@
+'/bootstrap':signature(statementsWoAnnotations(SL)::'/bootstrap':pred,[SL::'/bootstrap':list('/bootstrap':statement)]).
+statementsWoAnnotations(SL):-builtin:findall(S,'/bootstrap':statement, (builtin:loadedStatement(_,SPrime,_),builtin:removeAnnotations(SPrime::'/bootstrap':statement,S::'/bootstrap':statement)),SL).
+'/bootstrap':signature(statement(S2,Depth)::'/bootstrap':pred,[S2::'/bootstrap':statement,Depth::'/bootstrap':number]).
+'/bootstrap':signature(statement(S,Depth,SL)::'/bootstrap':pred,[S::'/bootstrap':statement,Depth::'/bootstrap':number,SL::'/bootstrap':list('/bootstrap':statement)]).
+statement(S,Depth):-statementsWoAnnotations(SL),statement(S,Depth,SL).
+statement(S,_,SL):-'/bootstrap':listMember(S,'/bootstrap':statement,SL).
+statement(S2,Depth,SL):-Depth>0,builtin:succ(DepthPrime,Depth),statement((S1~>S2),DepthPrime,SL),statement(S1,DepthPrime,SL).
+'/bootstrap':defAtom(allClauses::'/bootstrap':set('/bootstrap':statement)).
+'/bootstrap':setDef(allClauses,'/bootstrap':set((Head:-Body),statement((Head:-Body),100)),'/bootstrap':statement).
+'/bootstrap':defAtom(predicateID::'/bootstrap':type).
+'/bootstrap':signature(pred(Name,Arity)::predicateID,[Name::'/bootstrap':string,Arity::'/bootstrap':number]).
+'/bootstrap':projection(pred(Name,Arity)::predicateID,'/bootstrap':horiz(['/bootstrap':vis(Name::'/bootstrap':string),'/bootstrap':label(! (/)),'/bootstrap':vis(Arity::'/bootstrap':number)])).
+'/bootstrap':signature(headPredicate(Statement)::'/Functional':expr(predicateID),[Statement::'/Functional':expr('/bootstrap':statement)]).
+'/Functional':def(headPredicate(Statement),predicateID,'/Functional':where(predicateID('/Functional':const(Head)),'/Functional':eval(Statement,'/bootstrap':statement, (Head:-_)))).
+'/bootstrap':signature(predicateID(Pred)::'/Functional':expr(predicateID),[Pred::'/Functional':expr('/bootstrap':pred)]).
+'/Functional':def(predicateID(Pred),predicateID,'/Functional':where('/Functional':const(pred(Name,Arity)), ('/Functional':eval(Pred,'/bootstrap':pred,PredPrime),builtin:parseTerm(PredPrime::'/bootstrap':pred,Name,Args),'/Functional':eval(length(Args),'/bootstrap':number,Arity)))).

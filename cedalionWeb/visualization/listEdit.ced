@@ -1,0 +1,3 @@
+'/bootstrap':default(Default::Type)~>editActionIcon(List::'/bootstrap':list(Type),[Default|List]::'/bootstrap':list(Type),!'Create.png').
+'/bootstrap':default(Default::Type)~>editActionIcon([Item]::'/bootstrap':list(Type),[Item,Default]::'/bootstrap':list(Type),!'Create.png').
+editActionIcon([_|List]::'/bootstrap':list(Type),List::'/bootstrap':list(Type),!'Delete.png').

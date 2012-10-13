@@ -1,0 +1,11 @@
+'/bootstrap':signature(visualizeVar(TVar,VNs,Vis)::'/bootstrap':pred,[TVar::'/bootstrap':typedTerm,VNs::'/bootstrap':list('/bootstrap':varName),Vis::'/bootstrap':visualization]).
+'/bootstrap':signature(varName(TVar,VNs,Name)::'/bootstrap':pred,[TVar::'/bootstrap':typedTerm,VNs::'/bootstrap':list('/bootstrap':varName),Name::_]).
+varName(TVar,[builtin:varName(TVarPrime,Name)|_],Name):-builtin:equals(TVar,TVarPrime).
+varName(TVar,[_|VNs],Name):-varName(TVar,VNs,Name).
+'/bootstrap':unitTest(varName(Y::'/bootstrap':number,[builtin:varName(X::'/bootstrap':string,!'X'),builtin:varName(Y::'/bootstrap':number,!'Y'),builtin:varName(Z::'/bootstrap':number,!'Z')],!'Y')).
+'/bootstrap':signature(varNameVisualization(Name,Vis)::'/bootstrap':pred,[Name::_,Vis::'/bootstrap':visualization]).
+varNameVisualization(Name,Vis):-builtin:if(specialVarNameVisualization(Name,Vis),builtin:true,Vis::'/bootstrap':visualization='/bootstrap':label(Name)::'/bootstrap':visualization).
+'/bootstrap':signature(specialVarNameVisualization(Name,Vis)::'/bootstrap':pred,[Name::'/bootstrap':string,Vis::'/bootstrap':visualization]).
+'/bootstrap':varNameMacroStatement(Name,Vis)~>specialVarNameVisualization(Name,Vis):-builtin:true.
+annotation:shrink(('/bootstrap':varNameSuffix(Suff,Vis,VisPrime)~>specialVarNameVisualization(Name,VisPrime):-builtin:strcat(Base,Suff,Name),varNameVisualization(Base,Vis))).
+visualizeVar(TVar,VNs,'/bootstrap':italic('/bootstrap':color(Vis,cpi:rgb(0,128,0)))):-builtin:if((\+builtin:var(VNs::'/bootstrap':list('/bootstrap':varName)),varName(TVar,VNs,Name)),varNameVisualization(Name,Vis),Vis::'/bootstrap':visualization='/bootstrap':label(!'_')::'/bootstrap':visualization).

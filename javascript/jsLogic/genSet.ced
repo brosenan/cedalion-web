@@ -1,0 +1,18 @@
+'/bootstrap':defAtom(null::'/javascript':expr).
+'/bootstrap':projection(null::'/javascript':expr,'/bootstrap':color('/bootstrap':italic('/bootstrap':label(!null)),cpi:rgb(64,64,128))).
+'/bootstrap':signature(firstArgName(Clause)::'/Functional':expr('/javascript':expr),[Clause::'/bootstrap':statement]).
+'/bootstrap':signature(deepIndex(TTerm,List)::'/bootstrap':pred,[TTerm::'/bootstrap':typedTerm,List::'/bootstrap':list('/javascript':expr)]).
+deepIndex(TTerm,Index):-builtin:if(builtin:compound(TTerm), (builtin:parseTerm(TTerm,FirstName,Args),'/Functional':eval(length(Args),'/bootstrap':number,Arity),builtin:if(Args::'/bootstrap':list('/bootstrap':typedTerm)=[Arg1|ArgPrime]::'/bootstrap':list('/bootstrap':typedTerm),deepIndex(Arg1,IndexPrime),IndexPrime::'/bootstrap':list('/javascript':expr)=[]::'/bootstrap':list('/javascript':expr)),Index::'/bootstrap':list('/javascript':expr)=['/javascript':str(FirstName)|IndexPrime]::'/bootstrap':list('/javascript':expr)),Index::'/bootstrap':list('/javascript':expr)=[]::'/bootstrap':list('/javascript':expr)).
+'/Functional':def(firstArgName((Head:-_)),'/javascript':expr,'/Functional':where('/Functional':const('/javascript':array(List)),deepIndex(Head::'/bootstrap':pred,List))).
+'/bootstrap':signature(jsStatementsForClauses(Clauses)::'/bootstrap':set('/javascript':statement),[Clauses::'/bootstrap':set('/bootstrap':statement)]).
+'/bootstrap':setDef(jsStatementsForClauses(Clauses),'/bootstrap':set('/javascript':exprStatement('/javascript':call('/javascript':dot('/javascript':dot('/javascript':varExpr(logic),!program),!add),[Index,JSClause])), ('/bootstrap':member(Clause,Clauses,'/bootstrap':statement),'/Functional':eval(clauseFunction(Clause),'/javascript':expr,JSClause),'/Functional':eval(firstArgName(Clause),'/javascript':expr,Index))),'/javascript':statement).
+'/bootstrap':signature(jsStatementStrings(JsStatements)::'/bootstrap':set('/bootstrap':string),[JsStatements::'/bootstrap':set('/javascript':statement)]).
+'/bootstrap':setDef(jsStatementStrings(JsStatements),'/Functional':eset('/javascript':toString(Statement::'/javascript':statement,cpi:default),'/bootstrap':member(Statement,JsStatements,'/javascript':statement)),'/bootstrap':string).
+'/bootstrap':contextMenuEntry(ClauseSet::'/bootstrap':set('/bootstrap':statement),_,_,!'Generate Javascript Code','/bootstrap':generateFileForSet(!'cedalion.js',jsStatementStrings(jsStatementsForClauses(ClauseSet)))).
+'/bootstrap':signature(writeClauses(ClauseSet)::'/bootstrap':procedure,[ClauseSet::'/bootstrap':set('/bootstrap':statement)]).
+'/bootstrap':procedure(writeClauses(ClauseSet),'/bootstrap':writeFile(!'rawClauses.txt',builtin:fileContent(builtin:statement(Clause,[]),'/bootstrap':member(Clause,ClauseSet,'/bootstrap':statement),[]))).
+'/bootstrap':contextMenuEntry(ClauseSet::'/bootstrap':set('/bootstrap':statement),_,_,!'Generate raw clauses',writeClauses(ClauseSet)).
+'/bootstrap':contextMenuEntry(Statements::'/bootstrap':list('/bootstrap':statement),_,_,!'Generate Javascript Code for the Entire Program','/bootstrap':generateFileForSet(!'cedalion.js',jsStatementStrings(jsStatementsForClauses(allClauses)))).
+'/bootstrap':defAtom(a::'/bootstrap':pred).
+'/bootstrap':defAtom(b::'/bootstrap':pred).
+'/bootstrap':sandbox('/bootstrap':listSet([ (a:-b)])::'/bootstrap':set('/bootstrap':statement)).

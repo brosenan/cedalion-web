@@ -1,0 +1,36 @@
+'/bootstrap':defAtom(operator::'/bootstrap':type).
+'/bootstrap':signature(op(Arg1,Op,Arg2)::expr,[Arg1::expr,Op::operator,Arg2::expr]).
+'/bootstrap':projection(op(Arg1,Op,Arg2)::expr,'/bootstrap':horiz(['/bootstrap':vis(Arg1::expr),'/bootstrap':vis(Op::operator),'/bootstrap':vis(Arg2::expr)])).
+'/bootstrap':adapter(Op::operator,op(Arg1,Op,Arg2)::expr).
+annotation:shrink((hasSpecialRendering(op(Arg1,Op,Arg2)::expr,Str):-'/Functional':eval('/Functional':where(visToString(Vis),'/bootstrap':visualizeTerm(op(Arg1,Op,Arg2)::expr,cpi:default,Vis)),'/bootstrap':string,Str1),'/Functional':eval('/Functional':concat('/Functional':const(!'('),'/Functional':concat('/Functional':const(Str1),'/Functional':const(!')'))),'/bootstrap':string,Str))).
+'/bootstrap':defAtom(plus::operator).
+'/bootstrap':projection(plus::operator,'/bootstrap':label(! (+))).
+'/bootstrap':defAtom(minus::operator).
+'/bootstrap':projection(minus::operator,'/bootstrap':label(! (-))).
+'/bootstrap':defAtom(times::operator).
+'/bootstrap':projection(times::operator,'/bootstrap':label(! (*))).
+'/bootstrap':defAtom(div::operator).
+'/bootstrap':projection(div::operator,'/bootstrap':label(! (/))).
+'/bootstrap':defAtom(and::operator).
+'/bootstrap':projection(and::operator,'/bootstrap':label(!'&&')).
+'/bootstrap':defAtom(or::operator).
+'/bootstrap':projection(or::operator,'/bootstrap':label(!'||')).
+'/bootstrap':defAtom(eq::operator).
+'/bootstrap':projection(eq::operator,'/bootstrap':label(! (==))).
+'/bootstrap':defAtom(eqq::operator).
+'/bootstrap':projection(eqq::operator,'/bootstrap':label(!'===')).
+'/bootstrap':defAtom(gt::operator).
+'/bootstrap':projection(gt::operator,'/bootstrap':label(! (>))).
+'/bootstrap':defAtom(lt::operator).
+'/bootstrap':projection(lt::operator,'/bootstrap':label(! (<))).
+'/bootstrap':defAtom(ne::operator).
+'/bootstrap':projection(ne::operator,'/bootstrap':label(!'!=')).
+'/bootstrap':defAtom(instanceof::operator).
+'/bootstrap':defAtom(gte::operator).
+'/bootstrap':projection(gte::operator,'/bootstrap':label(! (>=))).
+'/bootstrap':defAtom(lte::operator).
+'/bootstrap':projection(lte::operator,'/bootstrap':label(!'<=')).
+'/bootstrap':defAtom((mod)::operator).
+'/bootstrap':projection((mod)::operator,'/bootstrap':label(!'%')).
+'/bootstrap':sandbox(op(const(1),mod,const(2))::expr).
+'/bootstrap':contextMenuEntry(op(Arg1,Op,Arg2)::expr,VNs,Path,!'Swap places',cpi:edit(Path,op(Arg2,Op,Arg1)::expr,VNs)).
