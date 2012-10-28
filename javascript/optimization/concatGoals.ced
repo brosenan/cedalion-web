@@ -1,0 +1,8 @@
+'/bootstrap':signature(concatGoals(G1,G2,G3)::'/bootstrap':pred,[G1::'/bootstrap':pred,G2::'/bootstrap':pred,G3::'/bootstrap':pred]).
+'/bootstrap':projection(concatGoals(G1,G2,G3)::'/bootstrap':pred,'/bootstrap':horiz(['/bootstrap':vis(G3::'/bootstrap':pred),'/bootstrap':label(!'is the concatenation of'),'/bootstrap':vis(G1::'/bootstrap':pred),'/bootstrap':label(!and),'/bootstrap':vis(G2::'/bootstrap':pred)])).
+concatGoals(G1,G2,G3):-builtin:if(G1::'/bootstrap':pred= (G11,G12)::'/bootstrap':pred, (concatGoals(G12,G2,G3Prime),G3::'/bootstrap':pred= (G11,G3Prime)::'/bootstrap':pred),G3::'/bootstrap':pred= (G1,G2)::'/bootstrap':pred).
+'/bootstrap':unitTest(concatGoals((builtin:true,builtin:true), (builtin:fail,builtin:fail), (builtin:true,builtin:true,builtin:fail,builtin:fail))).
+'/bootstrap':unitTest(concatGoals(builtin:true, (builtin:fail,builtin:fail), (builtin:true,builtin:fail,builtin:fail))).
+'/bootstrap':signature(removeTrivial(G1,G2)::'/bootstrap':pred,[G1::'/bootstrap':pred,G2::'/bootstrap':pred]).
+removeTrivial(G1,G2):-builtin:if(G1::'/bootstrap':pred= (builtin:true,G12)::'/bootstrap':pred,removeTrivial(G12,G2),builtin:if(G1::'/bootstrap':pred= (G11,G12)::'/bootstrap':pred, (removeTrivial(G12,G22),G2::'/bootstrap':pred= (G11,G22)::'/bootstrap':pred),G2::'/bootstrap':pred=G1::'/bootstrap':pred)).
+'/bootstrap':unitTest(removeTrivial((builtin:true,builtin:fail,builtin:true,builtin:fail), (builtin:fail,builtin:fail))).

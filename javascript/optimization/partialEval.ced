@@ -1,0 +1,17 @@
+'/bootstrap':signature(partialEvalClauses(CS)::'/bootstrap':set('/bootstrap':statement),[CS::'/bootstrap':set('/bootstrap':statement)]).
+'/bootstrap':setDef(partialEvalClauses(CS),'/bootstrap':set((H:-BPrime), ('/bootstrap':member((H:-B),CS,'/bootstrap':statement),partialEval(B,BPrime,CS,10))),'/bootstrap':statement).
+'/bootstrap':signature(partialEval(B,BPrime,CS,Depth)::'/bootstrap':pred,[B::'/bootstrap':pred,BPrime::'/bootstrap':pred,CS::'/bootstrap':set('/bootstrap':statement),Depth::'/bootstrap':number]).
+partialEval(Goal,GoalPrime,CS,Depth):-builtin:if(Depth::'/bootstrap':number=0::'/bootstrap':number,GoalPrime::'/bootstrap':pred=Goal::'/bootstrap':pred, (builtin:succ(DepthPrime,Depth),builtin:if(specialPartial(Goal,GoalPrime,CS,DepthPrime),builtin:true,builtin:if(isBuiltin(Goal),GoalPrime::'/bootstrap':pred=Goal::'/bootstrap':pred, (builtin:findall(B,'/bootstrap':pred,'/bootstrap':member(annotation:parentheses((Goal:-B)),CS,'/bootstrap':statement),[First|Rest]),'/bootstrap':member(annotation:parentheses((Goal:-First)),CS,'/bootstrap':statement),builtin:if(Rest::'/bootstrap':list('/bootstrap':pred)=[]::'/bootstrap':list('/bootstrap':pred),partialEval(First,GoalPrime,CS,DepthPrime),GoalPrime::'/bootstrap':pred=Goal::'/bootstrap':pred)))))).
+'/bootstrap':signature(specialPartial(Goal,GoalPrime,CS,Depth)::'/bootstrap':pred,[Goal::'/bootstrap':pred,GoalPrime::'/bootstrap':pred,CS::'/bootstrap':set('/bootstrap':statement),Depth::'/bootstrap':number]).
+specialPartial((First,Rest),GoalPrimePrime,CS,Depth):-partialEval(First,FirstPrime,CS,Depth),partialEval(Rest,RestPrime,CS,Depth),concatGoals(FirstPrime,RestPrime,GoalPrime),removeTrivial(GoalPrime,GoalPrimePrime).
+'/bootstrap':signature(isBuiltin(Goal)::'/bootstrap':pred,[Goal::'/bootstrap':pred]).
+isBuiltin(Goal):-builtin:parseTerm(Goal::'/bootstrap':pred,Name,_),builtin:charCodes(Name,Codes),builtin:charCodes(!'#',[Hash]),builtin:if('/bootstrap':append(Prefix,[Hash|_],Codes,'/bootstrap':number),builtin:charCodes(!builtin,Prefix),builtin:true).
+'/bootstrap':unitTest(isBuiltin(builtin:succ(_,_))).
+'/bootstrap':unitTest(\+isBuiltin(isBuiltin(builtin:succ(_,_)))).
+'/bootstrap':defAtom(testStatements::'/bootstrap':set('/bootstrap':statement)).
+'/bootstrap':setDef(testStatements,'/bootstrap':union('/bootstrap':singleton((a(V):-'/Functional':eval('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':const(1),'/Functional':numPlus,'/Functional':const(2)),'/Functional':numPlus,'/Functional':const(3)),'/bootstrap':number,V))),'/bootstrap':union('/bootstrap':singleton(('/Functional':eval('/Functional':applyBinOp(A,'/Functional':numPlus,B),'/bootstrap':number,V1):-'/Functional':eval(A,'/bootstrap':number,APrime),'/Functional':eval(B,'/bootstrap':number,BPrime),builtin:plus(APrime,BPrime,V1))),'/bootstrap':singleton(('/Functional':eval('/Functional':const(V2),'/bootstrap':number,V2):-builtin:true)))),'/bootstrap':statement).
+'/bootstrap':signature(a(V)::'/bootstrap':pred,[V::'/bootstrap':number]).
+'/bootstrap':unitTest('/bootstrap':member((a(V):-builtin:plus(1,2,X),builtin:plus(X,3,V)),partialEvalClauses(testStatements),'/bootstrap':statement)).
+'/bootstrap':defAtom(optAllClauses::'/bootstrap':set('/bootstrap':statement)).
+'/bootstrap':setDef(optAllClauses,partialEvalClauses('/javascript/jsLogic':allClauses),'/bootstrap':statement).
+'/bootstrap':unitTest('/bootstrap':member(('/Functional':eval('/Functional':switch(Expr,ExprType,Cases),T,V):-V5),optAllClauses,'/bootstrap':statement)).
