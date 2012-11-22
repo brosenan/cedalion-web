@@ -15,8 +15,8 @@ and/or configuration language(s) on top of the regular programming language.
 This brings up the question of why do we need another one...
 
 ### Why another web framework?
-When it comes to web frameworks, there are [A LOT] (http://en.wikipedia.org/wiki/Comparison_of_web_application_frameworks) of them.
-So what can this one give us, that no other framework does?
+When it comes to web frameworks, there are [A LOT] (http://en.wikipedia.org/wiki/Comparison_of_web_application_frameworks) of them around.
+So why do we need another one?
 
 The answer is, that cedalion-web was created BECAUSE there are so many of them around, not in spite of this fact. It is there to solve the
 problem causing this amazing number of frameworks.
