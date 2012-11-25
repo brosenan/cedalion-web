@@ -462,6 +462,7 @@ Logic.prototype.runProcedure = function(proc) {
 		});
 	} catch(e) {
 		console.log(e);
+		console.log(e.stack);
 		console.log("Recent calls: " + this.recentCalls.join("\n"));
 		var trace = this.ctx("tracing").getValue(this);
 		if(typeof(trace)=="function") {
@@ -935,8 +936,12 @@ logic.program.addBuiltin("greaterThen", 2, function(logic, term) {
 });
 
 Logic.prototype.copyTerm = function(term) {
+	var state = this.stack.length;	
 	var index = {i: 1};
 	var t = this.removeCycles(term, index);
+	while(this.stack.length > state) {
+		this.stack.pop()();
+	}
 	var map = [];
 	var res = this.addReferences(t, map);
 	return res;

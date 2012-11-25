@@ -152,31 +152,27 @@ Logic.prototype.resume = function(stackLevel) {
 };
 
 Logic.prototype.unify = function(term1, term2) {
-	var c1 = term1.constructor;
-	var c2 = term2.constructor;
 	// De-reference variables
-	if(c1 == Variable) {
+	if(term1 instanceof Variable) {
 		term1 = term1.getValue(this);
-		c1 = term1.constructor;
 	}
-	if(c2 ==  Variable) {
+	if(term2 instanceof Variable) {
 		term2 = term2.getValue(this);
-		c2 = term2.constructor;
 	}
 
 	// Unify variables by binding
-	if(c1 == Variable) {
+	if(term1 instanceof Variable) {
 		term1.bind(term2, this);
 		return true;
 	}
-	if(c2 == Variable) {
+	if(term2 instanceof Variable) {
 		term2.bind(term1, this);
 		return true;
 	}
 
 	// Unify compound terms
-	if(c1 == Array) {
-		if(!(c2 ==  Array))
+	if(term1 instanceof Array) {
+		if(!(term2 instanceof Array))
 			return false;
 		if(term1.length != term2.length)
 			return false;
@@ -393,7 +389,7 @@ Logic.prototype.fromJSON = function(json) {
 Logic.prototype.removeCycles = function(term, index) {
 	term = this.realValue(term);
 	if(term instanceof Variable) {
-		this.unify(term, {"var": index.i++});
+		this.unify(term, {"var": index.i++, foo: "bar"});
 		return this.realValue(term);
 	} else if(term instanceof Array){
 		var newTerm = [];
@@ -466,6 +462,7 @@ Logic.prototype.runProcedure = function(proc) {
 		});
 	} catch(e) {
 		console.log(e);
+		console.log(e.stack);
 		console.log("Recent calls: " + this.recentCalls.join("\n"));
 		var trace = this.ctx("tracing").getValue(this);
 		if(typeof(trace)=="function") {
@@ -714,9 +711,13 @@ logic.program.addBuiltin("compound", 1, function(logic, term) {
 logic.program.addBuiltin("var", 1, function(logic, term) {
 	// The argument is a typedTerm (::).  We only care about its first element.
 	var arg = term[1][1];
+console.log("var: " + logic.termToString(arg));
+console.log(arg);
 	if(arg instanceof Variable)
 		arg = arg.getValue();
 	var ret = arg instanceof Variable;
+console.log(arg);
+console.log(ret);
 	return ret;
 });
 
@@ -939,8 +940,12 @@ logic.program.addBuiltin("greaterThen", 2, function(logic, term) {
 });
 
 Logic.prototype.copyTerm = function(term) {
+	var state = this.stack.length;	
 	var index = {i: 1};
 	var t = this.removeCycles(term, index);
+	while(this.stack.length > state) {
+		this.stack.pop()();
+	}
 	var map = [];
 	var res = this.addReferences(t, map);
 	return res;
