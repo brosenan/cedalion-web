@@ -105,7 +105,11 @@
 	display: table-cell;
 }
 .hidden {
-	width: 0.1em;
+	display: none;
+}
+.tiny {
+	width: 1px;
+	height: 1px;
 }
 
 </style>
