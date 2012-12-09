@@ -238,8 +238,8 @@ Logic.prototype.executeClausesForPartialIndex = function(index, term, next) {
 };*/
 Logic.prototype.call = function(term, next) {
 	//DBG("[" + this.stack.length + "] Call: " + this.termToString(term));
-if(term[0] == "/Functional#eval" && term[1] instanceof Variable && term[1].getValue() instanceof Variable) throw Error("Bad eval");
-/*	this.recentCalls.push("[" + this.stack.length + "] Call: " + this.termToString(term));
+/*if(term[0] == "/Functional#eval" && term[1] instanceof Variable && term[1].getValue() instanceof Variable) throw Error("Bad eval");
+	this.recentCalls.push("[" + this.stack.length + "] Call: " + this.termToString(term));
 	if(this.recentCalls.length > 20) {
 		this.recentCalls.splice(0, this.recentCalls.length - 20);
 	}*/

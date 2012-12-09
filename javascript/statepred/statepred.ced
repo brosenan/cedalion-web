@@ -13,3 +13,4 @@ annotation:comment('/bootstrap':signature(pred(Pred)::statePred,[Pred::'/bootstr
 '/bootstrap':adapter(Pred::'/bootstrap':pred,pred(Pred)::statePred).
 '/bootstrap':alias(pred(Pred)::statePred,!'<>').
 def(pred(Pred),Cmd,Finally,'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/jsLogic':foreach(Pred,Cmd)),'/javascript/jsLogic':runProcedure('/javascript/jsLogic':do(Finally))])).
+'/bootstrap':defines(('/javascript/asyncproc':asyncProc('for (s)'(Pred,_),_,_):-_),Pred::statePred,'/bootstrap':semanticDefinition).
