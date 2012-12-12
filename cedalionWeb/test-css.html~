@@ -1,7 +1,7 @@
 <html>
 <head>
 <style type="text/css">
-[a="1"][b="2"] {
+[a="2"][b="1"] {
 	color: blue;
 }
 </style>
@@ -11,6 +11,13 @@
 <div a="1" b="2">A1B2</div>
 <div a="2" b="1">A2B1</div>
 <div a="2" b="2">A2B2</div>
+<select size="3">
+	<option value="1">hello</option>
+	<option value="2">world</option>
+	<option value="2">world</option>
+	<option value="2">world</option>
+	<option value="2">world</option>
+</select>
 
 </body>
 </html>

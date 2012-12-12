@@ -4,6 +4,7 @@
 '/cedalionWeb/xml':macro(toHTMLList([],_),'/cedalionWeb/xml':empty).
 '/cedalionWeb/xml':macro(toHTMLList([First|Rest],ChildClass),'/cedalionWeb/xml':list('/cedalionWeb/xml':'elem2'('/Functional':const(!div),['/cedalionWeb/xml':'attr2'('/Functional':const(!class),'/Functional':const(ChildClass))],toHTML(First)),toHTMLList(Rest,ChildClass))).
 '/cedalionWeb/xml':macro(toHTML('/bootstrap':horiz(List)),'/cedalionWeb/xml':'elem2'('/Functional':const(!div),['/cedalionWeb/xml':'attr2'('/Functional':const(!class),'/Functional':const(!'vis-horiz'))],toHTMLList(List,!'vis-horiz-elem'))).
+'/cedalionWeb/xml':macro(toHTML('/bootstrap':horiz(List,_)),annotation:minComment(toHTML('/bootstrap':horiz(List)),!'Temporary patch...')).
 '/cedalionWeb/xml':macro(toHTML('/bootstrap':vert(List)),'/cedalionWeb/xml':'elem2'('/Functional':const(!div),['/cedalionWeb/xml':'attr2'('/Functional':const(!class),'/Functional':const(!'vis-vert'))],toHTMLList(List,!'vis-vert-elem'))).
 '/cedalionWeb/xml':macro(toHTML('/bootstrap':symbol(Code)),'/cedalionWeb/xml':list('/cedalionWeb/xml':entity('/Functional':const(160)),'/cedalionWeb/xml':list('/cedalionWeb/xml':entity('/Functional':const(Code)),'/cedalionWeb/xml':list('/cedalionWeb/xml':entity('/Functional':const(160)),'/cedalionWeb/xml':empty)))).
 '/bootstrap':signature(defineModifier(Vis,VisPrime,Class)::'/bootstrap':statement,[Vis::'/bootstrap':visualization,VisPrime::'/bootstrap':visualization,Class::'/bootstrap':string]).

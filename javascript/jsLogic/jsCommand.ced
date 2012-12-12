@@ -12,8 +12,8 @@ annotation:shrink((specialTermConversion(jsCommand(Statements)::jsCommand,'/Func
 '/bootstrap':signature(jsExpr(Expr)::Type,[Expr::'/javascript':expr]).
 '/bootstrap':projection(jsExpr(Expr)::Type,'/bootstrap':lowered('/bootstrap':lineBorder('/bootstrap':background('/bootstrap':vis(Expr::'/javascript':expr),cpi:rgb(192,255,128)),5,cpi:rgb(192,255,128)))).
 '/bootstrap':defAtom(jsExpr::'/bootstrap':type).
-'/bootstrap':adapter(Expr::'/javascript':expr,jsExpr(Expr)::jsExpr).
-'/bootstrap':adapter(Symbol::'/javascript':symbol,jsExpr('/javascript':varExpr(Symbol))::jsExpr).
+'/bootstrap':disabled('/bootstrap':adapter(Expr::'/javascript':expr,jsExpr(Expr)::jsExpr)).
+'/bootstrap':disabled('/bootstrap':adapter(Symbol::'/javascript':symbol,jsExpr('/javascript':varExpr(Symbol))::jsExpr)).
 specialTermConversion(jsExpr(Expr)::Type,'/Functional':const(Expr)):-builtin:true.
 '/bootstrap':sandbox(jsExpr('/javascript':const(4))::'/bootstrap':statement).
 '/bootstrap':signature(length(TermsIn,Index)::'/bootstrap':pred,[TermsIn::'/bootstrap':list(_),Index::'/bootstrap':number]).

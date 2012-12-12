@@ -1,0 +1,36 @@
+'/bootstrap':defAtom(tCed::'/cedalionWeb/parsing':lexicalContext).
+'/bootstrap':defAtom(letter::'/cedalionWeb/parsing':pattern('/bootstrap':number)).
+'/cedalionWeb/parsing':prod(letter,'/bootstrap':number,'/cedalionWeb/parsing':alt('/cedalionWeb/parsing':charRange(!a,!z),'/cedalionWeb/parsing':charRange(!'A',!'Z'))).
+'/bootstrap':signature(digit(Val)::'/cedalionWeb/parsing':pattern('/bootstrap':number),[Val::'/bootstrap':number]).
+'/cedalionWeb/parsing':prod(digit(Val),'/bootstrap':number,'/cedalionWeb/parsing':follow('/cedalionWeb/parsing':bind('/cedalionWeb/parsing':charRange(!'0',!'9'),[Char]),'/cedalionWeb/parsing':pred('/Functional':eval('/Functional':applyBinOp('/Functional':const(Char),'/Functional':minus,'/cedalionWeb/parsing':charCode(!'0')),'/bootstrap':number,Val)))).
+'/bootstrap':defAtom(longIDChar::'/cedalionWeb/parsing':pattern('/bootstrap':number)).
+'/cedalionWeb/parsing':prod(longIDChar,'/bootstrap':number,'/cedalionWeb/parsing':alt('/cedalionWeb/parsing':alt('/cedalionWeb/parsing':char(! (/)),'/cedalionWeb/parsing':char(!'_')),'/cedalionWeb/parsing':char(! (-)))).
+'/bootstrap':signature(longID(ID)::'/cedalionWeb/parsing':token(tCed),[ID::'/bootstrap':string]).
+'/cedalionWeb/parsing':tokenDef(longID(ID),'/cedalionWeb/parsing':follow('/cedalionWeb/parsing':bind('/cedalionWeb/parsing':follow(annotation:parentheses('/cedalionWeb/parsing':alt('/cedalionWeb/parsing':charRange(!a,!z),longIDChar)),'/cedalionWeb/parsing':repeatMax(annotation:parentheses('/cedalionWeb/parsing':alt('/cedalionWeb/parsing':alt(letter,digit(_)),longIDChar)))),Codes),'/cedalionWeb/parsing':pred(builtin:charCodes(ID,Codes))),tCed).
+'/bootstrap':signature(decimal(NumOnLeft,Val)::'/cedalionWeb/parsing':pattern('/bootstrap':number),[NumOnLeft::'/bootstrap':number,Val::'/bootstrap':number]).
+'/cedalionWeb/parsing':prod(decimal(NumOnLeft,Val),'/bootstrap':number,'/cedalionWeb/parsing':if(digit(Digit),'/cedalionWeb/parsing':follow('/cedalionWeb/parsing':pred('/Functional':eval('/Functional':plus('/Functional':applyBinOp('/Functional':const(NumOnLeft),'/Functional':times,'/Functional':const(10)),'/Functional':const(Digit)),'/bootstrap':number,NewNumOnLeft)),decimal(NewNumOnLeft,Val)),'/cedalionWeb/parsing':pred(Val::'/bootstrap':number=NumOnLeft::'/bootstrap':number))).
+'/bootstrap':signature(numberToken(Val)::'/cedalionWeb/parsing':token(tCed),[Val::'/bootstrap':number]).
+'/cedalionWeb/parsing':tokenDef(numberToken(Val),'/cedalionWeb/parsing':follow(digit(First),decimal(First,Val)),tCed).
+'/bootstrap':signature(escChar(Char)::'/cedalionWeb/parsing':pattern('/bootstrap':number),[Char::'/bootstrap':string]).
+'/cedalionWeb/parsing':prod(escChar(! (\)),'/bootstrap':number,'/cedalionWeb/parsing':char(! (\))).
+'/cedalionWeb/parsing':prod(escChar(!'"'),'/bootstrap':number,'/cedalionWeb/parsing':char(!'"')).
+'/bootstrap':signature(stringToken(Str)::'/cedalionWeb/parsing':token(tCed),[Str::'/bootstrap':string]).
+'/bootstrap':signature(stringChar(Char)::'/cedalionWeb/parsing':pattern('/bootstrap':number),[Char::'/bootstrap':string]).
+'/cedalionWeb/parsing':prod(stringChar(Char),'/bootstrap':number,'/cedalionWeb/parsing':follow('/cedalionWeb/parsing':terminal(Code),'/cedalionWeb/parsing':pred('/Functional':eval(charForCode('/Functional':const(Code)),'/bootstrap':string,Char)))).
+'/cedalionWeb/parsing':prod(stringChar(Char),'/bootstrap':number,'/cedalionWeb/parsing':follow('/cedalionWeb/parsing':char(! (\)),escChar(Char))).
+'/bootstrap':signature(stringContent(Str)::'/cedalionWeb/parsing':pattern('/bootstrap':number),[Str::'/bootstrap':string]).
+'/cedalionWeb/parsing':prod(stringContent(Str),'/bootstrap':number,'/cedalionWeb/parsing':if('/cedalionWeb/parsing':char(!'"'),'/cedalionWeb/parsing':pred(Str::'/bootstrap':string=!''::'/bootstrap':string),'/cedalionWeb/parsing':if('/cedalionWeb/parsing':char(! (\)),'/cedalionWeb/parsing':follow(escChar(Char),'/cedalionWeb/parsing':follow(stringContent(StrPrime),'/cedalionWeb/parsing':pred(builtin:strcat(Char,StrPrime,Str)))),'/cedalionWeb/parsing':follow('/cedalionWeb/parsing':terminal(Code),'/cedalionWeb/parsing':follow(stringContent(StrPrime),'/cedalionWeb/parsing':pred((builtin:charCodes(Char,[Code]),builtin:strcat(Char,StrPrime,Str)))))))).
+'/cedalionWeb/parsing':tokenDef(stringToken(Str),'/cedalionWeb/parsing':follow('/cedalionWeb/parsing':char(!'"'),stringContent(Str)),tCed).
+'/bootstrap':unitTest('/cedalionWeb/parsing':parseString('/cedalionWeb/parsing':tokens([longID(!hello),numberToken(2),longID(!world),numberToken(123),longID(!abc),stringToken(!hello)],tCed),!'hello 2 world 123 abc "hello"')).
+'/bootstrap':unitTest(builtin:findall(T,'/bootstrap':list('/cedalionWeb/parsing':token(tCed)),'/cedalionWeb/parsing':parseString('/cedalionWeb/parsing':tokens(T,tCed),!'[a, b, c(d, "e")]'),_)).
+'/bootstrap':unitTest(\+'/cedalionWeb/parsing':parseString('/cedalionWeb/parsing':token(_,tCed),!'')).
+'/bootstrap':unitTest('/cedalionWeb/parsing':parseString('/cedalionWeb/parsing':tokens([stringToken(!hello),'/cedalionWeb/parsing':symbol(! (,)),longID(!world),longID(!a)],tCed),!'"hello", world a')).
+'/cedalionWeb/parsing':defSymbol(!'(',tCed).
+'/cedalionWeb/parsing':defSymbol(!')',tCed).
+'/cedalionWeb/parsing':defSymbol(! (,),tCed).
+'/cedalionWeb/parsing':defSymbol(!'[',tCed).
+'/cedalionWeb/parsing':defSymbol(!']',tCed).
+'/cedalionWeb/parsing':defSymbol(! (::),tCed).
+'/cedalionWeb/parsing':defSymbol(!'#',tCed).
+'/bootstrap':unitTest('/cedalionWeb/parsing':parseString('/cedalionWeb/parsing':tokens([longID(!hello),'/cedalionWeb/parsing':symbol(!'('),stringToken(!world),'/cedalionWeb/parsing':symbol(!')')],tCed),!'hello("world")')).
+'/bootstrap':unitTest('/cedalionWeb/parsing':parseString('/cedalionWeb/parsing':tokens(_,tCed),!'[a, b, c(d, "e")]')).
