@@ -5,3 +5,6 @@
 '/bootstrap':defAtom(autocompleMenu::'/bootstrap':mode).
 '/bootstrap':projection(editingCommand(Role,From,To)::editingCommand,autocompleMenu,'/bootstrap':vis(To::'/bootstrap':typedTerm)).
 '/javascript/asyncproc':asyncProc(applyEditingCommand(editingCommand(Role,From,To),Model),After,'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/asyncproc':andThen(applyEditingCommand(startEditingTransaction,Model),'/javascript/asyncproc':andThen(modifyModel(Role,Model,From,To),After)))])):-builtin:true.
+'/bootstrap':signature(defEditingCmd(Cmd,Def)::'/bootstrap':statement,[Cmd::editingCommand,Def::editingCommand]).
+'/bootstrap':projection(defEditingCmd(Cmd,Def)::'/bootstrap':statement,'/bootstrap':horiz(['/bootstrap':label(!'define editing command'),'/bootstrap':vis(Cmd::editingCommand),'/bootstrap':label(! (as)),'/bootstrap':vis(Def::editingCommand)])).
+defEditingCmd(Cmd,Def)~>annotation:shrink(('/javascript/asyncproc':asyncProc(applyEditingCommand(Cmd,Model),After,JsCmd):-'/javascript/asyncproc':asyncProc(applyEditingCommand(Def,Model),After,JsCmd))).
