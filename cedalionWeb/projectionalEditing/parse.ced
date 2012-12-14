@@ -1,2 +1,3 @@
-'/bootstrap':signature(parse(Text,Prefix,Role,Cmd)::'/bootstrap':pred,[Text::'/bootstrap':string,Prefix::'/bootstrap':string,Role::'/bootstrap':string,Cmd::editingCommand]).
-parse(Text,Prefix,Role,editingCommand(Role,_::Type,Term::Type)):-'/cedalionWeb/parsing':lexParseString(term(Prefix,Term::Type),Text,tCed).
+'/bootstrap':signature(parse(Text,Prefix,Role,Lang,Cmd)::'/bootstrap':pred,[Text::'/bootstrap':string,Prefix::'/bootstrap':string,Role::'/bootstrap':string,Lang::'/bootstrap':set(textualLanguage),Cmd::editingCommand]).
+'/bootstrap':defAtom(textualCedalion::textualLanguage).
+parse(Text,Prefix,Role,'/bootstrap':singleton(textualCedalion),editingCommand(Role,_::Type,Term::Type)):-'/cedalionWeb/parsing':lexParseString(term(Prefix,Term::Type),Text,tCed).
