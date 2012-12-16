@@ -579,6 +579,15 @@ Logic.prototype.toList = function(array) {
 	return list;
 };
 
+Logic.prototype.toArray = function(list) {
+	var array = [];
+	while(list.length == 3) {
+		array.push(list[1]);
+		list = list[2];
+	}
+	return array;
+};
+
 Logic.prototype.wrapCommand = function(command) {
 	var cmd = function() { console.log((new Error("Command no longer a function")).stack); };
 	if(!command.func) {

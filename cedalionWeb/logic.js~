@@ -132,7 +132,7 @@ Logic.prototype.run = function(term, next) {
 };
 
 Logic.prototype.process = function(stackLevel) {
-	this.count = 1000000;
+	this.count = 10000000;
 	while(this.running && this.stack.length > stackLevel) {
 		this.count--;
 		if(this.count == 0) {
@@ -577,6 +577,15 @@ Logic.prototype.toList = function(array) {
 		list = [".", array[i], list];
 	}
 	return list;
+};
+
+Logic.prototype.toArray = function(list) {
+	var array = [];
+	while(list.length == 3) {
+		array.unshift(list[1]);
+		list = list[2];
+	}
+	return array;
 };
 
 Logic.prototype.wrapCommand = function(command) {

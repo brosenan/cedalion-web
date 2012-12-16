@@ -38,3 +38,5 @@ defKeyboardCommand(home,defaultMap,_,navigate([go(descendants,!'.vis-term')])).
 defKeyboardCommand(pgdn,defaultMap,_,navigate([go(descendants,!'.vis-term')])).
 defKeyboardCommand(right,defaultMap,_,navigate([go(parents,!'.vis-horiz-elem'),go(followingSiblings,!'.vis-horiz-elem'),go(descendants,!'.vis-term:not(:has(.vis-term))')])).
 defKeyboardCommand(left,defaultMap,_,navigate([go(parents,!'.vis-horiz-elem'),go(precedingSiblings,!'.vis-horiz-elem'),go(descendants,!'.vis-term:not(:has(.vis-term))')])).
+defKeyboardCommand(down,defaultMap,_,navigate([go(parents,!'.vis-vert-elem'),go(followingSiblings,!'.vis-vert-elem'),go(descendants,!'.vis-term:not(:has(.vis-term))')])).
+defKeyboardCommand(up,defaultMap,_,navigate([go(parents,!'.vis-vert-elem'),go(precedingSiblings,!'.vis-vert-elem'),go(descendants,!'.vis-term:not(:has(.vis-term))')])).

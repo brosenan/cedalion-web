@@ -3,3 +3,9 @@
 defInsertion(Before,After)~>keyboardCommand(insert,Role,defaultMap,editingCommand(Role,Before,After)):-builtin:true.
 defInsertion(Before,After)~>keyboardCommand(delete,Role,defaultMap,editingCommand(Role,After,Before)):-builtin:true.
 defInsertion(L::'/bootstrap':list(T),[_|L]::'/bootstrap':list(T)).
+defInsertion(A::'/bootstrap':pred, (B,A)::'/bootstrap':pred).
+'/bootstrap':signature(defAppend(Before,After)::'/bootstrap':statement,[Before::'/bootstrap':typedTerm,After::'/bootstrap':typedTerm]).
+'/bootstrap':projection(defAppend(Before,After)::'/bootstrap':statement,'/bootstrap':horiz(['/bootstrap':label(!'appending changes'),'/bootstrap':vis(Before::'/bootstrap':typedTerm),'/bootstrap':label(!to),'/bootstrap':vis(After::'/bootstrap':typedTerm)])).
+defAppend(Before,After)~>keyboardCommand(alt(insert),Role,defaultMap,editingCommand(Role,Before,After)):-builtin:true.
+defAppend([A|L]::'/bootstrap':list(T),[A,B|L]::'/bootstrap':list(T)).
+defAppend((A,B)::'/bootstrap':pred, (A,C,B)::'/bootstrap':pred).

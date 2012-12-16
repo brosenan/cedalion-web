@@ -23,7 +23,7 @@
 }
 .vis-brackets {
 	display: table-row;
-	vertical-align: middle;
+	/*vertical-align: middle;*/
 }
 .vis-line-border {
 	border-style: solid;
