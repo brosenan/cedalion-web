@@ -2,17 +2,28 @@
 <head>
 <title>Cedalion Web Application</title>
 <style type="text/css">
-.vis-line-border .vis-horiz .vis-vert .vis-color .vis-halfsize .vis-background .vis-raised .vis-lowered .vis-smaller .vis-bold .vis-italic .vis-term {
+.vis-line-border, .vis-horiz, 
+	.vis-vert, .vis-color, 
+	.vis-halfsize, .vis-background, 
+	.vis-raised, .vis-lowered, 
+	.vis-smaller, .vis-bold, 
+	.vis-italic, .vis-term,
+	.vis-symbol {
 	display: block;
 }
 .vis-horiz-elem {
 	display: table-cell;
 }
-.vis-brackets-left .vis-brackets-middle .vis-brackets-right {
+.vis-bracket, .vis-brackets-middle {
 	display: table-cell;
+}
+.vis-bracket {
+	font-family: "Times New Roman",Times,serif;
+	vertical-align: middle;
 }
 .vis-brackets {
 	display: table-row;
+	vertical-align: middle;
 }
 .vis-line-border {
 	border-style: solid;
@@ -108,6 +119,11 @@
 	display: none;
 }
 .tiny {
+	width: 1px;
+	height: 1px;
+}
+
+.tiny input {
 	width: 1px;
 	height: 1px;
 }

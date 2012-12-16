@@ -53,6 +53,7 @@ defKeyCode(27,esc).
 '/bootstrap':defAtom(keyTestPane::'/cedalionWeb/xml':xml).
 '/bootstrap':signature(letter(Char)::keyCombination,[Char::'/bootstrap':string]).
 '/bootstrap':projection(letter(Char)::keyCombination,'/bootstrap':horiz(['/bootstrap':label(!'\''),'/bootstrap':vis(Char::'/bootstrap':string),'/bootstrap':label(!'\'')])).
+'/bootstrap':adapter(Char::'/bootstrap':string,letter(Char)::keyCombination).
 keyCode(Code,letter(Char)):-builtin:greaterThen(Code,64),builtin:greaterThen(91,Code),builtin:charCodes(Char,[Code]).
 keyCode(Code,letter(Char)):-builtin:greaterThen(Code,47),builtin:greaterThen(58,Code),builtin:charCodes(Char,[Code]).
 '/bootstrap':signature(f(Num)::keyCombination,[Num::'/bootstrap':number]).

@@ -1,0 +1,5 @@
+'/bootstrap':signature(defInsertion(Before,After)::'/bootstrap':statement,[Before::'/bootstrap':typedTerm,After::'/bootstrap':typedTerm]).
+'/bootstrap':projection(defInsertion(Before,After)::'/bootstrap':statement,'/bootstrap':horiz(['/bootstrap':label(!'insertion changes'),'/bootstrap':vis(Before::'/bootstrap':typedTerm),'/bootstrap':label(!to),'/bootstrap':vis(After::'/bootstrap':typedTerm)])).
+defInsertion(Before,After)~>keyboardCommand(insert,Role,defaultMap,editingCommand(Role,Before,After)):-builtin:true.
+defInsertion(Before,After)~>keyboardCommand(delete,Role,defaultMap,editingCommand(Role,After,Before)):-builtin:true.
+defInsertion(L::'/bootstrap':list(T),[_|L]::'/bootstrap':list(T)).
