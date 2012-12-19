@@ -170,6 +170,14 @@ Logic.prototype.unify = function(term1, term2) {
 		return true;
 	}
 
+	// If a command, relate to the code
+	if(typeof(term1) === "function" && term1.code) {
+		term1 = term1.code;
+	}
+	if(typeof(term2) === "function" && term2.code) {
+		term2 = term2.code;
+	}
+
 	// Unify compound terms
 	if(term1 instanceof Array) {
 		if(!(term2 instanceof Array))
@@ -398,7 +406,7 @@ Logic.prototype.removeCycles = function(term, index) {
 		}
 		return newTerm;
 	} else if(typeof(term) === "function" && term.func) {
-		return this.wrapCommand({func: term.func, terms: this.removeCycles(term.terms, index)});
+		return this.wrapCommand({func: term.func, terms: this.removeCycles(term.terms, index), code: this.removeCycles(term.code, index)});
 	} else {
 		return term;
 	}
@@ -421,7 +429,7 @@ Logic.prototype.addReferences = function(term, map) {
 		//DBG("Returning compound: " + newTerm);
 		return newTerm;
 	} else if(typeof(term) === "function" && term.func){
-		return this.wrapCommand({func: term.func, terms: this.addReferences(term.terms, map)});
+		return this.wrapCommand({func: term.func, terms: this.addReferences(term.terms, map), code: this.addReferences(term.code, map)});
 	} else {
 		//DBG("Returning unmodified term: " + term);
 		return term;
@@ -507,6 +515,7 @@ Logic.prototype.concreteCommand = function(cmd) {
 	var cmd2 = {
 		func: cmd.func,
 		terms: this.concreteValue(cmd.terms),
+		code: cmd.code,
 	};
 	return this.wrapCommand(cmd2);
 };
@@ -595,6 +604,7 @@ Logic.prototype.wrapCommand = function(command) {
 	}
 	cmd.func = command.func;
 	cmd.terms = command.terms;
+	cmd.code = command.code;
 	cmd.toString = function() { return "<CMD " + this.func.toString() + " CMD>"; };
 	return cmd;
 };
@@ -714,6 +724,11 @@ logic.program.addBuiltin("modulus", 3, function(logic, term) {
 logic.program.addBuiltin("compound", 1, function(logic, term) {
 	// The argument is a typedTerm (::).  We only care about its first element.
 	var arg = logic.realValue(term[1][1]);
+console.log("compound: " + arg);
+	if(typeof(arg) === "function" && arg.code) {
+console.log("code: " + JSON.stringify(arg.code));
+		arg = arg.code;
+	}
 	return arg instanceof Array;
 });
 
@@ -729,6 +744,9 @@ logic.program.addBuiltin("var", 1, function(logic, term) {
 logic.program.addBuiltin("string", 1, function(logic, term) {
 	// The argument is a typedTerm (::).  We only care about its first element.
 	var arg = term[1][1];
+	if(arg instanceof Variable) {
+		arg = arg.getValue(logic);
+	}
 	if(typeof(arg) == "string") {
 			term[1][2] = ["/bootstrap#string"];
 			return true;
@@ -739,6 +757,9 @@ logic.program.addBuiltin("string", 1, function(logic, term) {
 logic.program.addBuiltin("number", 1, function(logic, term) {
 	// The argument is a typedTerm (::).  We only care about its first element.
 	var arg = term[1][1];
+	if(arg instanceof Variable) {
+		arg = arg.getValue(logic);
+	}
 	if(typeof(arg) == "number") {
 		term[1][2] = ["/bootstrap#number"];
 		return true;
@@ -866,17 +887,23 @@ logic.program.addBuiltin("parseTerm", 3, function(logic, term) {
 			// Non-compound (e.g., command)
 			logic.unify(value, term[2]);			
 		}
-	} else if(value instanceof Array) {
-		// We need to decompose
-		term[2] = value[0]; // the name
-		term[3] = ["[]"];
-		for(var i = value.length - 1; i > 0; i--) {
-			term[3] = [".", ["::", value[i], new Variable()], term[3]];
-		}
 	} else {
-		// Concrete value that is not a compount term: the "name" will contain the value, and the list will be empty
-		term[2] = term[1];
-		term[3] = ["[]"];
+		// If value is a command, parse the code
+		if(typeof(value) === "function" && value.code) {
+			value = value.code;
+		}
+		if(value instanceof Array) {
+			// We need to decompose
+			term[2] = value[0]; // the name
+			term[3] = ["[]"];
+			for(var i = value.length - 1; i > 0; i--) {
+				term[3] = [".", ["::", value[i], new Variable()], term[3]];
+			}
+		} else {
+			// Concrete value that is not a compount term: the "name" will contain the value, and the list will be empty
+			term[2] = term[1];
+			term[3] = ["[]"];
+		}
 	}
 	return true;
 });

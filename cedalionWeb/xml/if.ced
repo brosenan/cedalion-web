@@ -1,0 +1,3 @@
+'/bootstrap':signature(if(Cond,Then,Else)::xml,[Cond::'/bootstrap':pred,Then::xml,Else::xml]).
+'/bootstrap':projection(if(Cond,Then,Else)::xml,'/bootstrap':vert(['/bootstrap':horiz(['/bootstrap':label(!if),'/bootstrap':vis(Cond::'/bootstrap':pred)]),'/bootstrap':horiz(['/bootstrap':label(!'    '),'/bootstrap':vis(Then::xml)]),'/bootstrap':label(!else),'/bootstrap':horiz(['/bootstrap':label(!'    '),'/bootstrap':vis(Else::xml)])])).
+'generates2'(if(Cond,Then,Else),Output,A1,A2):-builtin:if(Cond,'generates2'(Then,Output,A1,A2),'generates2'(Else,Output,A1,A2)).
