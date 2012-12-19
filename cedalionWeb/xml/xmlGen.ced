@@ -16,7 +16,8 @@
 'generates2'('elem2'(Name,Attr,Body),Str,Annot1,Annot2):-'/Functional':eval('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':const(! (<)),'/Functional':concat,Name),'/Functional':concat,'genAttr2'(Attr)),'/Functional':concat,'/Functional':const(! (>))),'/Functional':concat,'gen2'(Body,Annot1,Annot2)),'/Functional':concat,'/Functional':const(!'</')),'/Functional':concat,Name),'/Functional':concat,'/Functional':const(! (>))),'/bootstrap':string,Str).
 'generates2'(empty,!'',Annot,Annot):-builtin:true.
 '/bootstrap':signature(xmlEncode(Str)::'/Functional':expr('/bootstrap':string),[Str::'/Functional':expr('/bootstrap':string)]).
-annotation:comment(('/Functional':eval(xmlEncode(Str),'/bootstrap':string,StrPrime):-'/Functional':eval(Str,'/bootstrap':string,StrPrime)),!'TODO: Add real encoding here').
+'/bootstrap':signature(builtin:strrep(Input,Replace,With,Output)::'/bootstrap':pred,[Input::'/bootstrap':string,Replace::'/bootstrap':string,With::'/bootstrap':string,Output::'/bootstrap':string]).
+'/Functional':eval(xmlEncode(Str),'/bootstrap':string,S5):-'/Functional':eval(Str,'/bootstrap':string,StrPrime),builtin:strrep(StrPrime,!'&',!'&amp;',S1),builtin:strrep(S1,!'"',!'&quot;',S2),builtin:strrep(S2,!'\'',!'&apos;',S3),builtin:strrep(S3,! (<),!'&lt;',S4),builtin:strrep(S4,! (>),!'&gt;',S5).
 '/bootstrap':unitTest('/Functional':eval(xmlEncode('/Functional':const(!'XXX')),'/bootstrap':string,!'XXX')).
 'generates2'(str(Str),StrPrime,Annot,Annot):-'/Functional':eval(xmlEncode('/Functional':const(Str)),'/bootstrap':string,StrPrime).
 '/bootstrap':unitTest('generates2'('elem2'('/Functional':const(!div),['attr2'('/Functional':const(!class),'/Functional':const(!myClass)),'attr2'('/Functional':const(!id),'/Functional':const(!myID))],str(!'Hello')),!'<div class="myClass" id="myID">Hello</div>',[],[])).

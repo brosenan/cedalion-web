@@ -1,3 +1,3 @@
-'/bootstrap':signature(parse(Text,Prefix,Role,Lang,Cmd)::'/bootstrap':pred,[Text::'/bootstrap':string,Prefix::'/bootstrap':string,Role::'/bootstrap':string,Lang::'/bootstrap':set(textualLanguage),Cmd::editingCommand]).
+annotation:shrink('/bootstrap':signature(parse(Text,Prefix,Role,Lang,Cmd)::'/bootstrap':pred,[Text::'/bootstrap':string,Prefix::'/bootstrap':string,Role::'/bootstrap':string,Lang::textualLanguage,Cmd::editingCommand])).
 '/bootstrap':defAtom(textualCedalion::textualLanguage).
-parse(Text,Prefix,Role,'/bootstrap':singleton(textualCedalion),editingCommand(Role,_::Type,Term::Type)):-'/cedalionWeb/parsing':lexParseString(term(Prefix,Term::Type),Text,tCed).
+annotation:shrink((parse(Text,Prefix,Role,textualCedalion,editingCommand(Role,_,TTerm)):-'/cedalionWeb/parsing':lexParseString(term(Prefix,TTerm),Text,tCed))).

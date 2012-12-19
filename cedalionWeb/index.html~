@@ -27,6 +27,7 @@
 }
 .vis-line-border {
 	border-style: solid;
+	border-radius: 0.25em;
 }
 .vis-halfsize {
 	font-size: 50%;
@@ -34,10 +35,12 @@
 .vis-raised {
 	border-style: outset;
 	border-width: 3px;
+	border-radius: 0.25em;
 }
 .vis-lowered {
 	border-style: inset;
 	border-width: 3px;
+	border-radius: 0.25em;
 }
 .vis-smaller {
 	font-size: 75%;
@@ -126,6 +129,13 @@
 .tiny input {
 	width: 1px;
 	height: 1px;
+}
+.cedalion-editor .input-entry {
+	position: relative;
+}
+.input-entry .autocomplete-menu {
+	position: absolute;
+	top: 1.5em;
 }
 
 </style>

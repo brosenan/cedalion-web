@@ -729,19 +729,27 @@ logic.program.addBuiltin("var", 1, function(logic, term) {
 logic.program.addBuiltin("string", 1, function(logic, term) {
 	// The argument is a typedTerm (::).  We only care about its first element.
 	var arg = term[1][1];
-	if(arg instanceof Variable)
-		arg = arg.getValue();
-	var ret = typeof(arg) == "string";
-	return ret;
+	if(arg instanceof Variable) {
+		arg = arg.getValue(logic);
+	}
+	if(typeof(arg) == "string") {
+			term[1][2] = ["/bootstrap#string"];
+			return true;
+	}
+	return false;
 });
 
 logic.program.addBuiltin("number", 1, function(logic, term) {
 	// The argument is a typedTerm (::).  We only care about its first element.
 	var arg = term[1][1];
-	if(arg instanceof Variable)
-		arg = arg.getValue();
-	var ret = typeof(arg) == "number";
-	return ret;
+	if(arg instanceof Variable) {
+		arg = arg.getValue(logic);
+	}
+	if(typeof(arg) == "number") {
+		term[1][2] = ["/bootstrap#number"];
+		return true;
+	}
+	return false;
 });
 
 logic.program.addBuiltin("strcat", 3, function(logic, term) {
@@ -994,6 +1002,11 @@ logic.program.addBuiltin("throw", 1, function(logic, term) {
 logic.program.addBuiltin("concreteCommand", 2, function(logic, term) {
 //	term[2] = logic.concreteCommand(term[1]);
 	term[2] = term[1];
+	return true;
+});
+
+logic.program.addBuiltin("strrep", 4, function(logic, term) {
+	term[4] = term[1].replace(term[2], term[3]);
 	return true;
 });
 
