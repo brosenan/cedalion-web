@@ -1029,4 +1029,17 @@ logic.program.addBuiltin("strrep", 4, function(logic, term) {
 	return true;
 });
 
+logic.program.add([">", 2], function(logic, term, next) {
+	var a = new Variable();
+	var b = new Variable();
+
+	if(!logic.unify(term, [">", a, b]))
+		return;
+	a = a.getValue(logic);
+	b = b.getValue(logic);
+	if(a > b) {
+		logic.push(next);
+	}
+});
+
 

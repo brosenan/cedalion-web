@@ -724,9 +724,7 @@ logic.program.addBuiltin("modulus", 3, function(logic, term) {
 logic.program.addBuiltin("compound", 1, function(logic, term) {
 	// The argument is a typedTerm (::).  We only care about its first element.
 	var arg = logic.realValue(term[1][1]);
-console.log("compound: " + arg);
 	if(typeof(arg) === "function" && arg.code) {
-console.log("code: " + JSON.stringify(arg.code));
 		arg = arg.code;
 	}
 	return arg instanceof Array;

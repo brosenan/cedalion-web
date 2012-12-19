@@ -1,0 +1,5 @@
+'/bootstrap':signature(neededDepthForProjection(TTerm,Depth)::'/bootstrap':pred,[TTerm::'/bootstrap':typedTerm,Depth::'/bootstrap':number]).
+neededDepthForProjection('/bootstrap':symbol(_)::'/bootstrap':visualization,2):-builtin:true.
+neededDepthForProjection('/bootstrap':lineBorder('/bootstrap':symbol(_),_,_)::'/bootstrap':visualization,3):-builtin:true.
+neededDepthForProjection('/bootstrap':background(_,_)::'/bootstrap':visualization,3):-builtin:true.
+neededDepthForProjection('/bootstrap':color(_,_)::'/bootstrap':visualization,3):-builtin:true.
