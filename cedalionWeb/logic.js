@@ -469,7 +469,7 @@ Logic.prototype.runProcedure = function(proc) {
 			cmd.func(logic, cmd.terms);
 		});
 	} catch(e) {
-		console.log(e);
+		console.log(e.message);
 		console.log(e.stack);
 		console.log("Recent calls: " + this.recentCalls.join("\n"));
 		var trace = this.ctx("tracing").getValue(this);
