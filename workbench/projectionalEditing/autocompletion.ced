@@ -5,7 +5,7 @@ annotation:shrink((conceptAutocompletion(Type,Prefix,Role,editingCommand(Role,Fr
 '/bootstrap':unitTest(conceptAutocompletion('/Functional':expr('/bootstrap':number),! (+),!'RRR',editingCommand(!'RRR','/Functional':const(1)::'/Functional':expr('/bootstrap':number),'/Functional':plus('/Functional':const(1),empty)::'/Functional':expr('/bootstrap':number)),!'+ [/Functional#plus]')).
 '/bootstrap':signature(removeVariables(TTerm)::'/bootstrap':pred,[TTerm::'/bootstrap':typedTerm]).
 '/bootstrap':defAtom(empty::_).
-'/bootstrap':projection(empty::_,'/bootstrap':italic('/bootstrap':label(!'...'))).
+'/bootstrap':projection(empty::Type,'/bootstrap':italic('/bootstrap':color('/bootstrap':brackets('/bootstrap':vis(cpi:immediateDescriptor(Type,[])::'/bootstrap':type),123,125),cpi:rgb(128,128,255)))).
 removeVariables(TTerm):-builtin:if(builtin:var(TTerm),TTerm=empty::_, (builtin:parseTerm(TTerm,_,Args),removeVariablesInList(Args))).
 '/bootstrap':signature(removeVariablesInList(Args)::'/bootstrap':pred,[Args::'/bootstrap':list('/bootstrap':typedTerm)]).
 removeVariablesInList([]):-builtin:true.

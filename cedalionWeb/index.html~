@@ -50,6 +50,29 @@
 .vis-italic {
 	font-style: italic;
 }
+
+.vis-tooltip {
+	display: none;
+}
+
+.vis-has-tooltip {
+	position: relative;
+	z-index: 0;
+}
+
+.vis-has-tooltip:hover > .vis-tooltip{
+	position: absolute;
+	top: 1.5em;
+	left: 2em;
+	display: block;	
+	background-color: rgb(255, 255, 190);
+}
+
+.vis-label {
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+
 .mouse-over {
 	border-style: solid;
 	border-width: 1px;
@@ -135,6 +158,7 @@
 .input-entry .autocomplete-menu {
 	position: absolute;
 	top: 1.5em;
+	z-index: 1;
 }
 
 </style>
@@ -143,7 +167,7 @@
 <div id="main">
 <p>Loading...</p>
 </div>
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script type="text/javascript" src="logic.js"></script>
 <script type="text/javascript" src="cedalion.js"></script>
 <script type="text/javascript">

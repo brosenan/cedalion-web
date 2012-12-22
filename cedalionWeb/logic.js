@@ -1042,4 +1042,61 @@ logic.program.add([">", 2], function(logic, term, next) {
 	}
 });
 
+function safeCheckDepth(term, maxDepth) {
+	if(maxDepth == 0)
+		return -1;
+	if(term instanceof Array) {
+		var depth = 0;
+		for(var i = 1; i < term.length; i++) {
+			var newDepth = safeCheckDepth(term[i], maxDepth - 1);
+			if(newDepth > depth) {
+				depth = newDepth;
+			}
+		}
+		return depth+1;
+	} else if(term instanceof Variable) {
+		var value = term.getValue();
+		if(value instanceof Variable) {
+			return 0;
+		}
+		return safeCheckDepth(value, maxDepth);
+	} else {
+		return 0;
+	}
+}
+
+logic.program.addBuiltin("safeUnify", 2, function(logic, term) {
+	if(!logic.unify(term[1], term[2])) {
+		return false;
+	}
+	return safeCheckDepth(term[1], 100) > 0;
+});
+
+function structurallyEqual(logic, term1, term2) {
+	term1 = logic.realValue(term1);
+	term2 = logic.realValue(term2);
+
+	if(term1 instanceof Array) {
+		if(!(term2 instanceof Array)) {
+			return false;
+		}
+		if(term2.length != term1.length) {
+			return false;
+		}
+		for(var i = 0; i < term1.length; i++) {
+			if(!structurallyEqual(logic, term1[i], term2[i])) {
+				return false
+			}
+		}
+		return true;
+	} else if(term1 instanceof Variable) {
+		return term2 instanceof Variable;
+	} else {
+		return term2 === term1;
+	}
+}
+logic.program.addBuiltin("structurallyEqual", 2, function(logic, term) {
+	return structurallyEqual(logic, term[1], term[2]);
+});
+
 

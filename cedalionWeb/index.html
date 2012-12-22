@@ -50,6 +50,29 @@
 .vis-italic {
 	font-style: italic;
 }
+
+.vis-tooltip {
+	display: none;
+}
+
+.vis-has-tooltip {
+	position: relative;
+	z-index: 0;
+}
+
+.vis-has-tooltip:hover > .vis-tooltip{
+	position: absolute;
+	top: 1.5em;
+	left: 2em;
+	display: block;	
+	background-color: rgb(255, 255, 190);
+}
+
+.vis-label {
+	padding-left: 0.25em;
+	padding-right: 0.25em;
+}
+
 .mouse-over {
 	border-style: solid;
 	border-width: 1px;
@@ -135,6 +158,7 @@
 .input-entry .autocomplete-menu {
 	position: absolute;
 	top: 1.5em;
+	z-index: 1;
 }
 
 </style>

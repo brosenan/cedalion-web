@@ -1,5 +1,5 @@
 '/bootstrap':signature(toHTML(Vis)::'/cedalionWeb/xml':xml,[Vis::'/bootstrap':visualization]).
-'/cedalionWeb/xml':macro(toHTML('/bootstrap':label(Str)),'/cedalionWeb/xml':list('/cedalionWeb/xml':entity('/Functional':const(160)),'/cedalionWeb/xml':list('/cedalionWeb/xml':str(Str),'/cedalionWeb/xml':list('/cedalionWeb/xml':entity('/Functional':const(160)),'/cedalionWeb/xml':empty)))).
+'/cedalionWeb/xml':macro(toHTML('/bootstrap':label(Str)),'/cedalionWeb/xml':'elem2'('/Functional':const(!span),['/cedalionWeb/xml':'attr2'('/Functional':const(!class),'/Functional':const(!'vis-label'))],'/cedalionWeb/xml':str(Str))).
 '/bootstrap':signature(toHTMLList(List,ChildClass)::'/cedalionWeb/xml':xml,[List::'/bootstrap':list('/bootstrap':visualization),ChildClass::'/bootstrap':string]).
 '/cedalionWeb/xml':macro(toHTMLList([],_),'/cedalionWeb/xml':empty).
 '/cedalionWeb/xml':macro(toHTMLList([First|Rest],ChildClass),'/cedalionWeb/xml':list('/cedalionWeb/xml':'elem2'('/Functional':const(!div),['/cedalionWeb/xml':'attr2'('/Functional':const(!class),'/Functional':const(ChildClass))],toHTML(First)),toHTMLList(Rest,ChildClass))).
