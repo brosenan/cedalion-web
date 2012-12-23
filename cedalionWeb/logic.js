@@ -132,7 +132,7 @@ Logic.prototype.run = function(term, next) {
 };
 
 Logic.prototype.process = function(stackLevel) {
-	this.count = 10000000;
+	this.count = 1000000000;
 	while(this.running && this.stack.length > stackLevel) {
 		this.count--;
 		if(this.count == 0) {

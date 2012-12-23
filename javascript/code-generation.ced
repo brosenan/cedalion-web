@@ -19,13 +19,15 @@ hasSpecialRendering('/bootstrap':'$SAT$'(Num)::symbol,Symbol):-'/Functional':eva
 '/Functional':def(visToString('/bootstrap':vis(TTerm)),'/bootstrap':string,toString(TTerm)).
 '/Functional':def(visToString(cpi:vis(TTerm,Mode)),'/bootstrap':string,'/Functional':where(visToString(Vis),'/bootstrap':visualizeTerm(TTerm,Mode,Vis))).
 '/bootstrap':disabled('/Functional':def(visToString(Vis),'/bootstrap':string,annotation:shrink('/Functional':where(visToString(SubVis),'/bootstrap':safeParseTerm(Vis::'/bootstrap':visualization,_,[SubVis::'/bootstrap':visualization|_]))))).
-'/Functional':def(visToString('/bootstrap':halfSize(Vis)),'/bootstrap':string,visToString(Vis)).
+'/bootstrap':signature(propagateVis(V1,V2)::'/bootstrap':statement,[V1::'/bootstrap':visualization,V2::'/bootstrap':visualization]).
+'/bootstrap':projection(propagateVis(V1,V2)::'/bootstrap':statement,'/bootstrap':horiz(['/bootstrap':vis(V1::'/bootstrap':visualization),'/bootstrap':label(!'is generated as'),'/bootstrap':vis(V2::'/bootstrap':visualization)])).
+propagateVis(V1,V2)~>'/Functional':def(visToString(V1),'/bootstrap':string,visToString(V2)).
+propagateVis('/bootstrap':halfSize(Vis),Vis).
 '/Functional':def(visToString('/bootstrap':brackets(Vis,Start,End)),'/bootstrap':string,'/Functional':where('/Functional':concat('/Functional':const(StartChar),'/Functional':concat(visToString(Vis),'/Functional':const(EndChar))), (builtin:charCodes(StartChar,[Start]),builtin:charCodes(EndChar,[End])))).
-'/Functional':def(visToString('/bootstrap':lineBorder(Vis,_,_)),'/bootstrap':string,visToString(Vis)).
-'/Functional':def(visToString('/bootstrap':background(Vis,_)),'/bootstrap':string,visToString(Vis)).
-'/Functional':def(visToString('/bootstrap':italic(Vis)),'/bootstrap':string,visToString(Vis)).
-'/Functional':def(visToString('/bootstrap':bold(Vis)),'/bootstrap':string,visToString(Vis)).
-'/Functional':def(visToString('/bootstrap':color(Vis,_)),'/bootstrap':string,visToString(Vis)).
+propagateVis('/bootstrap':lineBorder(Vis,_,_),Vis).
+propagateVis('/bootstrap':italic(Vis),Vis).
+propagateVis('/bootstrap':bold(Vis),Vis).
+propagateVis('/bootstrap':color(Vis,_),Vis).
 '/bootstrap':contextMenuEntry(Term::Type,[],_,!'To String','/bootstrap':where('/bootstrap':doProc('/bootstrap':showInView(String::'/bootstrap':string,[])),'/Functional':eval(toString(Term::Type),'/bootstrap':string,String))).
 '/bootstrap':signature(macro(TMacro,TCode)::'/bootstrap':statement,[TMacro::'/bootstrap':typedTerm,TCode::'/bootstrap':typedTerm]).
 '/bootstrap':projection(macro(TMacro,TCode)::'/bootstrap':statement,'/bootstrap':vert(['/bootstrap':horiz(['/bootstrap':label(!macro),'/bootstrap':vis(TMacro::'/bootstrap':typedTerm)]),'/bootstrap':horiz(['/bootstrap':label(!'    '),'/bootstrap':vis(TCode::'/bootstrap':typedTerm)])])).

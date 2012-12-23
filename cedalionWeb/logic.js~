@@ -1077,7 +1077,18 @@ function structurallyEqual(logic, term1, term2) {
 	term2 = logic.realValue(term2);
 
 	if(term1 instanceof Array) {
-		
+		if(!(term2 instanceof Array)) {
+			return false;
+		}
+		if(term2.length != term1.length) {
+			return false;
+		}
+		for(var i = 0; i < term1.length; i++) {
+			if(!structurallyEqual(logic, term1[i], term2[i])) {
+				return false
+			}
+		}
+		return true;
 	} else if(term1 instanceof Variable) {
 		return term2 instanceof Variable;
 	} else {

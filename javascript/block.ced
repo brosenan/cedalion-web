@@ -1,0 +1,4 @@
+'/bootstrap':signature(block(Body)::statement,[Body::'/bootstrap':list(statement)]).
+'/bootstrap':projection(block(Body)::statement,'/bootstrap':vert(['/bootstrap':label(!'{'),cpi:vis(Body::'/bootstrap':list(statement),'/bootstrap':vertical('/bootstrap':label(!'    '),'/bootstrap':color('/bootstrap':label(!'    // Empty'),cpi:rgb(192,192,192)),'/bootstrap':horiz([]))),'/bootstrap':label(!'}')])).
+'/bootstrap':alias(block(Body)::statement,!'{}').
+javascript([block([])]).
