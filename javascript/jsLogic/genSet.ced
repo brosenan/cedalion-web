@@ -12,7 +12,9 @@ deepIndex(TTerm,Index):-builtin:if(builtin:compound(TTerm), (builtin:parseTerm(T
 '/bootstrap':signature(writeClauses(ClauseSet)::'/bootstrap':procedure,[ClauseSet::'/bootstrap':set('/bootstrap':statement)]).
 '/bootstrap':procedure(writeClauses(ClauseSet),'/bootstrap':writeFile(!'rawClauses.txt',builtin:fileContent(builtin:statement(Clause,[]),'/bootstrap':member(Clause,ClauseSet,'/bootstrap':statement),[]))).
 '/bootstrap':contextMenuEntry(ClauseSet::'/bootstrap':set('/bootstrap':statement),_,_,!'Generate raw clauses',writeClauses(ClauseSet)).
-'/bootstrap':contextMenuEntry(Statements::'/bootstrap':list('/bootstrap':statement),_,_,!'Generate Javascript Code for the Entire Program','/bootstrap':generateFileForSet(!'cedalion.js',jsStatementStrings(jsStatementsForClauses(allClauses)))).
+'/bootstrap':contextMenuEntry(Statements::'/bootstrap':list('/bootstrap':statement),_,_,!'Generate Javascript Code for the Entire Program','/bootstrap':generateFileForSet(!'cedalion.js',jsStatementStrings('/bootstrap':union(jsStatementsForClauses(allClauses),withoutAnnotations(jsStatementsForClauses(loadedStatementClauses)))))).
 '/bootstrap':defAtom(a::'/bootstrap':pred).
 '/bootstrap':defAtom(b::'/bootstrap':pred).
 '/bootstrap':sandbox('/bootstrap':listSet([ (a:-b)])::'/bootstrap':set('/bootstrap':statement)).
+'/bootstrap':signature(withoutAnnotations(JsStatementSet)::'/bootstrap':set('/javascript':statement),[JsStatementSet::'/bootstrap':set('/javascript':statement)]).
+'/bootstrap':setDef(withoutAnnotations(JS),'/bootstrap':set(Statement, ('/bootstrap':member(StatementPrime,JS,'/javascript':statement),builtin:removeAnnotations(StatementPrime::'/javascript':statement,Statement::'/javascript':statement))),'/javascript':statement).

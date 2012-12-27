@@ -6,7 +6,7 @@ statement(S,Depth):-statementsWoAnnotations(SL),statement(S,Depth,SL).
 statement(S,_,SL):-'/bootstrap':listMember(S,'/bootstrap':statement,SL).
 statement(S2,Depth,SL):-Depth>0,builtin:succ(DepthPrime,Depth),statement((S1~>S2),DepthPrime,SL),statement(S1,DepthPrime,SL).
 '/bootstrap':defAtom(allClauses::'/bootstrap':set('/bootstrap':statement)).
-'/bootstrap':setDef(allClauses,'/bootstrap':union('/bootstrap':set((Head:-Body),statement((Head:-Body),100)),loadedStatementClauses),'/bootstrap':statement).
+'/bootstrap':setDef(allClauses,'/bootstrap':set((Head:-Body),statement((Head:-Body),100)),'/bootstrap':statement).
 '/bootstrap':defAtom(predicateID::'/bootstrap':type).
 '/bootstrap':signature(pred(Name,Arity)::predicateID,[Name::'/bootstrap':string,Arity::'/bootstrap':number]).
 '/bootstrap':projection(pred(Name,Arity)::predicateID,'/bootstrap':horiz(['/bootstrap':vis(Name::'/bootstrap':string),'/bootstrap':label(! (/)),'/bootstrap':vis(Arity::'/bootstrap':number)])).

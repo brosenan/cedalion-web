@@ -247,10 +247,10 @@ Logic.prototype.executeClausesForPartialIndex = function(index, term, next) {
 Logic.prototype.call = function(term, next) {
 	//DBG("[" + this.stack.length + "] Call: " + this.termToString(term));
 //if(term[0] == "/Functional#eval" && term[1] instanceof Variable && term[1].getValue() instanceof Variable) throw Error("Bad eval");
-	this.recentCalls.push("[" + this.stack.length + "] Call: " + this.termToString(term));
+/*	this.recentCalls.push("[" + this.stack.length + "] Call: " + this.termToString(term));
 	if(this.recentCalls.length > 20) {
 		this.recentCalls.splice(0, this.recentCalls.length - 20);
-	}
+	}*/
 	term = this.realValue(term);
 	this.program.trie.applyClauses(this, term, next);
 
@@ -267,6 +267,7 @@ Logic.prototype.executeClauses = function(clauses, term, next) {
 		this.push(this.clauseFunction(clause, term, next));
 	}
 }
+
 Logic.prototype.termToString = function(term) {
 	if(term instanceof Variable) {
 		term = term.getValue(this);
@@ -298,6 +299,49 @@ Logic.prototype.termToString = function(term) {
 	return s;
 }
 
+
+Logic.prototype.termToProlog = function(term) {
+	var state = this.stack.length;
+	var index = {i: 0};
+	var result = this.termToPrologInternal(term, index);
+	this.process(state);
+	return result + ".";
+};
+Logic.prototype.termToPrologInternal = function(term, index) {
+	if(term instanceof Variable) {
+		term = term.getValue(this);
+	}
+	if(term instanceof Variable) {
+		term.bind({v: index.i}, this);
+		index.i++;
+		return "_" + (index.i-1);
+	} else if(typeof(term) === "object" && typeof(term.v) != 'undefined') {
+		return "_" + term.v;
+	} else if(typeof(term) === "string") {
+		return "'!'(" + this.toAtom(term) + ")"
+	} else if(typeof(term) === "number") {
+		return term.toString();
+	} else if(typeof(term) === "function" && term.code) {
+		return this.termToPrologInternal(term.code, index);
+	} else if(!term) {
+		return "nil";
+	}
+	if(!(term instanceof Array)) {
+		//return "not_a_compound";
+		return "<<<" + JSON.stringify(term) + ">>>";
+	}
+	var s = this.toAtom(term[0]);
+	if(term.length > 1) {
+		s += "(";
+		for(var i = 1; i < term.length; i++) {
+			if(i > 1) {s += ", ";}
+			s += this.termToPrologInternal(term[i], index);
+		}
+		s += ")";
+	}
+	return s;
+}
+Logic.prototype.toAtom = function(str) { return "'" + str.replace("\\", "\\\\").replace("'", "\\'").replace('\n', '\\n') + "'"; };
 Logic.prototype.toString = function() { return "Logic"; };
 
 Logic.prototype.realValue = function(val) {
@@ -723,7 +767,11 @@ logic.program.addBuiltin("modulus", 3, function(logic, term) {
 
 logic.program.addBuiltin("compound", 1, function(logic, term) {
 	// The argument is a typedTerm (::).  We only care about its first element.
-	var arg = logic.realValue(term[1][1]);
+	var arg = new Variable();
+	if(!logic.unify(term[1], ["::", arg, new Variable()])) {
+		return false;
+	}
+	arg = arg.getValue(logic);
 	if(typeof(arg) === "function" && arg.code) {
 		arg = arg.code;
 	}
@@ -732,19 +780,23 @@ logic.program.addBuiltin("compound", 1, function(logic, term) {
 
 logic.program.addBuiltin("var", 1, function(logic, term) {
 	// The argument is a typedTerm (::).  We only care about its first element.
-	var arg = term[1][1];
-	if(arg instanceof Variable)
-		arg = arg.getValue();
+	var arg = new Variable();
+	if(!logic.unify(term[1], ["::", arg, new Variable()])) {
+		return false;
+	}
+	arg = arg.getValue(logic);
 	var ret = arg instanceof Variable;
+console.log("var: " + ret + " " + logic.termToString(term[1][1]));
 	return ret;
 });
 
 logic.program.addBuiltin("string", 1, function(logic, term) {
 	// The argument is a typedTerm (::).  We only care about its first element.
-	var arg = term[1][1];
-	if(arg instanceof Variable) {
-		arg = arg.getValue(logic);
+	var arg = new Variable();
+	if(!logic.unify(term[1], ["::", arg, new Variable()])) {
+		return false;
 	}
+	arg = arg.getValue(logic);
 	if(typeof(arg) == "string") {
 			term[1][2] = ["/bootstrap#string"];
 			return true;
@@ -754,10 +806,11 @@ logic.program.addBuiltin("string", 1, function(logic, term) {
 
 logic.program.addBuiltin("number", 1, function(logic, term) {
 	// The argument is a typedTerm (::).  We only care about its first element.
-	var arg = term[1][1];
-	if(arg instanceof Variable) {
-		arg = arg.getValue(logic);
+	var arg = new Variable();
+	if(!logic.unify(term[1], ["::", arg, new Variable()])) {
+		return false;
 	}
+	arg = arg.getValue(logic);
 	if(typeof(arg) == "number") {
 		term[1][2] = ["/bootstrap#number"];
 		return true;
@@ -993,8 +1046,6 @@ logic.program.add(["builtin#loadedStatement", 3], function(logic, term, next) {
 });
 
 logic.program.addBuiltin("findall", 4, function(logic, term) {
-var rand = Math.random();
-	//var tmpLogic = new Logic(logic.program);
 	var all = [];
 	logic.run(term[3], function() {
 		var copy = logic.copyTerm(logic.concreteValue(term[1]));
@@ -1097,6 +1148,32 @@ function structurallyEqual(logic, term1, term2) {
 }
 logic.program.addBuiltin("structurallyEqual", 2, function(logic, term) {
 	return structurallyEqual(logic, term[1], term[2]);
+});
+
+function removeAnnotations(term, logic) {
+	var prefix = "annotation#";
+	term = logic.realValue(term);
+	if(term instanceof Array) {
+		if(term[0] == "annotation#escape") {
+			return term[1];
+		} else if(term[0].substr(0, prefix.length) === prefix) {
+			return removeAnnotations(term[1], logic);
+		} else {
+			var newTerm = [];
+			for(var i = 0; i < term.length; i++) {
+				newTerm.push(removeAnnotations(term[i], logic));
+			}
+			return newTerm;
+		}
+	} else {
+		return term;
+	}
+}
+
+logic.program.addBuiltin("removeAnnotations", 2, function(logic, term) {
+	term[2] = ["::", removeAnnotations(term[1][1], logic), term[1][2]];
+	console.log("removeAnnotations: " + logic.termToString(term[2]));
+	return true;
 });
 
 
