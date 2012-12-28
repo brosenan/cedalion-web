@@ -1,4 +1,5 @@
 % Cedalion to Javascript Compiler
+:- expects_dialect(swi).
 :- op(1200, xfy, '~>').
 :- op(100, xfx, ':').
 :- op(100, fx, '$').
@@ -7,6 +8,8 @@
 :- op(0, xfx, (':=')).
 :- op(0, yfx, ('div')).
 :- op(0, yfx, ('xor')).
+
+:-set_prolog_flag(unknown, error).
 
 % If predicate
 'builtin#if'(Cond, Then, _) :-
@@ -45,7 +48,7 @@ removeAnnotations(WithAnnot, NoAnnot) :-
 		%else
 		(
 			WithAnnot =.. [Func | Args],
-			'builtin#if'((concat_atom(['annotation#', _], Func), Args = [First | _]),
+			'builtin#if'((atom_concat('annotation#', _, Func), Args = [First | _]),
 				removeAnnotations(First, NoAnnot),
 			%else
 			(
@@ -78,8 +81,8 @@ nonCompoundTerm(!(X)) :-
 'builtin#parseTerm'(TTerm, Func, TArgs) :- parseTerm(TTerm, Func, TArgs).
 'builtin#succ'(X, XPlus1) :- 'builtin#if'(var(XPlus1), XPlus1 is X+1, X is XPlus1 - 1).
 'builtin#length'(List, _Type, Len) :- length(List, Len).
-'builtin#charCodes'(!(Atom), Codes) :- atom_codes(Atom, Codes).
-'builtin#strcat'(!S1, !S2, !S3) :- atom_concat(S1, S2, S3).
+'builtin#charCodes'(!(Atom), Codes) :- 'builtin#if'(number(Atom), number_codes(Atom, Codes), atom_codes(Atom, Codes)).
+'builtin#strcat'(!S1, !S2, !S3) :- atomic_concat(S1, S2, S3).
 'builtin#throw'(Exception) :- throw(Exception).
 'builtin#catch'(Goal, Exception, AltGoal) :- catch(Goal, Exception, AltGoal).
 'builtin#findall'(Template, _Type, Goal, List) :- findall(Template, Goal, List).

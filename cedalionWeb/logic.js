@@ -1172,7 +1172,6 @@ function removeAnnotations(term, logic) {
 
 logic.program.addBuiltin("removeAnnotations", 2, function(logic, term) {
 	term[2] = ["::", removeAnnotations(term[1][1], logic), term[1][2]];
-	console.log("removeAnnotations: " + logic.termToString(term[2]));
 	return true;
 });
 

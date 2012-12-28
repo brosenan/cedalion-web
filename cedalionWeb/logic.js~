@@ -767,7 +767,11 @@ logic.program.addBuiltin("modulus", 3, function(logic, term) {
 
 logic.program.addBuiltin("compound", 1, function(logic, term) {
 	// The argument is a typedTerm (::).  We only care about its first element.
-	var arg = logic.realValue(term[1][1]);
+	var arg = new Variable();
+	if(!logic.unify(term[1], ["::", arg, new Variable()])) {
+		return false;
+	}
+	arg = arg.getValue(logic);
 	if(typeof(arg) === "function" && arg.code) {
 		arg = arg.code;
 	}
@@ -776,9 +780,11 @@ logic.program.addBuiltin("compound", 1, function(logic, term) {
 
 logic.program.addBuiltin("var", 1, function(logic, term) {
 	// The argument is a typedTerm (::).  We only care about its first element.
-	var arg = term[1][1];
-	if(arg instanceof Variable)
-		arg = arg.getValue();
+	var arg = new Variable();
+	if(!logic.unify(term[1], ["::", arg, new Variable()])) {
+		return false;
+	}
+	arg = arg.getValue(logic);
 	var ret = arg instanceof Variable;
 console.log("var: " + ret + " " + logic.termToString(term[1][1]));
 	return ret;
@@ -800,10 +806,11 @@ logic.program.addBuiltin("string", 1, function(logic, term) {
 
 logic.program.addBuiltin("number", 1, function(logic, term) {
 	// The argument is a typedTerm (::).  We only care about its first element.
-	var arg = term[1][1];
-	if(arg instanceof Variable) {
-		arg = arg.getValue(logic);
+	var arg = new Variable();
+	if(!logic.unify(term[1], ["::", arg, new Variable()])) {
+		return false;
 	}
+	arg = arg.getValue(logic);
 	if(typeof(arg) == "number") {
 		term[1][2] = ["/bootstrap#number"];
 		return true;
