@@ -33,10 +33,10 @@ defAxis(precedingSiblings,!prevAll).
 defAxis(Axis,Method)~>'/javascript/statepred':def(navigationStep(Source,go(Axis,Selector),Target),Action,Finally,'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/jsLogic':foreach(Target::'/cedalionWeb/visualization':jQueryElem='/javascript/jsLogic':jsExpr('/javascript':call('/javascript':arrayElement('/javascript/jsLogic':inlineTerm(Source::'/cedalionWeb/visualization':jQueryElem),'/javascript/jsLogic':inlineTerm(Method::'/bootstrap':string)),['/javascript/jsLogic':inlineTerm(Selector::'/bootstrap':string)]))::'/cedalionWeb/visualization':jQueryElem,Action)),'/javascript/jsLogic':runProcedure('/javascript/jsLogic':do(Finally))])).
 '/bootstrap':signature(isEmpty(JQuery)::'/javascript/statepred':statePred,[JQuery::'/cedalionWeb/visualization':jQueryElem]).
 '/javascript/statepred':def(isEmpty(JQuery),Action,Finally,'/javascript/jsLogic':jsCommand(['/javascript':if('/javascript':op('/javascript':dot('/javascript/jsLogic':inlineTerm(JQuery::'/cedalionWeb/visualization':jQueryElem),!length),'/javascript':eq,'/javascript':const(0)),['/javascript/jsLogic':runProcedure('/javascript/jsLogic':do(Action))],[]),'/javascript/jsLogic':runProcedure('/javascript/jsLogic':do(Finally))])).
-defKeyboardCommand(pgup,defaultMap,_,navigate([go(parents,!'.vis-term')])).
-defKeyboardCommand(home,defaultMap,_,navigate([go(descendants,!'.vis-term')])).
-defKeyboardCommand(pgdn,defaultMap,_,navigate([go(descendants,!'.vis-term')])).
-defKeyboardCommand(right,defaultMap,_,navigate([go(parents,!'.vis-horiz-elem'),go(followingSiblings,!'.vis-horiz-elem'),go(descendants,!'.vis-term:not(:has(.vis-term))')])).
-defKeyboardCommand(left,defaultMap,_,navigate([go(parents,!'.vis-horiz-elem'),go(precedingSiblings,!'.vis-horiz-elem'),go(descendants,!'.vis-term:not(:has(.vis-term))')])).
-defKeyboardCommand(down,defaultMap,_,navigate([go(parents,!'.vis-vert-elem'),go(followingSiblings,!'.vis-vert-elem'),go(descendants,!'.vis-term:not(:has(.vis-term))')])).
-defKeyboardCommand(up,defaultMap,_,navigate([go(parents,!'.vis-vert-elem'),go(precedingSiblings,!'.vis-vert-elem'),go(descendants,!'.vis-term:not(:has(.vis-term))')])).
+defKeyboardCommand(pgup,defaultMap,_,navigate([go(parents,!'.selectable:visible')])).
+defKeyboardCommand(home,defaultMap,_,navigate([go(descendants,!'.selectable:visible')])).
+defKeyboardCommand(pgdn,defaultMap,_,navigate([go(descendants,!'.selectable:visible')])).
+defKeyboardCommand(right,defaultMap,_,navigate([go(parents,!'.vis-horiz-elem'),go(followingSiblings,!'.vis-horiz-elem'),go(descendants,!'.selectable:visible:not(:has(.selectable))')])).
+defKeyboardCommand(left,defaultMap,_,navigate([go(parents,!'.vis-horiz-elem'),go(precedingSiblings,!'.vis-horiz-elem'),go(descendants,!'.selectable:visible:not(:has(.selectable))')])).
+defKeyboardCommand(down,defaultMap,_,navigate([go(parents,!'.vis-vert-elem'),go(followingSiblings,!'.vis-vert-elem'),go(descendants,!'.selectable:visible:not(:has(.selectable))')])).
+defKeyboardCommand(up,defaultMap,_,navigate([go(parents,!'.vis-vert-elem'),go(precedingSiblings,!'.vis-vert-elem'),go(descendants,!'.selectable:visible:not(:has(.selectable))')])).

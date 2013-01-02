@@ -12,3 +12,9 @@ annotation:shrink((extractVariablesInList([TTermIn|TTermsIn],[TTermOut|TTermsOut
 '/bootstrap':unitTest(extractVariables(a(b(var(!'X'),var(!'Y')),var(!'X'))::'/bootstrap':pred,a(b(X,Y),X)::_,[],[builtin:varName(Y::_,!'Y'),builtin:varName(X::_,!'X')])).
 '/bootstrap':unitTest(extractVariables(builtin:succ(var(!'_'),var(!'_'))::'/bootstrap':pred,builtin:succ(Y,X)::'/bootstrap':pred,[],[])).
 '/bootstrap':unitTest(extractVariables(builtin:succ(var(!'_'),var(!'X'))::'/bootstrap':pred,builtin:succ(Y,X)::'/bootstrap':pred,[],[builtin:varName(X::'/bootstrap':number,!'X')])).
+'/bootstrap':signature(concreteVariables(TTerm,VNs,ConcTerm)::'/bootstrap':pred,[TTerm::'/bootstrap':typedTerm,VNs::'/bootstrap':list('/bootstrap':varName),ConcTerm::'/bootstrap':typedTerm]).
+concreteVariables(TTerm,VNs,TTermPrime):-builtin:copyTerm('/Functional':pair(TTerm,VNs)::'/Functional':pairType('/bootstrap':typedTerm,'/bootstrap':list('/bootstrap':varName)),'/Functional':pair(TTermPrime,VNsPrime)::'/Functional':pairType('/bootstrap':typedTerm,'/bootstrap':list('/bootstrap':varName))),concreteVariables(TTermPrime,VNsPrime).
+'/bootstrap':signature(concreteVariables(TTermPrime,VNsPrime)::'/bootstrap':pred,[TTermPrime::'/bootstrap':typedTerm,VNsPrime::'/bootstrap':list('/bootstrap':varName)]).
+concreteVariables(TTerm,[builtin:varName(var(Name)::_,Name)|VNs]):-concreteVariables(TTerm,VNs).
+concreteVariables(_,[]):-builtin:true.
+'/bootstrap':unitTest(concreteVariables(builtin:succ(B,A)::'/bootstrap':pred,[builtin:varName(A::'/bootstrap':number,!'X'),builtin:varName(B::'/bootstrap':number,!'Y')],builtin:succ(var(!'Y'),var(!'X'))::'/bootstrap':pred)).

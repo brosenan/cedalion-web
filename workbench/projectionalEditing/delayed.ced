@@ -1,0 +1,8 @@
+'/bootstrap':signature(delayedDescriptor(Desc,MSec)::Type,[Desc::Type,MSec::'/bootstrap':number]).
+'/bootstrap':isDescriptor(delayedDescriptor(Desc,MSec)::Type):-'/bootstrap':isDescriptor(Desc::Type).
+'/bootstrap':descriptorContent(delayedDescriptor(TDesc,_),TTerm,VNs):-'/bootstrap':descriptorContent(TDesc,TTerm,VNs).
+annotation:shrink(('/cedalionWeb/visualization':propagateDescriptor(delayedDescriptor(Desc,MSec)::Type,TProp,VNs):-'/cedalionWeb/visualization':propagateDescriptor(Desc::Type,TTerm,VNs),'/bootstrap':safeParseTerm(TTerm,Name,TArgs),propagateDelayedDescriptor(TArgs,TPropArgs,MSec),builtin:parseTerm(TProp,Name,TPropArgs))).
+'/bootstrap':signature(propagateDelayedDescriptor(TArgs,TPropArgs,MSec)::'/bootstrap':pred,[TArgs::'/bootstrap':list('/bootstrap':typedTerm),TPropArgs::'/bootstrap':list('/bootstrap':typedTerm),MSec::'/bootstrap':number]).
+propagateDelayedDescriptor([],[],_):-builtin:true.
+annotation:shrink((propagateDelayedDescriptor([Arg::Type|TArgs],[delayedDescriptor(Arg,MSec)::Type|TProp],MSec):-propagateDelayedDescriptor(TArgs,TProp,MSec))).
+'/javascript/jsLogic':procedure('/cedalionWeb/visualization':bind(delayedDescriptor(Desc,MSec)::Type,Elem,Mode),'/javascript/jsLogic':jsCommand(['/javascript':exprStatement('/javascript':call('/javascript':varExpr('/cedalionWeb/jquery':setTimeout),['/javascript/statepred':async(annotation:shrink('/javascript':function([],['/javascript/jsLogic':runProcedure('/cedalionWeb/visualization':bind(Desc::Type,Elem,Mode))]))),'/javascript/jsLogic':inlineTerm(MSec::'/bootstrap':number)]))])).

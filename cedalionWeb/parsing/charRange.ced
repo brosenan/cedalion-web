@@ -7,7 +7,7 @@ parse(charRange(C1,C2),[FirstChar|Rest],'/bootstrap':number,Rest):-'/Functional'
 '/bootstrap':signature(char(Char)::pattern('/bootstrap':number),[Char::'/bootstrap':string]).
 '/bootstrap':projection(char(Char)::pattern('/bootstrap':number),'/bootstrap':brackets('/bootstrap':vis(Char::'/bootstrap':string),39,39)).
 '/bootstrap':adapter(Char::'/bootstrap':string,char(Char)::pattern('/bootstrap':number)).
-parse(char(Char),[CharCode|Text],'/bootstrap':number,Text):-builtin:charCodes(Char,[CharCode]).
+parse(char(Char),Text,'/bootstrap':number,Residue):-builtin:charCodes(Char,CharCodes),'/bootstrap':append(CharCodes,Residue,Text,'/bootstrap':number).
 '/bootstrap':signature(parseString(Pattern,Str)::'/bootstrap':pred,[Pattern::pattern('/bootstrap':number),Str::'/bootstrap':string]).
 '/bootstrap':projection(parseString(Pattern,Str)::'/bootstrap':pred,'/bootstrap':horiz(['/bootstrap':vis(Pattern::pattern('/bootstrap':number)),'/bootstrap':label(!parses),'/bootstrap':vis(Str::'/bootstrap':string)])).
 parseString(Pattern,Str):-builtin:charCodes(Str,Codes),parse(Pattern,Codes,'/bootstrap':number,[]).

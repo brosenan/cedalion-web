@@ -786,7 +786,6 @@ logic.program.addBuiltin("var", 1, function(logic, term) {
 	}
 	arg = arg.getValue(logic);
 	var ret = arg instanceof Variable;
-console.log("var: " + ret + " " + logic.termToString(term[1][1]));
 	return ret;
 });
 

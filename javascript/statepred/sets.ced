@@ -11,3 +11,7 @@ setDef(S1,T,S2)~>clause(member(X,T,S1),member(X,T,S2)).
 '/bootstrap':signature(eset(E,G)::stateSet(T),[E::stateExpr(T),G::statePred]).
 '/bootstrap':projection(eset(E,G)::stateSet(T),'/bootstrap':brackets('/bootstrap':horiz(['/bootstrap':vis(E::stateExpr(T)),'/bootstrap':box(2),'/bootstrap':brackets('/bootstrap':vis(G::statePred),0,0)]),123,125)).
 setDef(eset(E,G),T,set(V,conj(G,stateEval(E,T,V)))).
+'/bootstrap':signature(syncSet(Set)::stateSet(T),[Set::'/bootstrap':set(T)]).
+'/bootstrap':projection(syncSet(Set)::stateSet(T),'/bootstrap':brackets('/bootstrap':vis(Set::'/bootstrap':set(T)),60,62)).
+'/bootstrap':adapter(Set::'/bootstrap':set(T),syncSet(Set)::stateSet(T)).
+setDef(syncSet(Set),T,set(X,pred('/bootstrap':member(X,Set,T)))).
