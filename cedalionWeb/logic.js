@@ -247,10 +247,10 @@ Logic.prototype.executeClausesForPartialIndex = function(index, term, next) {
 Logic.prototype.call = function(term, next) {
 	//DBG("[" + this.stack.length + "] Call: " + this.termToString(term));
 //if(term[0] == "/Functional#eval" && term[1] instanceof Variable && term[1].getValue() instanceof Variable) throw Error("Bad eval");
-/*	this.recentCalls.push("[" + this.stack.length + "] Call: " + this.termToString(term));
+	this.recentCalls.push("[" + this.stack.length + "] Call: " + this.termToString(term));
 	if(this.recentCalls.length > 20) {
 		this.recentCalls.splice(0, this.recentCalls.length - 20);
-	}*/
+	}
 	term = this.realValue(term);
 	this.program.trie.applyClauses(this, term, next);
 
@@ -510,7 +510,12 @@ Logic.prototype.runProcedure = function(proc) {
 	try {
 		this.run(["cjs#procedureCommand", proc, CMD], function(){
 			var cmd = CMD.getValue();
-			cmd.func(logic, cmd.terms);
+			try {
+				cmd.func(logic, cmd.terms);
+			} catch(e) {
+				console.log("Received error '" + e.message + "' when running command " + cmd);
+				throw e;
+			}
 		});
 	} catch(e) {
 		console.log(e.message);
