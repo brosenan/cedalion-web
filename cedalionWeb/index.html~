@@ -160,6 +160,19 @@
 	z-index: 1;
 }
 
+.input-entry input {
+	background: transparent;
+	border-style: none;
+}
+
+.input-entry input.not-empty {
+	background-color: yellow;
+}
+
+.input-entry input:focus {
+	outline: none;
+}
+
 .tree-line {
 	display: table-row;
 }
@@ -195,10 +208,6 @@
 
 .editor-canvas {
 	overflow: scroll;
-}
-
-.marker-dirty:before {
-	content: XXX;
 }
 
 </style>

@@ -152,12 +152,25 @@
 	height: 1px;
 }
 .cedalion-editor .input-entry {
-	position: relative;
+	position: absolute;
 }
 .input-entry .autocomplete-menu {
 	position: absolute;
 	top: 1.5em;
 	z-index: 1;
+}
+
+.input-entry input {
+	background: transparent;
+	border-style: none;
+}
+
+.input-entry input.not-empty {
+	background-color: yellow;
+}
+
+.input-entry input:focus {
+	outline: none;
 }
 
 .tree-line {
