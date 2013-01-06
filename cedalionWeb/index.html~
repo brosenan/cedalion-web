@@ -168,7 +168,7 @@
 
 .input-entry input.not-empty {
 	background-color: yellow;
-	width: 20em;
+	width: 10em;
 }
 
 .input-entry input:focus {

@@ -5,7 +5,7 @@ removeDescriptorsFromType(Term::Type1,Term::Type2):-'/bootstrap':fixType(Type1::
 '/bootstrap':signature(visualizeNumber(TTerm,Vis)::'/bootstrap':pred,[TTerm::'/bootstrap':typedTerm,Vis::'/bootstrap':visualization]).
 visualizeNumber(Num::'/bootstrap':number,'/bootstrap':label(Str)):-'/Functional':eval('/Functional':'num2str'('/Functional':const(Num)),'/bootstrap':string,Str).
 '/bootstrap':signature(visualizeString(TTerm,Vis)::'/bootstrap':pred,[TTerm::'/bootstrap':typedTerm,Vis::'/bootstrap':visualization]).
-visualizeString(Str::'/bootstrap':string,'/bootstrap':label(Str)):-builtin:true.
+visualizeString(Str::'/bootstrap':string,'/bootstrap':color('/bootstrap':label(Str),cpi:rgb(255,0,255))):-builtin:true.
 '/bootstrap':signature(visualizeCompound(TDesc,Mode,Vis)::'/bootstrap':pred,[TDesc::'/bootstrap':typedTerm,Mode::'/bootstrap':mode,Vis::'/bootstrap':visualization]).
 '/bootstrap':signature(propagateDescriptor(TDesc,TTerm,VNs)::'/bootstrap':pred,[TDesc::'/bootstrap':typedTerm,TTerm::'/bootstrap':typedTerm,VNs::'/bootstrap':list('/bootstrap':varName)]).
 '/bootstrap':signature(propagateImmediateDescriptors(TArgs,VNs,TArgsPrime)::'/bootstrap':pred,[TArgs::'/bootstrap':list('/bootstrap':typedTerm),VNs::'/bootstrap':list('/bootstrap':varName),TArgsPrime::'/bootstrap':list('/bootstrap':typedTerm)]).
