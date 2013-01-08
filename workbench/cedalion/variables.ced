@@ -13,8 +13,15 @@ annotation:shrink((extractVariablesInList([TTermIn|TTermsIn],[TTermOut|TTermsOut
 '/bootstrap':unitTest(extractVariables(builtin:succ(var(!'_'),var(!'_'))::'/bootstrap':pred,builtin:succ(Y,X)::'/bootstrap':pred,[],[])).
 '/bootstrap':unitTest(extractVariables(builtin:succ(var(!'_'),var(!'X'))::'/bootstrap':pred,builtin:succ(Y,X)::'/bootstrap':pred,[],[builtin:varName(X::'/bootstrap':number,!'X')])).
 '/bootstrap':signature(concreteVariables(TTerm,VNs,ConcTerm)::'/bootstrap':pred,[TTerm::'/bootstrap':typedTerm,VNs::'/bootstrap':list('/bootstrap':varName),ConcTerm::'/bootstrap':typedTerm]).
-concreteVariables(TTerm,VNs,TTermPrime):-builtin:copyTerm('/Functional':pair(TTerm,VNs)::'/Functional':pairType('/bootstrap':typedTerm,'/bootstrap':list('/bootstrap':varName)),'/Functional':pair(TTermPrime,VNsPrime)::'/Functional':pairType('/bootstrap':typedTerm,'/bootstrap':list('/bootstrap':varName))),concreteVariables(TTermPrime,VNsPrime).
+concreteVariables(TTerm,VNs,TTermPrime):-builtin:copyTerm('/Functional':pair(TTerm,VNs)::'/Functional':pairType('/bootstrap':typedTerm,'/bootstrap':list('/bootstrap':varName)),'/Functional':pair(TTermPrime,VNsPrime)::'/Functional':pairType('/bootstrap':typedTerm,'/bootstrap':list('/bootstrap':varName))),concreteVariables(TTermPrime,VNsPrime),saturateSingletons(TTermPrime).
 '/bootstrap':signature(concreteVariables(TTermPrime,VNsPrime)::'/bootstrap':pred,[TTermPrime::'/bootstrap':typedTerm,VNsPrime::'/bootstrap':list('/bootstrap':varName)]).
 concreteVariables(TTerm,[builtin:varName(var(Name)::_,Name)|VNs]):-concreteVariables(TTerm,VNs).
 concreteVariables(_,[]):-builtin:true.
 '/bootstrap':unitTest(concreteVariables(builtin:succ(B,A)::'/bootstrap':pred,[builtin:varName(A::'/bootstrap':number,!'X'),builtin:varName(B::'/bootstrap':number,!'Y')],builtin:succ(var(!'Y'),var(!'X'))::'/bootstrap':pred)).
+'/bootstrap':signature(saturateSingletons(TTermPrime)::'/bootstrap':pred,[TTermPrime::'/bootstrap':typedTerm]).
+saturateSingletons(TTerm):-builtin:if(TTerm=var(!'_')::_,builtin:true,builtin:if(builtin:compound(TTerm), (builtin:parseTerm(TTerm,_,Args),saturateSingletonsList(Args)),builtin:true)).
+'/bootstrap':signature(saturateSingletonsList(Args)::'/bootstrap':pred,[Args::'/bootstrap':list('/bootstrap':typedTerm)]).
+saturateSingletonsList([]):-builtin:true.
+saturateSingletonsList([First|Rest]):-saturateSingletons(First),saturateSingletonsList(Rest).
+'/bootstrap':notConcrete(var(_)::_):-builtin:true.
+'/bootstrap':notConcrete('/workbench/projectionalEditing':empty::_):-builtin:true.
