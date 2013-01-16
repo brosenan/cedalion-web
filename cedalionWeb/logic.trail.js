@@ -175,7 +175,7 @@ Logic.prototype.pushTrail = function(variable, value) {
 		this.trailVal.push(value);
 	} else {
 		this.trailVar[this.trailPtr] = variable;
-		this.trailVal[this.trailPtr] = this.value;
+		this.trailVal[this.trailPtr] = value;
 	}
 	this.trailPtr++;
 }
