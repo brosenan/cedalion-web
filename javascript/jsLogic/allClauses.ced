@@ -15,4 +15,4 @@ statement(S2,Depth,SL):-Depth>0,builtin:succ(DepthPrime,Depth),statement((S1~>S2
 '/bootstrap':signature(predicateID(Pred)::'/Functional':expr(predicateID),[Pred::'/Functional':expr('/bootstrap':pred)]).
 '/Functional':def(predicateID(Pred),predicateID,'/Functional':where('/Functional':const(pred(Name,Arity)), ('/Functional':eval(Pred,'/bootstrap':pred,PredPrime),builtin:parseTerm(PredPrime::'/bootstrap':pred,Name,Args),'/Functional':eval(length(Args),'/bootstrap':number,Arity)))).
 '/bootstrap':defAtom(loadedStatementClauses::'/bootstrap':set('/bootstrap':statement)).
-'/bootstrap':setDef(loadedStatementClauses,'/bootstrap':set((builtin:loadedStatement(File,Statement,VNs):-builtin:true),builtin:loadedStatement(File,Statement,VNs)),'/bootstrap':statement).
+'/bootstrap':setDef(loadedStatementClauses,'/bootstrap':set((builtin:loadedStatement(File,Statement,VNs):-builtin:true), (builtin:loadedStatement(OrigFile,Statement,VNs),'/workbench/transition':transFileName(OrigFile,File))),'/bootstrap':statement).

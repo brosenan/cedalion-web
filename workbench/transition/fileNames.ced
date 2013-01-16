@@ -1,0 +1,7 @@
+'/bootstrap':signature(transFileName(OldName,NewName)::'/bootstrap':pred,[OldName::'/bootstrap':string,NewName::'/bootstrap':string]).
+transFileName(OldName,NewName):-oldPrefix(Pref),builtin:strcat(Pref,NewNameWithoutSlash,OldName),builtin:strcat(! (/),NewNameWithoutSlash,NewName).
+'/bootstrap':signature(oldPrefix(Pref)::'/bootstrap':pred,[Pref::'/bootstrap':string]).
+oldPrefix(!'/home/boaz/cedalion/'):-builtin:true.
+oldPrefix(!'/home/boaz/cedalion-web/'):-builtin:true.
+oldPrefix(!'/home/boaz/workspace/'):-builtin:true.
+'/bootstrap':unitTest(transFileName(!'/home/boaz/cedalion/bootstrap/something.ced',!'/bootstrap/something.ced')).
