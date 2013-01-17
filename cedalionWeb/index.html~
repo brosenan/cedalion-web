@@ -18,7 +18,7 @@
 	display: table-cell;
 }
 .vis-brackets-middle {
-	vertical-align: bottom;
+	/*vertical-align: bottom;*/
 }
 .vis-bracket {
 	font-family: "Times New Roman",Times,serif;
