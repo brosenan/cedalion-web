@@ -1,0 +1,5 @@
+'/bootstrap':signature(cedalionEditor(Model,Name,Features)::'/bootstrap':set('/cedalionWeb/xml':xml),[Model::'/javascript/jsLogic':jsExpr,Name::'/bootstrap':string,Features::'/bootstrap':set('/workbench/projectionalEditing':feature)]).
+'/bootstrap':setDef(cedalionEditor(Model,Name,Features),'/bootstrap':set('/workbench/projectionalEditing':editor(Model,Role,Features,Prefix), ('/Functional':eval('/Functional':applyBinOp('/Functional':const(Name),'/Functional':concat,'/Functional':const(!'-A')),'/bootstrap':string,Role),prefixForPath(Name,Prefix))),'/cedalionWeb/xml':xml).
+'/bootstrap':signature(prefixForPath(Name,Prefix)::'/bootstrap':pred,[Name::'/bootstrap':string,Prefix::'/bootstrap':string]).
+prefixForPath(Path,Prefix):-'/cedalionWeb/parsing':parseString('/cedalionWeb/parsing':follow('/cedalionWeb/parsing':follow('/cedalionWeb/parsing':bind('/cedalionWeb/parsing':oneOrMore('/cedalionWeb/parsing':not(!'')),PrefixCodes),'/cedalionWeb/parsing':char(! (/))),'/cedalionWeb/parsing':oneOrMoreMax('/cedalionWeb/parsing':not(! (/)))),Path),builtin:charCodes(Prefix,PrefixCodes).
+'/bootstrap':unitTest(prefixForPath(!'/hello/world/wii.ced',!'/hello/world')).

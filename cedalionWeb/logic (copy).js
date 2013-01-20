@@ -438,7 +438,8 @@ Logic.prototype.fromJSON = function(json) {
 
 
 // Replace variables with to {var: number} pairs, allowing conversion to JSON
-Logic.prototype.removeCycles = function(term, index) {
+Logic.prototype.removeCycles = function(term, index, depth) {
+	depth = depth || 5;
 	term = this.realValue(term);
 	if(term instanceof Variable) {
 		this.unify(term, {"var": index.i++});
@@ -446,24 +447,26 @@ Logic.prototype.removeCycles = function(term, index) {
 	} else if(term instanceof Array){
 		var newTerm = [];
 		for(var i = 0; i < term.length; i++) {
-			newTerm.push(this.removeCycles(term[i], index));
+			newTerm.push(this.removeCycles(term[i], index, depth));
 		}
 		return newTerm;
 	} else if(typeof(term) === "function" && term.func) {
-		return this.wrapCommand({func: term.func, terms: this.removeCycles(term.terms, index), code: this.removeCycles(term.code, index)});
-	} else if(typeof(term) === "object") {
+		return this.wrapCommand({func: term.func, terms: this.removeCycles(term.terms, index, depth), code: this.removeCycles(term.code, index, depth)});
+/*	} else if(typeof(term) === "object") {
+		if(depth == 0) return term;
 		var newTerm = {};
 		for(var key in term) {
-			newTerm[key] = this.removeCycles(term[key], index);
+			newTerm[key] = this.removeCycles(term[key], index, depth - 1);
 		}
 		return newTerm;
-	} else {
+*/	} else {
 		return term;
 	}
 };
 
 // Replace {var: number} pairs with references to actual variables
-Logic.prototype.addReferences = function(term, map) {
+Logic.prototype.addReferences = function(term, map, depth) {
+	depth = depth || 5;
 	if(typeof(term) === "object" && "var" in term) {
 		if(!map[term["var"]]) {
 			//DBG("New variable for: " + term["var"]);
@@ -474,19 +477,20 @@ Logic.prototype.addReferences = function(term, map) {
 	} else if(term instanceof Array){
 		var newTerm = [];
 		for(var i = 0; i < term.length; i++) {
-			newTerm.push(this.addReferences(term[i], map));
+			newTerm.push(this.addReferences(term[i], map, depth));
 		}
 		//DBG("Returning compound: " + newTerm);
 		return newTerm;
 	} else if(typeof(term) === "function" && term.func){
-		return this.wrapCommand({func: term.func, terms: this.addReferences(term.terms, map), code: this.addReferences(term.code, map)});
-	} else if(typeof(term) === "object") {
+		return this.wrapCommand({func: term.func, terms: this.addReferences(term.terms, map, depth), code: this.addReferences(term.code, map, depth)});
+/*	} else if(typeof(term) === "object") {
+		if(depth ==0) { return term; }
 		var newTerm = {};
 		for(var key in term) {
-			newTerm[key] = this.addReferences(term[key], map);
+			newTerm[key] = this.addReferences(term[key], map, depth-1);
 		}
 		return newTerm;
-	} else {
+*/	} else {
 		//DBG("Returning unmodified term: " + term);
 		return term;
 	}

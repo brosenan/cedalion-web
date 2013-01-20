@@ -7,7 +7,7 @@
 '/bootstrap':signature(compound(Name,Arity,Type)::termDescriptor,[Name::'/bootstrap':string,Arity::'/bootstrap':number,Type::'/bootstrap':type]).
 '/bootstrap':projection(compound(Name,Arity,Type)::termDescriptor,'/bootstrap':horiz(['/bootstrap':vis(Name::'/bootstrap':string),'/bootstrap':label(! (/)),'/bootstrap':vis(Arity::'/bootstrap':number),'/bootstrap':label(! (::)),'/bootstrap':vis(Type::'/bootstrap':type)])).
 '/bootstrap':signature(uuidLink(UUID)::termDescriptor,[UUID::'/bootstrap':string]).
-termDesc(Term::Type,Desc):-builtin:compound(Term::Type),builtin:if(Term::Type=termWithUUID(UUID)::Type,Desc::termDescriptor=uuidLink(UUID)::termDescriptor, (builtin:parseTerm(Term::Type,Name,Args),'/javascript/jsLogic':length(Args,Arity),Desc::termDescriptor=compound(Name,Arity,Type)::termDescriptor)).
+termDesc(Term::Type,Desc):-builtin:compound(Term::Type),builtin:if(Term::Type=termWithUUID(UUID)::Type,Desc::termDescriptor=uuidLink(UUID)::termDescriptor, (builtin:parseTerm(Term::Type,Name,Args),'/javascript/jsLogic':length(Args,Arity),builtin:copyTerm(Type::'/bootstrap':type,SatType::'/bootstrap':type),'/bootstrap':saturate(SatType::'/bootstrap':type,0,_),Desc::termDescriptor=compound(Name,Arity,SatType)::termDescriptor)).
 '/bootstrap':signature(number(Num)::termDescriptor,[Num::'/bootstrap':number]).
 termDesc(Num::'/bootstrap':number,number(Num)):-builtin:number(Num::'/bootstrap':number).
 '/bootstrap':signature(string(Str)::termDescriptor,[Str::'/bootstrap':string]).

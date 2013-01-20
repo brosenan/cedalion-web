@@ -451,7 +451,13 @@ Logic.prototype.removeCycles = function(term, index) {
 		return newTerm;
 	} else if(typeof(term) === "function" && term.func) {
 		return this.wrapCommand({func: term.func, terms: this.removeCycles(term.terms, index), code: this.removeCycles(term.code, index)});
-	} else {
+/*	} else if(typeof(term) === "object") {
+		var newTerm = {};
+		for(var key in term) {
+			newTerm[key] = this.removeCycles(term[key], index);
+		}
+		return newTerm;
+*/	} else {
 		return term;
 	}
 };
@@ -474,7 +480,13 @@ Logic.prototype.addReferences = function(term, map) {
 		return newTerm;
 	} else if(typeof(term) === "function" && term.func){
 		return this.wrapCommand({func: term.func, terms: this.addReferences(term.terms, map), code: this.addReferences(term.code, map)});
-	} else {
+/*	} else if(typeof(term) === "object") {
+		var newTerm = {};
+		for(var key in term) {
+			newTerm[key] = this.addReferences(term[key], map);
+		}
+		return newTerm;
+*/	} else {
 		//DBG("Returning unmodified term: " + term);
 		return term;
 	}

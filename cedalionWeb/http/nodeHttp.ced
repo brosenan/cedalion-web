@@ -1,0 +1,2 @@
+'/bootstrap':signature(nodeHttpReq(Req)::'/javascript/statepred':statePred,[Req::httpReq]).
+annotation:shrink('/javascript/statepred':clause(nodeHttpReq(http(Method,URL,Headers,Body,Status,RepHeaders,Content)),'/javascript/statepred':conj(headersToStruct(Headers,HeaderStruct),'/cedalionWeb/node':http(Method,'/javascript/statepred':expr(URL),HeaderStruct,Body,Status,RepHeaders,Content)))).

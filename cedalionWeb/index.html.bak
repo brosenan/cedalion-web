@@ -233,7 +233,7 @@
 <script type="text/javascript" src="logic.js"></script>
 <script type="text/javascript" src="cedalion.js"></script>
 <script type="text/javascript">
-	var proc = window.location.hash.substr(1);
+	var proc = 'cjs#appByFragment';
 //logic.load("cedalion.js");
 //logic.onProgramLoaded(function() {
 	logic.ctx("tracing").bind(function(msg) { console.log("TRACE: " + msg); }, logic);

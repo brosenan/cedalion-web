@@ -1,5 +1,7 @@
 '/bootstrap':defAtom(window::'/javascript':symbol).
 '/bootstrap':defAtom(cjs:appByFragment::'/javascript/jsLogic':procedure).
-'/javascript/jsLogic':procedure(cjs:appByFragment,'/javascript/jsLogic':jsCommand(['/javascript':var(URL,'/javascript':dot('/javascript':dot('/javascript':varExpr(window),!location),!href)),'/javascript/jsLogic':runProcedure('/javascript/jsLogic':foreach('/cedalionWeb/parsing':parseString(url(_,_,_,_,Fragment),'/javascript/jsLogic':jsExpr('/javascript':varExpr(URL))),'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure(app(Fragment))])))])).
+'/javascript/jsLogic':procedure(cjs:appByFragment,'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/asyncproc':andThen('/javascript/statepred':'for (s)'(browserURL(url(HTTP,Domain,Path,Query,Fragment)),'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure(app(Fragment))])),'/javascript/jsLogic':do('/javascript/jsLogic':jsCommand([]))))])).
+'/bootstrap':defAtom(cjs:appByQuery::'/javascript/jsLogic':procedure).
+'/javascript/jsLogic':procedure(cjs:appByQuery,'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/asyncproc':andThen('/javascript/statepred':'for (s)'(browserURL(url(HTTP,Dom,Path,Query,Frag)),'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure(app(Query))])),'/javascript/jsLogic':do('/javascript/jsLogic':jsCommand([]))))])).
 '/bootstrap':signature(app(Fragment)::'/javascript/jsLogic':procedure,[Fragment::'/bootstrap':string]).
 annotation:comment((cjs:procedureCommand(app(Name),Cmd):-builtin:parseTerm(Proc::'/javascript/jsLogic':procedure,Name,[]),cjs:procedureCommand(Proc,Cmd)),!'Should be restricted once security becomes an issue').

@@ -1,0 +1,6 @@
+'/bootstrap':signature(pathToList(Path,List)::'/bootstrap':pred,[Path::'/bootstrap':string,List::'/bootstrap':list('/bootstrap':string)]).
+pathToList(Path,List):-'/cedalionWeb/parsing':parseString(pathList(List),Path).
+'/bootstrap':signature(pathList(List)::'/cedalionWeb/parsing':pattern('/bootstrap':number),[List::'/bootstrap':list('/bootstrap':string)]).
+'/cedalionWeb/parsing':prod(pathList([First|Rest]),'/bootstrap':number,'/cedalionWeb/parsing':follow('/cedalionWeb/parsing':follow('/cedalionWeb/parsing':follow('/cedalionWeb/parsing':bind('/cedalionWeb/parsing':oneOrMoreMax('/cedalionWeb/parsing':not(! (/))),FirstCodes),'/cedalionWeb/parsing':pred(builtin:charCodes(First,FirstCodes))),'/cedalionWeb/parsing':char(! (/))),pathList(Rest))).
+'/cedalionWeb/parsing':prod(pathList([Single]),'/bootstrap':number,'/cedalionWeb/parsing':follow('/cedalionWeb/parsing':bind('/cedalionWeb/parsing':oneOrMoreMax('/cedalionWeb/parsing':not(! (/))),SingleCodes),'/cedalionWeb/parsing':pred(builtin:charCodes(Single,SingleCodes)))).
+'/bootstrap':unitTest(pathToList(!'a/bc/def',[!a,!bc,!def])).

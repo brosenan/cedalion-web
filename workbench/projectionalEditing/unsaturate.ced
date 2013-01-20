@@ -1,0 +1,14 @@
+'/bootstrap':signature(unsaturate(SatTTerm,TTerm)::'/bootstrap':pred,[SatTTerm::'/bootstrap':typedTerm,TTerm::'/bootstrap':typedTerm]).
+unsaturate(SatTTerm,TTerm):-unsaturate(SatTTerm,TTerm,[],_).
+'/bootstrap':signature(unsaturate(SatTTerm,TTerm,ListIn,ListOut)::'/bootstrap':pred,[SatTTerm::'/bootstrap':typedTerm,TTerm::'/bootstrap':typedTerm,ListIn::'/bootstrap':list('/bootstrap':typedTerm),ListOut::'/bootstrap':list('/bootstrap':typedTerm)]).
+annotation:shrink((unsaturate(STTerm,TTerm,ListIn,ListOut):-builtin:if(STTerm='/bootstrap':'$SAT$'(Num)::_, (expandList(ListIn,Num,ListOut,V),TTerm=V),builtin:if(builtin:compound(STTerm), (builtin:parseTerm(STTerm,Name,SArgs),unsaturateList(SArgs,TArgs,ListIn,ListOut),builtin:parseTerm(TTerm,Name,TArgs)), (TTerm=STTerm,ListOut::'/bootstrap':list('/bootstrap':typedTerm)=ListIn::'/bootstrap':list('/bootstrap':typedTerm)))))).
+'/bootstrap':signature(unsaturateList(SArgs,TArgs,ListIn,ListOut)::'/bootstrap':pred,[SArgs::'/bootstrap':list('/bootstrap':typedTerm),TArgs::'/bootstrap':list('/bootstrap':typedTerm),ListIn::'/bootstrap':list('/bootstrap':typedTerm),ListOut::'/bootstrap':list('/bootstrap':typedTerm)]).
+unsaturateList([],[],List,List):-builtin:true.
+unsaturateList([SFirst|SRest],[First|Rest],ListIn,ListOut):-unsaturate(SFirst,First,ListIn,ListMid),unsaturateList(SRest,Rest,ListMid,ListOut).
+'/bootstrap':unitTest(unsaturate(builtin:succ('/bootstrap':'$SAT$'(2),'/bootstrap':'$SAT$'(1))::'/bootstrap':pred,builtin:succ(X,X)::'/bootstrap':pred)).
+'/bootstrap':unitTest(unsaturate(builtin:succ('/bootstrap':'$SAT$'(3),'/bootstrap':'$SAT$'(3))::'/bootstrap':pred,builtin:succ(X,X)::'/bootstrap':pred)).
+'/bootstrap':signature(expandList(ListIn,Num,ListOut,V)::'/bootstrap':pred,[ListIn::'/bootstrap':list('/bootstrap':typedTerm),Num::'/bootstrap':number,ListOut::'/bootstrap':list('/bootstrap':typedTerm),V::'/bootstrap':typedTerm]).
+expandList([This|ListIn],Num,ListOut,V):-builtin:if(Num::'/bootstrap':number=0::'/bootstrap':number, (V=This,ListOut::'/bootstrap':list('/bootstrap':typedTerm)=[This|ListIn]::'/bootstrap':list('/bootstrap':typedTerm)), (builtin:succ(NumPrime,Num),expandList(ListIn,NumPrime,ListOutPrime,V),ListOut::'/bootstrap':list('/bootstrap':typedTerm)=[This|ListOutPrime]::'/bootstrap':list('/bootstrap':typedTerm))).
+expandList([],Num,ListOut,V):-builtin:if(Num::'/bootstrap':number=0::'/bootstrap':number,ListOut::'/bootstrap':list('/bootstrap':typedTerm)=[V]::'/bootstrap':list('/bootstrap':typedTerm), (builtin:succ(NumPrime,Num),expandList([],NumPrime,ListOutPrime,V),ListOut::'/bootstrap':list('/bootstrap':typedTerm)=[_|ListOutPrime]::'/bootstrap':list('/bootstrap':typedTerm))).
+'/bootstrap':unitTest(expandList([],5,[_,_,_,_,_,!a::'/bootstrap':string],!a::'/bootstrap':string)).
+'/bootstrap':unitTest(expandList([_,_,_,_,_,!a::'/bootstrap':string],2,[_,_,!b::'/bootstrap':string,_,_,!a::'/bootstrap':string],!b::'/bootstrap':string)).
