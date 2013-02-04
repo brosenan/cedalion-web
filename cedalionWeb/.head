@@ -1,7 +1,7 @@
 HTTP/1.1 200 OK
 Server: CouchDB/1.0.1 (Erlang OTP/R14B)
-Etag: "42-fd3644774e1c8ecd630e3d8b23280ca6"
-Date: Sun, 27 Jan 2013 16:14:05 GMT
+Etag: "15-57e9b4669c95a63b479c655fc641db76"
+Date: Sun, 03 Feb 2013 16:31:44 GMT
 Content-Type: text/plain;charset=utf-8
 Content-Length: 333
 Cache-Control: must-revalidate

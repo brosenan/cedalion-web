@@ -14,7 +14,7 @@ exports.DI = function(name) {
 	this.setValue = function(key, value) {
 		this[key] = value;
 		if(name) {
-			//console.log("[" + name + "] " + key + " = ...");
+			console.log("[" + name + "] " + key + " = ...");
 		}
 		this.kick();
 	};
