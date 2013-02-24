@@ -1,0 +1,6 @@
+defKeyboardCommand(ctrl(letter(!'P')),defaultMap,Role,setParkingLot(Role)).
+'/bootstrap':signature(setParkingLot(Role)::editingCommand,[Role::'/bootstrap':string]).
+'/javascript/asyncproc':procDef(applyEditingCommand(setParkingLot(Role),Model),'/javascript/statepred':'for (s)'(termForRole(Role,Model,TermPrime::Type,-1),'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/asyncproc':andThen(applyEditingCommand(editingCommand(Role,Term::Type,annotation:escape(annotation:conflict(Term,TermPrime))::Type),Model),'/javascript/jsLogic':do('/javascript/jsLogic':jsCommand([]))))]))).
+'/bootstrap':signature(where(EC,Goal)::editingCommand,[EC::editingCommand,Goal::'/javascript/statepred':statePred]).
+'/bootstrap':projection(where(EC,Goal)::editingCommand,'/bootstrap':horiz(['/bootstrap':vis(EC::editingCommand),'/bootstrap':label(!where),'/bootstrap':vis(Goal::'/javascript/statepred':statePred)])).
+'/javascript/asyncproc':asyncProc(applyEditingCommand(where(EC,Goal),Model),After,'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/asyncproc':andThen('/javascript/statepred':'for (s)'(Goal,'/javascript/jsLogic':jsCommand(['/javascript/jsLogic':runProcedure('/javascript/asyncproc':andThen(applyEditingCommand(EC,Model),After))])),'/javascript/jsLogic':do('/javascript/jsLogic':jsCommand([]))))])):-builtin:true.
