@@ -1,0 +1,39 @@
+<html>
+<body>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script language="javascript">
+
+var selection = '';
+
+var handler = {
+	resize: function(msg) { $('#theFrame').css({width: msg.width + "px", height: msg.height + "px"}); },
+	selected: function(msg) { selection = msg.id; }
+};
+
+$(function() {
+	// Handle messages
+	$(window).on('message', function(ev) {
+		var message = JSON.parse(ev.originalEvent.data);
+		if(handler[message.type]) {
+			handler[message.type](message);
+		} else {
+			console.log("Bad message type: " + message.type);
+		}
+	});
+
+	// Annotate
+	$('#annotate').on('click', function() {
+		$('#theFrame')[0].contentWindow.postMessage(JSON.stringify({type: 'annotate', 
+			id: selection,
+			text: $('#annotation').val(),
+			textStyle: "background-color: yellow;",
+			borderStyle: "border-style: solid; border-color: blue; border-width; 2px"}), "*");
+	});
+});
+</script>
+
+<iframe id="theFrame" src="http://localhost:5984/cedalion/main/index.html?#show=/Functional/pair.ced#aKtTri2AFBJJZ9HgX2g1@MBBB-A">
+</iframe>
+Enter your comment here: <input type="text" id="annotation"/> <input type="button" id="annotate" value="Annotate"/>
+</body>
+</html>

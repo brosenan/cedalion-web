@@ -1,0 +1,11 @@
+'/bootstrap':signature(expr(T)::'/bootstrap':type,[T::'/bootstrap':type]).
+'/bootstrap':defAtom(definition::'/bootstrap':type).
+'/bootstrap':signature(eval(Defs,Func,T,Value)::'/bootstrap':pred,[Defs::map(definition),Func::expr(T),T::'/bootstrap':type,Value::T]).
+annotation:shrink('/bootstrap':projection(eval(Defs,Func,T,Value)::'/bootstrap':pred,'/bootstrap':horiz(['/bootstrap':vis(Func::expr(T)),'/bootstrap':label(!'evaluates to'),'/bootstrap':vis(Value::T),'/bootstrap':label(! (::)),'/bootstrap':vis(T::'/bootstrap':type),'/bootstrap':label(!'in program'),'/bootstrap':vis(Defs::map(definition))]))).
+'/bootstrap':signature(func(Func,T,Body)::definition,[Func::expr(T),T::'/bootstrap':type,Body::expr(T)]).
+'/bootstrap':projection(func(Func,T,Body)::definition,'/bootstrap':horiz(['/bootstrap':vis(T::'/bootstrap':type),'/bootstrap':vis(Func::expr(T)),'/bootstrap':symbol(8797),'/bootstrap':vis(Body::expr(T))])).
+'/bootstrap':alias(func(Func,T,Body)::definition,!'=def').
+eval(Defs,Func,T,Value):-builtin:parseTerm(Func::expr(T),Name,_),mapLookup(Defs,Name,definition,just(func(Func,T,Body))),eval(Defs,Body,T,Value).
+'/bootstrap':signature(buildDefMap(Defs,DefsMap)::'/bootstrap':pred,[Defs::'/bootstrap':list(definition),DefsMap::map(definition)]).
+buildDefMap([],listMap([])):-builtin:true.
+buildDefMap([func(Func,T,Body)|Defs],DefsMap):-buildDefMap(Defs,DefsMap1),builtin:parseTerm(Func::expr(T),Name,_),addToMap(DefsMap1,Name,func(Func,T,Body),definition,DefsMap).

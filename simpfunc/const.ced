@@ -1,0 +1,4 @@
+'/bootstrap':signature(const(V)::expr(T),[V::T]).
+'/bootstrap':projection(const(V)::expr(T),'/bootstrap':lineBorder('/bootstrap':vis(V::T),1,cpi:rgb(192,192,192))).
+'/bootstrap':adapter(V::T,const(V)::expr(T)).
+eval(_,const(V),T,V):-builtin:true.

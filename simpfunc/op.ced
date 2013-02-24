@@ -1,0 +1,4 @@
+'/bootstrap':signature(applyBinOp(A,Op,B)::expr(T),[A::expr(T),Op::'/Functional':binOp(T),B::expr(T)]).
+'/bootstrap':projection(applyBinOp(A,Op,B)::expr(T),'/bootstrap':horiz(['/bootstrap':vis(A::expr(T)),'/bootstrap':vis(Op::'/Functional':binOp(T)),'/bootstrap':vis(B::expr(T))])).
+'/bootstrap':adapter(Op::'/Functional':binOp(T),applyBinOp(A,Op,B)::expr(T)).
+eval(Defs,applyBinOp(A,Op,B),T,V):-eval(Defs,A,T,APrime),eval(Defs,B,T,BPrime),'/Functional':eval('/Functional':applyBinOp('/Functional':const(APrime),Op,'/Functional':const(BPrime)),T,V).

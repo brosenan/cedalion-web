@@ -1,0 +1,11 @@
+'/bootstrap':defAtom(bool::'/bootstrap':type).
+'/bootstrap':defAtom(true::bool).
+'/bootstrap':defAtom(false::bool).
+'/bootstrap':signature(equals(A,B,T)::expr(bool),[A::expr(T),B::expr(T),T::'/bootstrap':type]).
+'/bootstrap':projection(equals(A,B,T)::expr(bool),'/bootstrap':horiz(['/bootstrap':horiz(['/bootstrap':vis(A::expr(T)),'/bootstrap':halfSize('/bootstrap':horiz(['/bootstrap':label(! (::)),'/bootstrap':vis(T::'/bootstrap':type)]))]),'/bootstrap':label(! (==)),'/bootstrap':vis(B::expr(T))])).
+eval(Defs,equals(A,B,T),bool,V):-eval(Defs,A,T,APrime),eval(Defs,B,T,BPrime),builtin:if(builtin:equals(APrime::T,BPrime::T),V::bool=true::bool,V::bool=false::bool).
+'/bootstrap':signature(if(Cond,Then,Else)::expr(T),[Cond::expr(bool),Then::expr(T),Else::expr(T)]).
+'/bootstrap':projection(if(Cond,Then,Else)::expr(T),'/bootstrap':vert(['/bootstrap':horiz(['/bootstrap':label(!if),'/bootstrap':vis(Cond::expr(bool))]),'/bootstrap':horiz(['/bootstrap':label(!'    '),'/bootstrap':vis(Then::expr(T))]),'/bootstrap':label(!else),'/bootstrap':horiz(['/bootstrap':label(!'    '),'/bootstrap':vis(Else::expr(T))])])).
+eval(Defs,if(Cond,Then,Else),T,V):-builtin:if(eval(Defs,Cond,bool,true),eval(Defs,Then,T,V),eval(Defs,Else,T,V)).
+'/bootstrap':signature(fact(N)::expr('/bootstrap':number),[N::expr('/bootstrap':number)]).
+'/bootstrap':unitTest((buildDefMap([func(fact(N),'/bootstrap':number,if(equals(N,const(0),'/bootstrap':number),const(1),applyBinOp(N,'/Functional':times,fact(applyBinOp(N,'/Functional':minus,const(1))))))],Defs),eval(Defs,fact(const(4)),'/bootstrap':number,24))).

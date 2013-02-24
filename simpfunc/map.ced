@@ -1,0 +1,15 @@
+'/bootstrap':signature(map(T)::'/bootstrap':type,[T::'/bootstrap':type]).
+'/bootstrap':signature(mapEntry(T)::'/bootstrap':type,[T::'/bootstrap':type]).
+'/bootstrap':signature(listMap(L)::map(T),[L::'/bootstrap':list(mapEntry(T))]).
+'/bootstrap':signature(mapEntry(Key,Value)::mapEntry(T),[Key::'/bootstrap':string,Value::T]).
+'/bootstrap':projection(mapEntry(Key,Value)::mapEntry(T),'/bootstrap':horiz(['/bootstrap':vis(Key::'/bootstrap':string),'/bootstrap':label(! (:)),'/bootstrap':vis(Value::T)])).
+'/bootstrap':signature(addToMap(Map,Key,Value,T,NewMap)::'/bootstrap':pred,[Map::map(T),Key::'/bootstrap':string,Value::T,T::'/bootstrap':type,NewMap::map(T)]).
+addToMap(listMap(L),Key,Value,T,listMap([mapEntry(Key,Value)|L])):-builtin:true.
+'/bootstrap':signature(maybe(T)::'/bootstrap':type,[T::'/bootstrap':type]).
+'/bootstrap':signature(just(Value)::maybe(T),[Value::T]).
+'/bootstrap':defAtom(nothing::maybe(T)).
+'/bootstrap':signature(mapLookup(Map,Key,T,Value)::'/bootstrap':pred,[Map::map(T),Key::'/bootstrap':string,T::'/bootstrap':type,Value::maybe(T)]).
+mapLookup(listMap(L),Key,T,Result):-builtin:if('/bootstrap':listMember(mapEntry(Key,Value),mapEntry(T),L),builtin:copyTerm(just(Value)::maybe(T),Result::maybe(T)),Result::maybe(T)=nothing::maybe(T)).
+'/bootstrap':unitTest(mapLookup(listMap([mapEntry(!one,1),mapEntry(!two,2)]),!one,'/bootstrap':number,just(1))).
+'/bootstrap':unitTest(mapLookup(listMap([mapEntry(!one,1),mapEntry(!two,2)]),!two,'/bootstrap':number,just(2))).
+'/bootstrap':unitTest(mapLookup(listMap([mapEntry(!one,1),mapEntry(!two,2)]),!three,'/bootstrap':number,nothing)).
