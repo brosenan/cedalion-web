@@ -1,0 +1,150 @@
+var vows = require('vows'),
+    assert = require('assert');
+
+vows.describe('detalion').addBatch({
+    'In ProgramDatabase': {
+        topic: new ProgramDatabase(),
+
+        'findAllMatches() should retrieve a stored statement': function (db) {
+			db.store([':-', ['a', 'X'], ['b', 'X']]);
+			var matches = db.findAllMatches([':-', ['a', 'X'], 'Y'], new Interpreter(db));
+            assert.equal(matches.length, 1);
+            assert.deepEqual(matches[0].st, [':-', ['a', 'X'], ['b', 'X']]);
+        },
+		'findAllMatches() should only retrieve matching statements': function(db) {
+			db.store([':-', ['b', 'X'], ['c', 'X']]);
+			var matches = db.findAllMatches([':-', ['a', 'X'], 'Y'], new Interpreter(db));
+            assert.equal(matches.length, 1);
+            assert.deepEqual(matches[0].st, [':-', ['a', 'X'], ['b', 'X']]);
+		},
+		'findAllMatches() should provide all that matches' : function(db) {
+			var matches = db.findAllMatches([':-', 'X', 'Y'], new Interpreter(db));
+            assert.equal(matches.length, 2);
+		},
+		'findAllMatches() should address the case where the pattern is more specific' : function(db) {
+			var matches = db.findAllMatches([':-', ['a', ['d', 'X']], ['b', 'X']], new Interpreter(db));
+            assert.equal(matches.length, 1);
+            assert.deepEqual(matches[0].st, [':-', ['a', 'X'], ['b', 'X']]);
+		},
+		'findAllMatches() should provide all answers if there are different levels of specificity' : function(db) {
+			db.store([':-', ['a', ['c', 'X']], ['b', 'X']]);
+			var matches = db.findAllMatches([':-', ['a', 'X'], 'Y'], new Interpreter(db));
+            assert.equal(matches.length, 2);
+            assert.deepEqual(matches[0].st, [':-', ['a', 'X'], ['b', 'X']]);
+            assert.deepEqual(matches[1].st, [':-', ['a', ['c', 'X']], ['b', 'X']]);
+		},
+		'findMostSpecific() should only return the most specific answer': function(db) {
+			var matches = db.findMostSpecific([':-', ['a', ['c', 'X']], 'Y'], new Interpreter(db));
+            assert.equal(matches.length, 1);
+            assert.deepEqual(matches[0].st, [':-', ['a', ['c', 'X']], ['b', 'X']]);
+		},
+		'in a case of a tie, findMostSpecific() should return all answers': function(db) {
+			var matches = db.findMostSpecific([':-', 'X', 'Y'], new Interpreter(db));
+            assert.equal(matches.length, 3);
+            assert.deepEqual(matches[0].st, [':-', ['a', 'X'], ['b', 'X']]);
+            assert.deepEqual(matches[1].st, [':-', ['b', 'X'], ['c', 'X']]);
+            assert.deepEqual(matches[2].st, [':-', ['a', ['c', 'X']], ['b', 'X']]);
+		},
+		'When there is a generic and a specific answer, findMostSpecific() should return the generic one': function(db) {
+			var matches = db.findMostSpecific([':-', ['a', 'Z'], 'Y'], new Interpreter(db));
+            assert.equal(matches.length, 1);
+            assert.deepEqual(matches[0].st, [':-', ['a', 'X'], ['b', 'X']]);
+		},
+		'findMostSpecific() should fall back to the more generic match if no specific one is found': function(db) {
+			var matches = db.findMostSpecific([':-', ['a', ['d', 'X']], ['b', 'X']], new Interpreter(db));
+            assert.equal(matches.length, 1);
+            assert.deepEqual(matches[0].st, [':-', ['a', 'X'], ['b', 'X']]);
+		}
+    },
+	'The interpreter': {
+		topic: (function() {
+			var program = new ProgramDatabase();
+			return new Interpreter(program);
+		})(),
+		'toAbsolute() allocates stack locations for the variables': function(det) {
+			var s = det.getState();
+			var abs = det.toAbsolute(['a', {id:1}, {id:2}]);
+			assert.deepEqual(abs, ['a', {ref: 1}, {ref: 2}]);
+			assert.equal(det.NF, 3);
+			det.setState(s);
+			assert.equal(det.NF, 1);
+		},
+		'Unification of a(1, X) and a(Y, 2) should succeed': function(det) {
+			var s = det.getState();
+			assert.isTrue(det.unifyRel(['a', 1, {id:1}], det.toAbsolute(['a', {id:2}, 2])));
+			assert.equal(det.getVar(1), 2);
+			assert.equal(det.getVar(2), 1);
+			det.setState(s);
+		},
+		'Unification of a(1, X) and a(2, Y) should fail': function(det) {
+			var s = det.getState();
+			assert.isFalse(det.unifyRel(['a', 1, {id:1}], det.toAbsolute(['a', 2, {id:2}])));
+			det.setState(s);
+		},
+		'Unification of concat([A|X], Y, [A|Z]) and concat([1], [2], _) should return true and emit A = 1, X = [], Y = [2]': function(det) {
+			det.protect(function() {
+				assert.isTrue(det.unifyRel(['concat', ['.', {id:1}, {id:2}], {id:3}, ['.', {id:1}, {id:4}]], 
+					det.toAbsolute(['concat', ['.', 1, ['[]']], ['.', 2, ['[]']], {id:5}])));
+				assert.equal(det.getVar(1), 1);
+				assert.deepEqual(det.getVar(2), ['[]']);
+				assert.deepEqual(det.getVar(3), ['.', 2, ['[]']]);
+				assert.deepEqual(det.toAbsolute(['concat', {id:2}, {id:3}, {id:4}]), ['concat', ['[]'], ['.', 2, ['[]']], {ref:4}]);
+			});
+		}
+	},
+	'A simple program': {
+		topic: (function() {
+			var program = new ProgramDatabase();
+			program.store([':-', ['a', {id: 1}, 'one'], ['true']]);
+			program.store([':-', ['a', ['b'], 'two'], ['true']]);
+			program.store([':-', ['a', ['c'], 'three'], ['fail']]);
+			return new Interpreter(program);
+		})(),
+		'evaluating a(Y, X) should emit X=one': function(det) {
+			var s = det.getState();
+			assert.isTrue(det.call(det.toAbsolute(['a', {id: 2}, {id: 1}])));
+			assert.equal(det.getVar(1), 'one');
+			det.setState(s);
+		},
+		'evaluating a(b, X) should emit X=two': function(det) {
+			var s = det.getState();
+			assert.isTrue(det.call(det.toAbsolute(['a', ['b'], {id: 1}])));
+			assert.equal(det.getVar(1), 'two');
+			det.setState(s);
+		},
+		'evaluating a(c, X) should fail': function(det) {
+			var s = det.getState();
+			assert.isFalse(det.call(det.toAbsolute(['a', ['c'], {id: 1}])));
+			det.setState(s);
+		},
+		'evaluating a(d, X) should emit X=one': function(det) {
+			var s = det.getState();
+			assert.isTrue(det.call(det.toAbsolute(['a', ['d'], {id: 1}])));
+			assert.equal(det.getVar(1), 'one');
+			det.setState(s);
+		}
+	},
+	'List concatenation': {
+		// concat([], X, X) :- true.
+		// concat([A|X], Y, [A|Z]) :- concat(X, Y, Z).
+		topic: (function() {
+			var program = new ProgramDatabase();
+			program.store([':-', ['concat', ['[]'], {id:1}, {id:1}], ['true']]);
+			program.store([':-', ['concat', ['.', {id:1}, {id:2}], {id:3}, ['.', {id:1}, {id:4}]], 
+				['concat', {id:2}, {id:3}, {id:4}]]);
+			return new Interpreter(program);
+		})(),
+		'concat([1], [2], X) should succeed, emitting X=[1, 2]': function(det) {
+			det.protect(function() {
+				try {
+					assert.isTrue(det.call(det.toAbsolute(['concat', ['.', 1, ['[]']], ['.', 2, ['[]']], {id:1}])));
+					assert.deepEqual(det.getVar(1), ['.', 1, ['.', 2, ['[]']]]);
+				} catch (e) {
+					//console.log(JSON.stringify(det.stack.slice(0, 10)));
+					throw e;
+				}
+			});
+		}
+	}
+}).run();
+

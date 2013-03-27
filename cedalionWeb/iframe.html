@@ -1,13 +1,27 @@
 <html>
+<head>
+<style type="text/css">
+	body {
+		background-color: rgb(255, 255, 200);
+	}
+	.frame {
+		border-radius: 1em;
+		border-style: inset;
+		border-width: 3px;
+		background-color: white;
+	}
+</style>
+</head>
 <body>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 <script language="javascript">
 
 var selection = '';
+var currentFrame = null;
 
 var handler = {
-	resize: function(msg) { $('#theFrame').css({width: msg.width + "px", height: msg.height + "px"}); },
-	selected: function(msg) { selection = msg.id; }
+	resize: function(msg, iframe) { iframe.css({width: msg.width + "px", height: msg.height + "px"}); },
+	selected: function(msg, iframe) { selection = msg.id; currentFrame = iframe; }
 };
 
 $(function() {
@@ -15,7 +29,11 @@ $(function() {
 	$(window).on('message', function(ev) {
 		var message = JSON.parse(ev.originalEvent.data);
 		if(handler[message.type]) {
-			handler[message.type](message);
+			$('iframe').each(function() {
+				if(this.contentWindow == ev.originalEvent.source) {
+					handler[message.type](message, $(this));
+				}
+			});
 		} else {
 			console.log("Bad message type: " + message.type);
 		}
@@ -23,17 +41,47 @@ $(function() {
 
 	// Annotate
 	$('#annotate').on('click', function() {
-		$('#theFrame')[0].contentWindow.postMessage(JSON.stringify({type: 'annotate', 
-			id: selection,
-			text: $('#annotation').val(),
-			textStyle: "background-color: yellow;",
-			borderStyle: "border-style: solid; border-color: blue; border-width; 2px"}), "*");
+		if(currentFrame) {
+			currentFrame[0].contentWindow.postMessage(JSON.stringify({type: 'annotate', 
+				id: selection,
+				text: $('#annotation').val(),
+				textStyle: "position: absolute; top: -0.8em; left: -0.5em; background-color: yellow;",
+				borderStyle: "position: relative; border-style: dashed; border-color: black; border-width; 1px"}), "*");
+		}
+	});
+	// Remove annotation
+	$('#unannotate').on('click', function() {
+		if(currentFrame) {
+			currentFrame[0].contentWindow.postMessage(JSON.stringify({type: 'annotate', 
+				id: selection,
+				text: '',
+				textStyle: '',
+				borderStyle: ''}), "*");
+		}
+	});
+	$('#new-iframe').on('click', function() {
+		$('#iframe-container').append('<div class="frame"><h2>' + $('#title').val() + '</h2><iframe class="projection"></div>');
+		var frame = $('#iframe-container .projection').last();
+		frame.attr('src', $('#url').val());
+		var close = $('<a href="">[Close]</a>');
+		close.on('click', function(){
+			$(this).parent().hide('slow');
+			return false;
+		});
+		frame.after(close);
 	});
 });
 </script>
 
-<iframe id="theFrame" src="http://localhost:5984/cedalion/main/index.html?#show=/Functional/pair.ced#aKtTri2AFBJJZ9HgX2g1@MBBB-A">
-</iframe>
+<div id="iframe-container"></div>
+<table>
+<tr><td>Title:</td><td><input type="text" id="title"/></td></tr>
+<tr><td>URL:</td><td><input type="text" id="url"/></td></tr>
+</table>
+<div><input type="button" id="new-iframe" value="Create a Frame"/></div>
+<div>
 Enter your comment here: <input type="text" id="annotation"/> <input type="button" id="annotate" value="Annotate"/>
+<input type="button" id="unannotate" value="Remove Annotation"/>
+</div>
 </body>
 </html>

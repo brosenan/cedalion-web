@@ -1,0 +1,9 @@
+#!/bin/bash
+
+for file in *.vows; do
+	echo ===== ${file%.vows} =====
+	cat ${file%.vows}.js $file > ${file%.vows}.tmp.js
+	node ${file%.vows}.tmp.js
+	rm ${file%.vows}.tmp.js
+done
+

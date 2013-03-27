@@ -1,6 +1,7 @@
 #!/bin/sh
 
 baseURL="http://localhost:5984/cedalion"
+#baseURL="http://brosenan.cloudant.com/cedalion"
 doc="main"
 
 
