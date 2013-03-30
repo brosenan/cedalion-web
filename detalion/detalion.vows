@@ -61,67 +61,50 @@ vows.describe('detalion').addBatch({
 			var program = new ProgramDatabase();
 			return new Interpreter(program);
 		})(),
-		'toAbsolute() allocates stack locations for the variables': function(det) {
-			var s = det.getState();
-			var abs = det.toAbsolute(['a', {id:1}, {id:2}]);
-			assert.deepEqual(abs, ['a', {ref: 1}, {ref: 2}]);
-			assert.equal(det.NF, 3);
-			det.setState(s);
-			assert.equal(det.NF, 1);
-		},
 		'Unification of a(1, X) and a(Y, 2) should succeed': function(det) {
-			var s = det.getState();
-			assert.isTrue(det.unifyRel(['a', 1, {id:1}], det.toAbsolute(['a', {id:2}, 2])));
-			assert.equal(det.getVar(1), 2);
-			assert.equal(det.getVar(2), 1);
-			det.setState(s);
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			assert.isTrue(det.unify(['a', 1, X], ['a', Y, 2]));
+			assert.equal(det.deref(X), 2);
+			assert.equal(det.deref(Y), 1);
 		},
 		'Unification of a(1, X) and a(2, Y) should fail': function(det) {
-			var s = det.getState();
-			assert.isFalse(det.unifyRel(['a', 1, {id:1}], det.toAbsolute(['a', 2, {id:2}])));
-			det.setState(s);
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			assert.isFalse(det.unify(['a', 1, X], ['a', 2, Y]));
 		},
-		'Unification of concat([A|X], Y, [A|Z]) and concat([1], [2], _) should return true and emit A = 1, X = [], Y = [2]': function(det) {
-			det.protect(function() {
-				assert.isTrue(det.unifyRel(['concat', ['.', {id:1}, {id:2}], {id:3}, ['.', {id:1}, {id:4}]], 
-					det.toAbsolute(['concat', ['.', 1, ['[]']], ['.', 2, ['[]']], {id:5}])));
-				assert.equal(det.getVar(1), 1);
-				assert.deepEqual(det.getVar(2), ['[]']);
-				assert.deepEqual(det.getVar(3), ['.', 2, ['[]']]);
-				assert.deepEqual(det.toAbsolute(['concat', {id:2}, {id:3}, {id:4}]), ['concat', ['[]'], ['.', 2, ['[]']], {ref:4}]);
-			});
+		'Writing a(2, 7) into a(X, Y) shoud turn p(X, 1, Y) into p(2, 1, 7)': function(det) {
+			assert.isTrue(det.unifyWrite(['a', {id:1}, {id:2}], ['a', 2, 7]));
+			assert.deepEqual(det.unifyRead(['p', {id:1}, 1, {id:2}]), ['p', 2, 1, 7]);
 		}
 	},
 	'A simple program': {
 		topic: (function() {
 			var program = new ProgramDatabase();
-			program.store([':-', ['a', {id: 1}, 'one'], ['true']]);
-			program.store([':-', ['a', ['b'], 'two'], ['true']]);
-			program.store([':-', ['a', ['c'], 'three'], ['fail']]);
+			program.store([PREFIX + ':-', ['a', {id: 1}, 'one'], [TRUE]]);
+			program.store([PREFIX + ':-', ['a', ['b'], 'two'], [TRUE]]);
+			program.store([PREFIX + ':-', ['a', ['c'], 'three'], [FAIL]]);
 			return new Interpreter(program);
 		})(),
 		'evaluating a(Y, X) should emit X=one': function(det) {
-			var s = det.getState();
-			assert.isTrue(det.call(det.toAbsolute(['a', {id: 2}, {id: 1}])));
-			assert.equal(det.getVar(1), 'one');
-			det.setState(s);
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			assert.isTrue(det.call(['a', Y, X]));
+			assert.equal(det.deref(X), 'one');
 		},
 		'evaluating a(b, X) should emit X=two': function(det) {
-			var s = det.getState();
-			assert.isTrue(det.call(det.toAbsolute(['a', ['b'], {id: 1}])));
-			assert.equal(det.getVar(1), 'two');
-			det.setState(s);
+			var X = det.heapAllocate();
+			assert.isTrue(det.call(['a', ['b'], X]));
+			assert.equal(det.deref(X), 'two');
 		},
 		'evaluating a(c, X) should fail': function(det) {
-			var s = det.getState();
-			assert.isFalse(det.call(det.toAbsolute(['a', ['c'], {id: 1}])));
-			det.setState(s);
+			var X = det.heapAllocate();
+			assert.isFalse(det.call(['a', ['c'], X]));
 		},
 		'evaluating a(d, X) should emit X=one': function(det) {
-			var s = det.getState();
-			assert.isTrue(det.call(det.toAbsolute(['a', ['d'], {id: 1}])));
-			assert.equal(det.getVar(1), 'one');
-			det.setState(s);
+			var X = det.heapAllocate();
+			assert.isTrue(det.call(['a', ['d'], X]));
+			assert.equal(det.deref(X), 'one');
 		}
 	},
 	'List concatenation': {
@@ -129,22 +112,113 @@ vows.describe('detalion').addBatch({
 		// concat([A|X], Y, [A|Z]) :- concat(X, Y, Z).
 		topic: (function() {
 			var program = new ProgramDatabase();
-			program.store([':-', ['concat', ['[]'], {id:1}, {id:1}], ['true']]);
-			program.store([':-', ['concat', ['.', {id:1}, {id:2}], {id:3}, ['.', {id:1}, {id:4}]], 
+			program.store([PREFIX + ':-', ['concat', ['[]'], {id:1}, {id:1}], [TRUE]]);
+			program.store([PREFIX + ':-', ['concat', ['.', {id:1}, {id:2}], {id:3}, ['.', {id:1}, {id:4}]], 
 				['concat', {id:2}, {id:3}, {id:4}]]);
 			return new Interpreter(program);
 		})(),
 		'concat([1], [2], X) should succeed, emitting X=[1, 2]': function(det) {
-			det.protect(function() {
-				try {
-					assert.isTrue(det.call(det.toAbsolute(['concat', ['.', 1, ['[]']], ['.', 2, ['[]']], {id:1}])));
-					assert.deepEqual(det.getVar(1), ['.', 1, ['.', 2, ['[]']]]);
-				} catch (e) {
-					//console.log(JSON.stringify(det.stack.slice(0, 10)));
-					throw e;
-				}
-			});
+			var X = det.heapAllocate();
+			assert.isTrue(det.call(['concat', ['.', 1, ['[]']], ['.', 2, ['[]']], X]));
+			assert.deepEqual(det.deepDeref(X), ['.', 1, ['.', 2, ['[]']]]);
+		},
+		'concat([3], X, [3, 4]) should succeed, emitting X=[4]': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call(['concat', ['.', 3, ['[]']], X, ['.', 3, ['.', 4, ['[]']]]]));
+			assert.deepEqual(det.deepDeref(X), ['.', 4, ['[]']]);
+		},
+		'concat([1], X, [3, 4]) should fail': function(det) {
+			var X = det.heapAllocate();
+			assert.isFalse(det.call(['concat', ['.', 1, ['[]']], X, ['.', 3, ['.', 4, ['[]']]]]));
 		}
+	},
+	'Builtin Predicate': {
+		topic :(function() {
+			var program = new ProgramDatabase();
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
+		})(),
+		'strcat("hello, ", "world", X) should succeed, emitting X = "hello, world"': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call([PREFIX + 'strcat', 'hello, ', 'world', X]));
+			assert.equal(det.deref(X), 'hello, world');
+		},
+		'strcat("hello, ", X, "hello, world") should succeed, emitting X = "world"': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call([PREFIX + 'strcat', 'hello, ', X, 'hello, world']));
+			assert.equal(det.deref(X), 'world');
+		},
+		'strcat(X, "world", "hello, world") should succeed, emitting X = "hello, "': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call([PREFIX + 'strcat', X, 'world', 'hello, world']));
+			assert.equal(det.deref(X), 'hello, ');
+		},
+		'strcat(X, "mondi", "hello, world") should fail': function(det) {
+			var X = det.heapAllocate();
+			assert.isFalse(det.call([PREFIX + 'strcat', X, 'mondi', 'hello, world']));
+		}
+	},
+	'peano numbers' : {
+		topic :(function() {
+			// p(zero, 0) :- true.
+			// p(s(X), Y) :- p(X, Y1), plus(Y1, 1, Y).
+			var program = new ProgramDatabase();
+			program.store([PREFIX + ':-', ['p', ['zero'], 0], [TRUE]]);
+			program.store([PREFIX + ':-', ['p', ['s', {id:1}], {id:2}], [PREFIX + ',', ['p', {id:1}, {id:3}], [PREFIX+'plus', {id:3}, 1, {id:2}]]]);
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
+		})(),
+		'zero = 0': function(det) {
+			var Y = det.heapAllocate();
+			assert.isTrue(det.call(['p', ['zero'], Y]));
+			assert.equal(det.deref(Y), 0);
+		},
+		's(s(zero)) = 2': function(det) {
+			var Y = det.heapAllocate();
+			assert.isTrue(det.call(['p', ['s', ['s', ['zero']]], Y]));
+			assert.equal(det.deref(Y), 2);
+		}
+	},
+	'Fibonacci Sequence': {
+		topic :(function() {
+			// fib(X, Y) :- if(X < 2,
+			//	Y = 1,
+			//	(
+			//		minus(X, 1, X1),
+			//		fib(X1, Y1),
+			//		minus(X, 2, X2),
+			//		fib(X2, Y2),
+			//		plus(Y1, Y2, Y)
+			//	).
+			var program = new ProgramDatabase();
+			program.store([PREFIX + ':-', ['fib', {id:1}, {id:2}], [PREFIX + 'if', [PREFIX + '<', {id:1}, 2], 
+				[PREFIX + '=', {id:2}, 1],
+				[PREFIX + ',', [PREFIX + 'minus', {id:1}, 1, {id:3}], 
+				[PREFIX + ',', [PREFIX + 'minus', {id:1}, 2, {id:4}], 
+				[PREFIX + ',', ['fib', {id:3}, {id:5}],
+				[PREFIX + ',', ['fib', {id:4}, {id:6}],
+				[PREFIX + 'plus', {id:5}, {id:6}, {id:2}]]]]]]]);
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
+		})(),
+		'fib(2) = 2': function(det) {
+			var Y = det.heapAllocate();
+			assert.isTrue(det.call(['fib', 2, Y]));
+			assert.equal(det.deref(Y), 2);
+		},
+		'fib(5) = 8': function(det) {
+			var Y = det.heapAllocate();
+			assert.isTrue(det.call(['fib', 5, Y]));
+			assert.equal(det.deref(Y), 8);
+		},
+		'fib(11) = 144': function(det) {
+			var Y = det.heapAllocate();
+			assert.isTrue(det.call(['fib', 11, Y]));
+			assert.equal(det.deref(Y), 144);
+		},
 	}
 }).run();
 

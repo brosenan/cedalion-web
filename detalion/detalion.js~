@@ -1,5 +1,10 @@
-var STACK_SIZE = 64000;
-var MAX_ARITY = 8;
+var HEAP_SIZE = 64000;
+var TRAIL_SIZE = 1024;
+var NUM_REG = 17;
+//var PREFIX = 'detalion#';
+var PREFIX = '#';
+var TRUE = PREFIX + 'true';
+var FAIL = PREFIX + 'fail';
 
 /// A trie containing a program
 function ProgramDatabase() {
@@ -10,7 +15,7 @@ function ProgramDatabase() {
 		var term = statement;
 		var lastNode = null;
 		var lastTerm = null;
-		while(term instanceof Array) {
+		while(Array.isArray(term)) {
 			// Add matches for more general terms
 			if(!node['*']) {
 				node['*'] = [];
@@ -36,7 +41,7 @@ function ProgramDatabase() {
 		var results = [];
 		var node = this.db;
 		var term = det.deref(pattern);
-		while(term instanceof Array && node) {
+		while(Array.isArray(term) && node) {
 			if(node['.'])
 				results = results.concat(node['.']);
 			node = node[term[0] + '/' + (term.length - 1)];
@@ -47,13 +52,13 @@ function ProgramDatabase() {
 		if(node && node['*'])
 			results = results.concat(node['*']);
 		return results;
-	}
+	};
 
 	this.findMostSpecific = function(pattern, det) {
 		var fallback = [];
 		var node = this.db;
 		var term = det.deref(pattern);
-		while(term instanceof Array && node) {
+		while(Array.isArray(term) && node) {
 			if(node['.'])
 				fallback = node['.'];
 			node = node[term[0] + '/' + (term.length - 1)];
@@ -64,188 +69,372 @@ function ProgramDatabase() {
 		if(node && node['*'])
 			return node['*'];
 		return fallback;
-	}
+	};
+	
+	// Store a function for handling a specific mode of a clause
+	this.storeBuiltin = function(pattern, det, mode, func, numRegs) {
+		var options = this.findMostSpecific(pattern, det);
+		if(options.length != 1) {
+			throw Error('Pattern not found or not specific: ' + pattern);
+		}
+		var node = options[0];
+		if(!node.builtins) {
+			node.builtins = new Array(1<<numRegs);
+		}
+		node.builtins[mode] = func;
+	};
 
 }
 
 // The interpreter
 function Interpreter(program) {
 	this.program = program;
-	this.builtins = createBuiltins();
-	this.stack = new Array(STACK_SIZE);
-	this.SP = 0;
-	this.NF = 1;
-	this.getVar = function(n) { return this.stack[this.SP + n]; };
-	this.deref = function(term) {
-		var last = -1;
-		var toUpdate = [];
-		while(term && term.ref && term.ref != last) {
-			last = term.ref;
-			toUpdate.push(last);
-			term = this.stack[term.ref];
-		}
-		for(var i = 0; i < toUpdate.length; i++) {
-			this.updateStack(toUpdate[i], term);
-		}
-		return term;
+	this.heap = new Array(HEAP_SIZE);
+	this.registers = new Array(NUM_REG);
+	this.trail = new Array(TRAIL_SIZE);
+	this.trailRefs = new Array(TRAIL_SIZE);
+	// The next available heap location
+	this.H = 1;
+	// The top allocated register
+	this.TR = 0;
+	// The point on the heap where the last choice point was placed.
+	// Below this point, changes must be trailed.
+	this.BH = 1;
+	// Trail pointer
+	this.T = 0;
+	// Allocate a new heap location and return a reference
+	this.heapAllocate = function() {
+		var ref = this.H;
+		this.H++;
+		var val = {ref: ref}
+		this.heap[ref] = val;
+		return val;
 	};
-	this.bind = function(v, term) {
-		v = this.deref(v);
-		term = this.deref(term);
-		if(!v.ref) {
-			throw Error('Trying to bind an already bound variable');
-		}
-		if(term.ref && term.ref > v.ref) {
-			this.updateStack(term.ref, v);
-		} else {
-			this.updateStack(v.ref, term);
-		}
-	};
-	this.updateStack = function(n, term) {
-		this.allocateFrame(n);
-		this.stack[n] = term;
-	};
-	this.allocateFrame = function(addr) {
-		while(this.NF <= addr) {
-			this.stack[this.NF] = {ref: this.NF};
-			this.NF++;
-		}
+
+	// Reset all registers
+	this.resetRegs = function() {
+		this.TR = 0;
 	}
-	this.unifyRel = function(rel, abs) {
-//console.log('unifying ' + JSON.stringify(rel) + ' and '  + JSON.stringify(abs));
-		abs = this.deref(abs);
-		if(rel.id) {
-			this.allocateFrame(this.SP + rel.id);
-			return this.unify({ref: this.SP + rel.id}, abs);
+	// Get the value of a register
+	this.getReg = function(reg) { 
+		if(reg > this.TR) {
+			return null;
+		} else {
+			return this.registers[reg];
 		}
-		if(abs.ref) {
-			this.bind(abs, this.toAbsolute(rel));
+	};
+	// Modify the value of a register
+	this.setReg = function(reg, val) {
+		if(reg > this.TR) {
+			this.TR++;
+		}
+		while(reg > this.TR) {
+			this.registers[this.TR] = null;
+			this.TR++;
+		}
+		this.registers[reg] = val;
+	};
+	
+	// Bind a value to a variable
+	this.bind = function(ref, val) {
+		if(ref < this.BH) {
+			this.trail[this.T] = this.heap[ref];
+			this.trailRefs[this.T] = ref;
+			this.T++;
+		}
+		this.heap[ref] = val;
+	};
+
+	// Dereference a value by walking all variable references
+	this.deref = function(term, addr) {
+		addr = addr || -1;
+		if(term && term.ref && term.ref != addr) {
+			var value = this.deref(this.heap[term.ref], term.ref);
+			this.bind(term.ref, value);
+			return value;
+		} else {
+			return term;
+		}
+	};
+
+	// Unify a prototype with a term, writing to registers
+	this.unifyWrite = function(proto, term) {
+		term = this.deref(term);
+		if(proto.id) {
+			var val = this.getReg(proto.id);
+			if(val == null) {
+				this.setReg(proto.id, term);
+				return true;
+			} else {
+				return this.unify(val, term);
+			}
+		} else if(term.ref) {
+			this.bind(term.ref, this.unifyRead(proto));
 			return true;
-		}
-		if(rel instanceof Array) {
-			if(!(abs instanceof Array))
+		} else if(Array.isArray(proto)) {
+			if(!Array.isArray(term))
 				return false;
-			if(rel.length != abs.length)
+			if(term.length != proto.length)
 				return false;
-			for(var i = 0; i < rel.length; i++) {
-				if(!this.unifyRel(rel[i], abs[i]))
+			if(term[0] != proto[0])
+				return false;
+			for(var i = 1; i < proto.length; i++) {
+				if(!this.unifyWrite(proto[i], term[i])) {
 					return false;
+				}
 			}
 			return true;
+		} else {
+			return proto === term;
 		}
-		return rel == abs;
 	};
+
+	// Returns a term corresponding to the given prototype with the current register values
+	this.unifyRead = function(proto) {
+		if(proto.id) {
+			var val = this.getReg(proto.id);
+			if(val == null) {
+				val = this.heapAllocate();
+				this.setReg(proto.id, val);
+			}
+			return val;
+		} else if(Array.isArray(proto)) {
+			var term = new Array(proto.length);
+			term[0] = proto[0];
+			for(var i = 1; i < proto.length; i++) {
+				term[i] = this.unifyRead(proto[i]);
+			}
+			return term;
+		} else {
+			return proto;
+		}
+	};
+
+	// Unify two terms
 	this.unify = function(term1, term2) {
-console.log('unifying ' + JSON.stringify(term1) + ' and '  + JSON.stringify(term2));
 		term1 = this.deref(term1);
 		term2 = this.deref(term2);
 		if(term1.ref) {
-			this.bind(term1, term2);
+			this.bind(term1.ref, term2);
 			return true;
 		}
 		if(term2.ref) {
-			this.bind(term2, term1);
+			this.bind(term2.ref, term1);
 			return true;
 		}
-		if(term1 instanceof Array) {
-			if(!(term2 instanceof Array))
+		if(Array.isArray(term1)) {
+			if(!Array.isArray(term2)) {
 				return false;
-			if(term1.length != term2.length)
+			}
+			if(term1.length != term2.length) {
 				return false;
-			for(var i = 0; i < term1.length; i++) {
-				if(!this.unify(term1[i], term2[i]))
+			}
+			if(term1[0] != term2[0]) {
+				return false;
+			}
+			for(var i = 1; i < term1.length; i++) {
+				if(!this.unify(term1[i], term2[i])) {
 					return false;
+				}
 			}
 			return true;
-		}
-		return term1 == term2;
-	};
-	this.toAbsolute = function(rel) {
-		if(rel.id) {
-			var addr = this.SP + rel.id;
-			this.allocateFrame(addr);
-			return this.deref({ref: addr});
-		} else if(rel instanceof Array) {
-			var abs = []
-			for(var i = 0; i < rel.length; i++) {
-				abs.push(this.toAbsolute(rel[i]));
-			}
-			return abs;
 		} else {
-			return rel;
+			return term1 === term2;
 		}
 	};
-	this.call = function(goal) {
-		var s = this.getState();
-		this.SP = this.NF;
-		this.NF = this.SP + 1;
-		while(true) {
-console.log(JSON.stringify(goal));
-			if(goal.length == 1) {
-				if(goal[0] == 'true') {
-					this.setState(s);
-					return true;
-				}
-				if(goal[0] == 'fail') {
-					this.setState(s);
-					return false;
-				}
-			} else if(this.builtins[goal[0]]) {
-				var builtin = this.builtins[goal[0]];
-				goal = builtin.apply(this, goal.slice(1));
-			} else {
-				var clauses = this.program.findMostSpecific([':-', goal, 0], this);
-				if(clauses.length == 0) {
-					this.setState(s);
-					return false;
-				}
-				if(clauses.length > 1)
-					throw Error('Non-deterministic solution for ' + JSON.stringify(goal));
-				var clause = clauses[0].st;
-				var head = clause[1];
-				var body = clause[2];
 
-				if(!this.unifyRel(head, goal)){
-					this.setState(s);
-					return false;
-				}
-				goal = this.concrete(this.toAbsolute(body));
-				//this.SP = this.NF;
-				this.NF = this.SP + 1;
-			}
-		}
-	};
-	this.concrete = function(term) {
+	// Deep deref
+	this.deepDeref = function(term) {
 		term = this.deref(term);
-		if(term instanceof Array) {
-			var newTerm = [];
-			for(var i = 0; i < term.length; i++) {
-				newTerm.push(this.concrete(term[i]));
+		if(Array.isArray(term)) {
+			var newTerm = new Array(term.length);
+			newTerm[0] = term[0];
+			for(var i = 1; i < term.length; i++) {
+				newTerm[i] = this.deepDeref(term[i]);
 			}
 			return newTerm;
 		}
 		return term;
 	};
-	this.getState = function() { return {SP: this.SP, NF: this.NF}; }
-	this.setState = function(state) {
-		this.SP = state.SP;
-		this.NF = state.NF;
+
+	// The interpreter
+	this.call = function(goal) {
+		while(true) {
+console.log(goal);
+			if(goal.length == 1) {
+				if(goal[0] == TRUE) {
+					return true;
+				} else if(goal[0] == FAIL) {
+					return false;
+				}
+			}
+			var nodes = this.program.findMostSpecific([PREFIX + ':-', goal, '_'], this);
+			if(nodes.length == 0) {
+				return false;
+			} else if(nodes.length > 1) {
+				throw Error("Ambiguous goal: " + goal);
+			}
+			var clause = nodes[0].st;
+			var head = clause[1];
+			var body = clause[2];
+			this.resetRegs();
+			if(!this.unifyWrite(head, goal)) {
+				return false;
+			}
+			var func = null;
+			if(nodes[0].builtins) {
+				var mode = this.calcMode();
+				func = nodes[0].builtins[mode];
+			}
+			if(func) {
+				goal = func.apply(this, this.registers.slice(1, this.TR + 1));
+			} else {
+				goal = this.unifyRead(body);
+			}
+		}
 	};
-	this.protect = function(fn) {
-		var s = this.getState();
-		var res = fn();
-		this.setState(s);
-		return res;
+
+	// Add a builtin predicate
+	this.addBuiltin = function(name, arity, modeMap) {
+		var head = [PREFIX + name];
+		for(var i = 1; i <= arity; i++) {
+			head.push({id:i});
+		}
+		var clause = [PREFIX + ':-', head, [PREFIX + 'error', 'Undefined mode for predicate ' + name + '/' + arity]];
+		this.program.store(clause);
+		for(var modeStr in modeMap) {
+			this.program.storeBuiltin(clause, this, modeStrToNum(modeStr), modeMap[modeStr], modeStr.length);
+		}
+	};
+
+	// Calculate the calling mode based on the registers
+	this.calcMode = function() {
+		var mode = 0;
+		for(var i = 1; i <= this.TR; i++) {
+			mode *= 2;
+			var reg = this.registers[i];
+			if(reg != null && !reg.ref) {
+				mode++;
+			}
+		}
+		return mode;
+	};
+
+	// Save the state for a choice point
+	this.saveChoicePoint = function() {
+		var cp = { H: this.H, T: this.T, BH: this.BH};
+		this.BH = this.H;
+		return cp;
+	};
+
+	// Restore a choice-point, recovering tralied values
+	this.restoreChoicePoint = function(cp) {
+		while(this.T > cp.T) {
+			this.T--;
+			this.heap[this.trailRefs[this.T]] = this.trail[this.T];
+		}
+		this.H = cp.H;
+		this.BH = cp.BH;
 	}
 }
 
-function createBuiltins() {
-	return {
-		',': function(first, rest) {
+function modeStrToNum(modeStr) {
+	var mode = 0;
+	for(var i = 0; i < modeStr.length; i++) {
+		mode *= 2;
+		if(modeStr.charAt(i) == 'I') {
+			mode++;
+		}
+	}
+	return mode;
+}
+
+function createBuiltins(det) {
+	det.addBuiltin(',', 2, {
+		'II': function(first, rest) {
 			if(this.call(first))
 				return rest;
 			else
-				return ['fail'];
+				return [FAIL];
 		}
-	};
+	});
+
+	det.addBuiltin('if', 3, {
+		'III': function(cond, then, els) {
+			var cp = this.saveChoicePoint();
+			if(this.call(cond)) {
+				return then;
+			} else {
+				this.restoreChoicePoint(cp);
+				return els;
+			}
+		}
+	});
+
+	det.addBuiltin('error', 1, {
+		'I': function(err) {
+			throw Error(err);
+		}
+	});
+
+	det.addBuiltin('strcat', 3, {
+		'IIO': function(a, b, c) {
+			this.bind(c.ref, a+b);
+			return [TRUE];
+		},
+		'IOI': function(a, b, c) {
+			if(c.substr(0, a.length) == a) {
+				this.bind(b.ref, c.substr(a.length));
+				return [TRUE];
+			} else {
+				return [FAIL];
+			}
+		},
+		'OII': function(a, b, c) {
+			if(c.substr(c.length - b.length) == b) {
+				this.bind(a.ref, c.substr(0, c.length - b.length));
+				return [TRUE];
+			} else {
+				return [FAIL];
+			}
+		}
+	});
+
+	det.addBuiltin('plus', 3, {
+		'IIO': function(a, b, c) {
+			this.bind(c.ref, a+b);
+			return [TRUE];
+		}
+	});
+
+	det.addBuiltin('minus', 3, {
+		'IIO': function(a, b, c) {
+			this.bind(c.ref, a-b);
+			return [TRUE];
+		}
+	});
+
+	det.addBuiltin('mult', 3, {
+		'IIO': function(a, b, c) {
+			this.bind(c.ref, a*b);
+			return [TRUE];
+		}
+	});
+
+	det.addBuiltin('div', 3, {
+		'IIO': function(a, b, c) {
+			this.bind(c.ref, a/b);
+			return [TRUE];
+		}
+	});
+
+	det.addBuiltin('<', 2, {
+		'II': function(a, b) {
+			return (a<b) ? [TRUE] : [FAIL];
+		}
+	});
+
+
+	det.program.store([PREFIX + ':-', [PREFIX + '=', {id:1}, {id:1}], [TRUE]]);
 }
+
