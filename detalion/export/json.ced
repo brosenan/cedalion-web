@@ -1,0 +1,46 @@
+'/bootstrap':defAtom(json::'/bootstrap':type).
+'/bootstrap':signature(stringify(JSON)::'/Functional':expr('/bootstrap':string),[JSON::json]).
+'/bootstrap':signature(str(S)::json,[S::'/bootstrap':string]).
+'/bootstrap':projection(str(S)::json,'/bootstrap':horiz(['/bootstrap':label(!'"'),'/bootstrap':vis(S::'/bootstrap':string),'/bootstrap':label(!'"')])).
+'/bootstrap':adapter(S::'/bootstrap':string,str(S)::json).
+'/Functional':def(stringify(str(S)),'/bootstrap':string,'/Functional':applyBinOp('/Functional':applyBinOp('/Functional':const(!'"'),'/Functional':concat,escape(S)),'/Functional':concat,'/Functional':const(!'"'))).
+'/bootstrap':signature(escape(S)::'/Functional':expr('/bootstrap':string),[S::'/bootstrap':string]).
+'/Functional':def(escape(S),'/bootstrap':string,'/Functional':where('/Functional':const(Esc), (builtin:charCodes(S,Codes),escapeCodes(Codes,EscCodes),builtin:charCodes(Esc,EscCodes)))).
+'/bootstrap':signature(escapeCodes(Codes,EscCodes)::'/bootstrap':pred,[Codes::'/bootstrap':list('/bootstrap':number),EscCodes::'/bootstrap':list('/bootstrap':number)]).
+escapeCodes([],[]):-builtin:true.
+escapeCodes([Code|Codes],[annotation:minComment(92,!backslash),EscCode|EscCodes]):-escapeCode(Code,EscCode),escapeCodes(Codes,EscCodes).
+escapeCodes([Code|Codes],[Code|EscCodes]):- \+escapeCode(Code,_),escapeCodes(Codes,EscCodes).
+'/bootstrap':signature(escapeCode(Code,EscCode)::'/bootstrap':pred,[Code::'/bootstrap':number,EscCode::'/bootstrap':number]).
+annotation:comment((escapeCode(34,34):-builtin:true),!'"').
+annotation:comment((escapeCode(92,92):-builtin:true),!backslash).
+annotation:comment((escapeCode(10,110):-builtin:true),!'LF').
+annotation:comment((escapeCode(13,114):-builtin:true),!'CR').
+'/bootstrap':unitTest('/Functional':eval(stringify(str(!'hello,
+"world"')),'/bootstrap':string,!'"hello,
+"world""')).
+'/bootstrap':signature(array(List)::json,[List::'/bootstrap':list(json)]).
+'/bootstrap':projection(array(List)::json,'/bootstrap':lineBorder('/bootstrap':vis(List::'/bootstrap':list(json)),1,cpi:rgb(192,192,192))).
+'/bootstrap':adapter(List::'/bootstrap':list(json),array(List)::json).
+'/Functional':def(stringify(array(List)),'/bootstrap':string,'/Functional':applyBinOp('/Functional':applyBinOp('/Functional':const(!'['),'/Functional':concat,commaSeparatedList(List)),'/Functional':concat,'/Functional':const(!']'))).
+'/bootstrap':signature(commaSeparatedList(List)::'/Functional':expr('/bootstrap':string),[List::'/bootstrap':list(json)]).
+'/Functional':def(commaSeparatedList([]),'/bootstrap':string,'/Functional':const(!'')).
+'/Functional':def(commaSeparatedList([Elem]),'/bootstrap':string,stringify(Elem)).
+'/Functional':def(commaSeparatedList([First,Second|Rest]),'/bootstrap':string,'/Functional':applyBinOp('/Functional':applyBinOp(stringify(First),'/Functional':concat,'/Functional':const(! (,))),'/Functional':concat,commaSeparatedList([Second|Rest]))).
+'/bootstrap':unitTest('/Functional':eval(stringify(array([str(!hello),str(!world),num(3)])),'/bootstrap':string,!'["hello","world",3]')).
+'/bootstrap':signature(num(Num)::json,[Num::'/bootstrap':number]).
+'/bootstrap':projection(num(Num)::json,'/bootstrap':lineBorder('/bootstrap':vis(Num::'/bootstrap':number),1,cpi:rgb(192,192,192))).
+'/bootstrap':adapter(Num::'/bootstrap':number,num(Num)::json).
+'/Functional':def(stringify(num(Num)),'/bootstrap':string,'/Functional':'num2str'('/Functional':const(Num))).
+'/bootstrap':defAtom(objProp::'/bootstrap':type).
+'/bootstrap':signature(object(List)::json,[List::'/bootstrap':list(objProp)]).
+'/bootstrap':projection(object(List)::json,'/bootstrap':brackets(cpi:vis(List::'/bootstrap':list(objProp),'/bootstrap':horizontal('/bootstrap':label(! (,)),'/bootstrap':label(!''))),123,125)).
+'/bootstrap':alias(object([])::json,!'{}').
+'/Functional':def(stringify(object(List)),'/bootstrap':string,'/Functional':applyBinOp('/Functional':applyBinOp('/Functional':const(!'{'),'/Functional':concat,propertyList(List)),'/Functional':concat,'/Functional':const(!'}'))).
+'/bootstrap':signature(prop(Name,Value)::objProp,[Name::'/bootstrap':string,Value::json]).
+'/bootstrap':projection(prop(Name,Value)::objProp,'/bootstrap':horiz(['/bootstrap':vis(Name::'/bootstrap':string),'/bootstrap':label(! (:)),'/bootstrap':vis(Value::json)])).
+'/bootstrap':adapter(Name::'/bootstrap':string,prop(Name,Value)::objProp).
+'/bootstrap':signature(propertyList(List)::'/Functional':expr('/bootstrap':string),[List::'/bootstrap':list(objProp)]).
+'/Functional':def(propertyList([]),'/bootstrap':string,'/Functional':const(!'')).
+'/Functional':def(propertyList([prop(Name,Value)]),'/bootstrap':string,'/Functional':applyBinOp('/Functional':applyBinOp(stringify(str(Name)),'/Functional':concat,'/Functional':const(! (:))),'/Functional':concat,stringify(Value))).
+'/Functional':def(propertyList([prop(Name,Value),Second|Rest]),'/bootstrap':string,'/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':applyBinOp(stringify(str(Name)),'/Functional':concat,'/Functional':const(! (:))),'/Functional':concat,stringify(Value)),'/Functional':concat,'/Functional':const(! (,))),'/Functional':concat,propertyList([Second|Rest]))).
+'/bootstrap':unitTest('/Functional':eval(stringify(object([prop(!hello,str(!world)),prop(!hola,array([str(!mondi),num(13)]))])),'/bootstrap':string,!'{"hello":"world","hola":["mondi",13]}')).
