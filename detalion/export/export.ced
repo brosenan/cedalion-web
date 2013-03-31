@@ -1,0 +1,3 @@
+'/bootstrap':defAtom(cedalionProgramAsJson::'/bootstrap':set('/bootstrap':string)).
+'/bootstrap':setDef(cedalionProgramAsJson,'/Functional':eset(stringify(JSON), (builtin:loadedStatement(_,Statement,_),'/Functional':eval(termToJson(Statement::'/bootstrap':statement),json,JSON))),'/bootstrap':string).
+'/bootstrap':contextMenuEntry(_::'/bootstrap':list('/bootstrap':statement),_,_,!'Export program as JSON','/bootstrap':generateFileForSet(!'detalion.json.txt',cedalionProgramAsJson)).

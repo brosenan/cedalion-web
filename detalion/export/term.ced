@@ -1,0 +1,8 @@
+'/bootstrap':signature(termToJson(TTerm)::'/Functional':expr(json),[TTerm::'/bootstrap':typedTerm]).
+'/Functional':def(termToJson(TTerm),json,'/Functional':where(saturatedTermToJson(TTermPrime), (builtin:copyTerm(TTerm,TTermPrime),'/bootstrap':saturate(TTermPrime,1,_)))).
+'/bootstrap':signature(saturatedTermToJson(TTerm)::'/Functional':expr(json),[TTerm::'/bootstrap':typedTerm]).
+annotation:shrink('/Functional':def(saturatedTermToJson(TTerm),json,'/Functional':if((TTerm='/bootstrap':'$SAT$'(Num)::_,builtin:number(Num::'/bootstrap':number)),'/Functional':const(object([prop(!id,num(Num))])),'/Functional':if((TTerm=Num::'/bootstrap':number,builtin:number(Num::'/bootstrap':number)),'/Functional':const(num(Num)),'/Functional':if((TTerm=Str::'/bootstrap':string,builtin:string(Str::'/bootstrap':string)),'/Functional':const(str(Str)),'/Functional':where('/Functional':const(array([str(Name)|ArgJson])), ('/bootstrap':safeParseTerm(TTerm,Name,Args),termListToJson(Args,ArgJson)))))))).
+'/bootstrap':signature(termListToJson(Args,ArgJson)::'/bootstrap':pred,[Args::'/bootstrap':list('/bootstrap':typedTerm),ArgJson::'/bootstrap':list(json)]).
+termListToJson([],[]):-builtin:true.
+termListToJson([First|Rest],[FirstJson|RestJson]):-'/Functional':eval(saturatedTermToJson(First),json,FirstJson),termListToJson(Rest,RestJson).
+'/bootstrap':unitTest('/Functional':eval(termToJson(a(X,b(Y,2))::V2),json,array([str(!'/detalion/export#a'),object([prop(!id,num(1))]),array([str(!'/detalion/export#b'),object([prop(!id,num(2))]),num(2)])]))).
