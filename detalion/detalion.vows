@@ -6,54 +6,54 @@ vows.describe('detalion').addBatch({
         topic: new ProgramDatabase(),
 
         'findAllMatches() should retrieve a stored statement': function (db) {
-			db.store([':-', ['a', 'X'], ['b', 'X']]);
-			var matches = db.findAllMatches([':-', ['a', 'X'], 'Y'], new Interpreter(db));
+			db.store(['clause', ['a', 'X'], ['b', 'X']]);
+			var matches = db.findAllMatches(['clause', ['a', 'X'], 'Y'], new Interpreter(db));
             assert.equal(matches.length, 1);
-            assert.deepEqual(matches[0].st, [':-', ['a', 'X'], ['b', 'X']]);
+            assert.deepEqual(matches[0].st, ['clause', ['a', 'X'], ['b', 'X']]);
         },
 		'findAllMatches() should only retrieve matching statements': function(db) {
-			db.store([':-', ['b', 'X'], ['c', 'X']]);
-			var matches = db.findAllMatches([':-', ['a', 'X'], 'Y'], new Interpreter(db));
+			db.store(['clause', ['b', 'X'], ['c', 'X']]);
+			var matches = db.findAllMatches(['clause', ['a', 'X'], 'Y'], new Interpreter(db));
             assert.equal(matches.length, 1);
-            assert.deepEqual(matches[0].st, [':-', ['a', 'X'], ['b', 'X']]);
+            assert.deepEqual(matches[0].st, ['clause', ['a', 'X'], ['b', 'X']]);
 		},
 		'findAllMatches() should provide all that matches' : function(db) {
-			var matches = db.findAllMatches([':-', 'X', 'Y'], new Interpreter(db));
+			var matches = db.findAllMatches(['clause', 'X', 'Y'], new Interpreter(db));
             assert.equal(matches.length, 2);
 		},
 		'findAllMatches() should address the case where the pattern is more specific' : function(db) {
-			var matches = db.findAllMatches([':-', ['a', ['d', 'X']], ['b', 'X']], new Interpreter(db));
+			var matches = db.findAllMatches(['clause', ['a', ['d', 'X']], ['b', 'X']], new Interpreter(db));
             assert.equal(matches.length, 1);
-            assert.deepEqual(matches[0].st, [':-', ['a', 'X'], ['b', 'X']]);
+            assert.deepEqual(matches[0].st, ['clause', ['a', 'X'], ['b', 'X']]);
 		},
 		'findAllMatches() should provide all answers if there are different levels of specificity' : function(db) {
-			db.store([':-', ['a', ['c', 'X']], ['b', 'X']]);
-			var matches = db.findAllMatches([':-', ['a', 'X'], 'Y'], new Interpreter(db));
+			db.store(['clause', ['a', ['c', 'X']], ['b', 'X']]);
+			var matches = db.findAllMatches(['clause', ['a', 'X'], 'Y'], new Interpreter(db));
             assert.equal(matches.length, 2);
-            assert.deepEqual(matches[0].st, [':-', ['a', 'X'], ['b', 'X']]);
-            assert.deepEqual(matches[1].st, [':-', ['a', ['c', 'X']], ['b', 'X']]);
+            assert.deepEqual(matches[0].st, ['clause', ['a', 'X'], ['b', 'X']]);
+            assert.deepEqual(matches[1].st, ['clause', ['a', ['c', 'X']], ['b', 'X']]);
 		},
 		'findMostSpecific() should only return the most specific answer': function(db) {
-			var matches = db.findMostSpecific([':-', ['a', ['c', 'X']], 'Y'], new Interpreter(db));
+			var matches = db.findMostSpecific(['clause', ['a', ['c', 'X']], 'Y'], new Interpreter(db));
             assert.equal(matches.length, 1);
-            assert.deepEqual(matches[0].st, [':-', ['a', ['c', 'X']], ['b', 'X']]);
+            assert.deepEqual(matches[0].st, ['clause', ['a', ['c', 'X']], ['b', 'X']]);
 		},
 		'in a case of a tie, findMostSpecific() should return all answers': function(db) {
-			var matches = db.findMostSpecific([':-', 'X', 'Y'], new Interpreter(db));
+			var matches = db.findMostSpecific(['clause', 'X', 'Y'], new Interpreter(db));
             assert.equal(matches.length, 3);
-            assert.deepEqual(matches[0].st, [':-', ['a', 'X'], ['b', 'X']]);
-            assert.deepEqual(matches[1].st, [':-', ['b', 'X'], ['c', 'X']]);
-            assert.deepEqual(matches[2].st, [':-', ['a', ['c', 'X']], ['b', 'X']]);
+            assert.deepEqual(matches[0].st, ['clause', ['a', 'X'], ['b', 'X']]);
+            assert.deepEqual(matches[1].st, ['clause', ['b', 'X'], ['c', 'X']]);
+            assert.deepEqual(matches[2].st, ['clause', ['a', ['c', 'X']], ['b', 'X']]);
 		},
 		'When there is a generic and a specific answer, findMostSpecific() should return the generic one': function(db) {
-			var matches = db.findMostSpecific([':-', ['a', 'Z'], 'Y'], new Interpreter(db));
+			var matches = db.findMostSpecific(['clause', ['a', 'Z'], 'Y'], new Interpreter(db));
             assert.equal(matches.length, 1);
-            assert.deepEqual(matches[0].st, [':-', ['a', 'X'], ['b', 'X']]);
+            assert.deepEqual(matches[0].st, ['clause', ['a', 'X'], ['b', 'X']]);
 		},
 		'findMostSpecific() should fall back to the more generic match if no specific one is found': function(db) {
-			var matches = db.findMostSpecific([':-', ['a', ['d', 'X']], ['b', 'X']], new Interpreter(db));
+			var matches = db.findMostSpecific(['clause', ['a', ['d', 'X']], ['b', 'X']], new Interpreter(db));
             assert.equal(matches.length, 1);
-            assert.deepEqual(matches[0].st, [':-', ['a', 'X'], ['b', 'X']]);
+            assert.deepEqual(matches[0].st, ['clause', ['a', 'X'], ['b', 'X']]);
 		}
     },
 	'The interpreter': {
@@ -81,9 +81,9 @@ vows.describe('detalion').addBatch({
 	'A simple program': {
 		topic: (function() {
 			var program = new ProgramDatabase();
-			program.store([PREFIX + ':-', ['a', {id: 1}, 'one'], [TRUE]]);
-			program.store([PREFIX + ':-', ['a', ['b'], 'two'], [TRUE]]);
-			program.store([PREFIX + ':-', ['a', ['c'], 'three'], [FAIL]]);
+			program.store([PREFIX + 'clause', ['a', {id: 1}, 'one'], [TRUE]]);
+			program.store([PREFIX + 'clause', ['a', ['b'], 'two'], [TRUE]]);
+			program.store([PREFIX + 'clause', ['a', ['c'], 'three'], [FAIL]]);
 			return new Interpreter(program);
 		})(),
 		'evaluating a(Y, X) should emit X=one': function(det) {
@@ -112,8 +112,8 @@ vows.describe('detalion').addBatch({
 		// concat([A|X], Y, [A|Z]) :- concat(X, Y, Z).
 		topic: (function() {
 			var program = new ProgramDatabase();
-			program.store([PREFIX + ':-', ['concat', ['[]'], {id:1}, {id:1}], [TRUE]]);
-			program.store([PREFIX + ':-', ['concat', ['.', {id:1}, {id:2}], {id:3}, ['.', {id:1}, {id:4}]], 
+			program.store([PREFIX + 'clause', ['concat', ['[]'], {id:1}, {id:1}], [TRUE]]);
+			program.store([PREFIX + 'clause', ['concat', ['.', {id:1}, {id:2}], {id:3}, ['.', {id:1}, {id:4}]], 
 				['concat', {id:2}, {id:3}, {id:4}]]);
 			return new Interpreter(program);
 		})(),
@@ -164,8 +164,8 @@ vows.describe('detalion').addBatch({
 			// p(zero, 0) :- true.
 			// p(s(X), Y) :- p(X, Y1), plus(Y1, 1, Y).
 			var program = new ProgramDatabase();
-			program.store([PREFIX + ':-', ['p', ['zero'], 0], [TRUE]]);
-			program.store([PREFIX + ':-', ['p', ['s', {id:1}], {id:2}], [PREFIX + ',', ['p', {id:1}, {id:3}], [PREFIX+'plus', {id:3}, 1, {id:2}]]]);
+			program.store([PREFIX + 'clause', ['p', ['zero'], 0], [TRUE]]);
+			program.store([PREFIX + 'clause', ['p', ['s', {id:1}], {id:2}], [PREFIX + 'conj', ['p', {id:1}, {id:3}], [PREFIX+'plus', {id:3}, 1, {id:2}]]]);
 			var det = new Interpreter(program);
 			createBuiltins(det);
 			return det;
@@ -193,12 +193,12 @@ vows.describe('detalion').addBatch({
 			//		plus(Y1, Y2, Y)
 			//	).
 			var program = new ProgramDatabase();
-			program.store([PREFIX + ':-', ['fib', {id:1}, {id:2}], [PREFIX + 'if', [PREFIX + '<', {id:1}, 2], 
+			program.store([PREFIX + 'clause', ['fib', {id:1}, {id:2}], [PREFIX + 'if', [PREFIX + 'lt', {id:1}, 2], 
 				[PREFIX + '=', {id:2}, 1],
-				[PREFIX + ',', [PREFIX + 'minus', {id:1}, 1, {id:3}], 
-				[PREFIX + ',', [PREFIX + 'minus', {id:1}, 2, {id:4}], 
-				[PREFIX + ',', ['fib', {id:3}, {id:5}],
-				[PREFIX + ',', ['fib', {id:4}, {id:6}],
+				[PREFIX + 'conj', [PREFIX + 'minus', {id:1}, 1, {id:3}], 
+				[PREFIX + 'conj', [PREFIX + 'minus', {id:1}, 2, {id:4}], 
+				[PREFIX + 'conj', ['fib', {id:3}, {id:5}],
+				[PREFIX + 'conj', ['fib', {id:4}, {id:6}],
 				[PREFIX + 'plus', {id:5}, {id:6}, {id:2}]]]]]]]);
 			var det = new Interpreter(program);
 			createBuiltins(det);

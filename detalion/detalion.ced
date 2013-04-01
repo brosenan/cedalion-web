@@ -1,0 +1,18 @@
+'/bootstrap':defAtom(pred::'/bootstrap':type).
+'/bootstrap':signature(clause(Head,Body)::'/bootstrap':statement,[Head::pred,Body::pred]).
+'/bootstrap':projection(clause(Head,Body)::'/bootstrap':statement,'/bootstrap':horiz(['/bootstrap':vis(Head::pred),'/bootstrap':label(! (:-)),'/bootstrap':vis(Body::pred)])).
+'/bootstrap':defAtom(true::pred).
+'/bootstrap':signature(eq(A,B)::pred,[A::'/bootstrap':typedTerm,B::'/bootstrap':typedTerm]).
+'/bootstrap':projection(eq(A,B)::pred,'/bootstrap':horiz(['/bootstrap':vis(A::'/bootstrap':typedTerm),'/bootstrap':label(! (=)),'/bootstrap':vis(B::'/bootstrap':typedTerm)])).
+clause(eq(A,A),true).
+'/bootstrap':signature(if(Cond,Then,Else)::pred,[Cond::pred,Then::pred,Else::pred]).
+'/bootstrap':projection(if(Cond,Then,Else)::pred,'/bootstrap':vert(['/bootstrap':horiz(['/bootstrap':label(!if),'/bootstrap':vis(Cond::pred)]),'/bootstrap':horiz(['/bootstrap':label(!'    '),'/bootstrap':vis(Then::pred)]),'/bootstrap':label(!else),'/bootstrap':horiz(['/bootstrap':label(!'    '),'/bootstrap':vis(Else::pred)])])).
+'/bootstrap':signature(lt(X,Y)::pred,[X::'/bootstrap':number,Y::'/bootstrap':number]).
+'/bootstrap':projection(lt(X,Y)::pred,'/bootstrap':horiz(['/bootstrap':vis(X::'/bootstrap':number),'/bootstrap':label(! (<)),'/bootstrap':vis(Y::'/bootstrap':number)])).
+'/bootstrap':signature(conj(G1,G2)::pred,[G1::pred,G2::pred]).
+'/bootstrap':projection(conj(G1,G2)::pred,'/bootstrap':vert(['/bootstrap':horiz(['/bootstrap':vis(G1::pred),'/bootstrap':label(! (,))]),'/bootstrap':vis(G2::pred)])).
+'/bootstrap':alias(conj(G1,G2)::pred,! (,)).
+'/bootstrap':signature(minus(A,B,C)::pred,[A::'/bootstrap':number,B::'/bootstrap':number,C::'/bootstrap':number]).
+'/bootstrap':signature(plus(A,B,C)::pred,[A::'/bootstrap':number,B::'/bootstrap':number,C::'/bootstrap':number]).
+'/bootstrap':signature(test:fib(X,Y)::pred,[X::'/bootstrap':number,Y::'/bootstrap':number]).
+clause(test:fib(X,Y),if(lt(X,2),eq(Y::'/bootstrap':number,1::'/bootstrap':number),conj(minus(X,1,X1),conj(test:fib(X1,Y1),conj(minus(X,2,X2),conj(test:fib(X2,Y2),plus(Y1,Y2,Y))))))).

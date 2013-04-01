@@ -2,7 +2,7 @@ var HEAP_SIZE = 64000;
 var TRAIL_SIZE = 1024;
 var NUM_REG = 17;
 //var PREFIX = 'detalion#';
-var PREFIX = '#';
+var PREFIX = '/detalion#';
 var TRUE = PREFIX + 'true';
 var FAIL = PREFIX + 'fail';
 
@@ -268,7 +268,7 @@ console.log(goal);
 					return false;
 				}
 			}
-			var nodes = this.program.findMostSpecific([PREFIX + ':-', goal, '_'], this);
+			var nodes = this.program.findMostSpecific([PREFIX + 'clause', goal, '_'], this);
 			if(nodes.length == 0) {
 				return false;
 			} else if(nodes.length > 1) {
@@ -300,7 +300,7 @@ console.log(goal);
 		for(var i = 1; i <= arity; i++) {
 			head.push({id:i});
 		}
-		var clause = [PREFIX + ':-', head, [PREFIX + 'error', 'Undefined mode for predicate ' + name + '/' + arity]];
+		var clause = [PREFIX + 'clause', head, [PREFIX + 'error', 'Undefined mode for predicate ' + name + '/' + arity]];
 		this.program.store(clause);
 		for(var modeStr in modeMap) {
 			this.program.storeBuiltin(clause, this, modeStrToNum(modeStr), modeMap[modeStr], modeStr.length);
@@ -350,7 +350,7 @@ function modeStrToNum(modeStr) {
 }
 
 function createBuiltins(det) {
-	det.addBuiltin(',', 2, {
+	det.addBuiltin('conj', 2, {
 		'II': function(first, rest) {
 			if(this.call(first))
 				return rest;
@@ -428,13 +428,13 @@ function createBuiltins(det) {
 		}
 	});
 
-	det.addBuiltin('<', 2, {
+	det.addBuiltin('lt', 2, {
 		'II': function(a, b) {
 			return (a<b) ? [TRUE] : [FAIL];
 		}
 	});
 
 
-	det.program.store([PREFIX + ':-', [PREFIX + '=', {id:1}, {id:1}], [TRUE]]);
+	det.program.store([PREFIX + 'clause', [PREFIX + '=', {id:1}, {id:1}], [TRUE]]);
 }
 
