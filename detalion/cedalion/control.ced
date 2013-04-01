@@ -3,3 +3,8 @@
 '/detalion':clause(cedalion(builtin:fail,_,_,_),'/detalion':fail).
 '/detalion':clause(cedalion(builtin:if(Cond,Then,Else),Term,Type,Result),'/detalion':if(cedalion(Cond,Then,'/bootstrap':pred,[ThenPrime|_]),cedalion(ThenPrime,Term,Type,Result),cedalion(Else,Term,Type,Result))).
 '/detalion':clause(cedalion(A=B,Term,Type,[Term]),'/detalion':eq(A,B)).
+'/detalion':clause(cedalion(builtin:compound(TTerm),Term,Type,[Term]),'/detalion':compound(TTerm)).
+'/detalion':clause(cedalion(builtin:var(TTerm),Term,Type,[Term]),'/detalion':var(TTerm)).
+'/detalion':clause(cedalion(builtin:string(TTerm),Term,Type,[Term]),'/detalion':string(TTerm)).
+'/detalion':clause(cedalion(builtin:number(TTerm),Term,Type,[Term]),'/detalion':number(TTerm)).
+'/detalion':clause(cedalion(\+G,Term,Type,[Term]),'/detalion':if(cedalion(G,_,_,_),'/detalion':fail,'/detalion':true)).

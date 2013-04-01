@@ -1,0 +1,22 @@
+[app] detalion = ...
+[app] program = ...
+[DBG] [cedalion] ["/detalion/cedalion#test",{"ref":2}]
+[DBG] [cedalion] ["/Functional#eval",["/Functional#applyBinOpList",["/Functional#const",["[]"]],["/Functional#numPlus"],["/Functional#const",["[]"]]],["/bootstrap#list",["/bootstrap#number"]],{"ref":2}]
+[DBG] [cedalion] ["/detalion/export#statement",["/Functional#def",["/Functional#applyBinOpList",["/Functional#const",["[]"]],["/Functional#numPlus"],["/Functional#const",["[]"]]],["/bootstrap#list",["/bootstrap#number"]],{"ref":14}]]
+[DBG] [cedalion] ["/Functional#eval",["/Functional#where",["/Functional#const",["[]"]],[",",["/Functional#eval",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],["[]"]],["/Functional#eval",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],["[]"]]]],["/bootstrap#list",["/bootstrap#number"]],{"ref":2}]
+[DBG] [cedalion] ["/detalion/export#statement",["/Functional#def",["/Functional#where",["/Functional#const",["[]"]],[",",["/Functional#eval",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],["[]"]],["/Functional#eval",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],["[]"]]]],["/bootstrap#list",["/bootstrap#number"]],{"ref":52}]]
+[DBG] [cedalion] ["/Functional#eval",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],["[]"]]
+[DBG] [cedalion] ["/detalion/export#statement",["/Functional#def",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],{"ref":74}]]
+[DBG] [cedalion] ["/Functional#eval",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],["[]"]]
+[DBG] [cedalion] ["/detalion/export#statement",["/Functional#def",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],{"ref":91}]]
+[DBG] [cedalion] ["/Functional#eval",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],{"ref":2}]
+[DBG] [cedalion] ["/detalion/export#statement",["/Functional#def",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],{"ref":95}]]
+[DBG] [cedalion] ["/Functional#eval",["/Functional#where",["/Functional#const",[".",{"ref":27},{"ref":28}]],[",",["/Functional#eval",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],[".",{"ref":29},{"ref":30}]],[",",["/Functional#eval",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],[".",{"ref":31},{"ref":32}]],[",",["/Functional#eval",["/Functional#applyBinOpList",["/Functional#const",{"ref":30}],["/Functional#numPlus"],["/Functional#const",{"ref":32}]],["/bootstrap#list",["/bootstrap#number"]],{"ref":28}],["/Functional#eval",["/Functional#applyBinOp",["/Functional#const",{"ref":29}],["/Functional#numPlus"],["/Functional#const",{"ref":31}]],["/bootstrap#number"],{"ref":27}]]]]],["/bootstrap#list",["/bootstrap#number"]],{"ref":2}]
+[DBG] [cedalion] ["/detalion/export#statement",["/Functional#def",["/Functional#where",["/Functional#const",[".",{"ref":27},{"ref":28}]],[",",["/Functional#eval",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],[".",{"ref":29},{"ref":30}]],[",",["/Functional#eval",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],[".",{"ref":31},{"ref":32}]],[",",["/Functional#eval",["/Functional#applyBinOpList",["/Functional#const",{"ref":30}],["/Functional#numPlus"],["/Functional#const",{"ref":32}]],["/bootstrap#list",["/bootstrap#number"]],{"ref":28}],["/Functional#eval",["/Functional#applyBinOp",["/Functional#const",{"ref":29}],["/Functional#numPlus"],["/Functional#const",{"ref":31}]],["/bootstrap#number"],{"ref":27}]]]]],["/bootstrap#list",["/bootstrap#number"]],{"ref":54}]]
+[DBG] [cedalion] ["/Functional#eval",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],[".",{"ref":29},{"ref":30}]]
+[DBG] [cedalion] ["/detalion/export#statement",["/Functional#def",["/Functional#const",["[]"]],["/bootstrap#list",["/bootstrap#number"]],{"ref":76}]]
+fib emitted [".",["[]"],["[]"]]
+[86] Running unit test: ["/javascript/optimization#concatGoals",[",",["builtin#true"],{"ref":10}],[",",["builtin#fail"],{"ref":11}],[",",["builtin#true"],[",",{"ref":10},[",",["builtin#fail"],{"ref":11}]]]]
+[DBG] [cedalion] ["/javascript/optimization#concatGoals",[",",["builtin#true"],{"ref":10}],[",",["builtin#fail"],{"ref":11}],[",",["builtin#true"],[",",{"ref":10},[",",["builtin#fail"],{"ref":11}]]]]
+[DBG] [cedalion] ["\\+",["builtin#var",["::",[",",["builtin#true"],{"ref":10}],["/bootstrap#pred"]]]]
+[86] FAIL

@@ -1,3 +1,6 @@
 '/detalion':clause(cedalion(builtin:plus(A,B,C),Term,Type,[Term]),'/detalion':plus(A,B,C)).
 '/detalion':clause(cedalion(builtin:minus(A,B,C),Term,Type,[Term]),'/detalion':minus(A,B,C)).
 '/detalion':clause(cedalion(builtin:greaterThen(A,B),Term,Type,[Term]),'/detalion':lt(B,A)).
+'/detalion':clause(cedalion(A>B,Term,Type,[Term]),'/detalion':lt(B,A)).
+'/detalion':clause(cedalion(builtin:strcat(A,B,C),Term,Type,[Term]),'/detalion':strcat(A,B,C)).
+'/detalion':clause(cedalion(builtin:strrep(Src,Rep,With,Tgt),Term,Type,[Term]),'/detalion':strrep(Src,Rep,With,Tgt)).

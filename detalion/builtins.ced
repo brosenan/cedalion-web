@@ -3,3 +3,9 @@
 '/bootstrap':signature(copyTerm(Src,Tgt,Type)::pred,[Src::Type,Tgt::Type,Type::'/bootstrap':type]).
 '/bootstrap':defAtom(fail::pred).
 '/bootstrap':signature(debug(Name,Value)::pred,[Name::'/bootstrap':string,Value::'/bootstrap':typedTerm]).
+'/bootstrap':signature(strcat(A,B,C)::pred,[A::'/bootstrap':string,B::'/bootstrap':string,C::'/bootstrap':string]).
+'/bootstrap':signature(strrep(Src,Rep,With,Tgt)::pred,[Src::'/bootstrap':string,Rep::'/bootstrap':string,With::'/bootstrap':string,Tgt::'/bootstrap':string]).
+'/bootstrap':signature(compound(TTerm)::pred,[TTerm::'/bootstrap':typedTerm]).
+'/bootstrap':signature(var(TTerm)::pred,[TTerm::'/bootstrap':typedTerm]).
+'/bootstrap':signature(string(TTerm)::pred,[TTerm::'/bootstrap':typedTerm]).
+'/bootstrap':signature(number(TTerm)::pred,[TTerm::'/bootstrap':typedTerm]).

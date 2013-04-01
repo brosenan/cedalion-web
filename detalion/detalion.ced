@@ -16,3 +16,4 @@ clause(eq(A,A),true).
 '/bootstrap':signature(plus(A,B,C)::pred,[A::'/bootstrap':number,B::'/bootstrap':number,C::'/bootstrap':number]).
 '/bootstrap':signature(test:fib(X,Y)::pred,[X::'/bootstrap':number,Y::'/bootstrap':number]).
 clause(test:fib(X,Y),if(lt(X,2),eq(Y::'/bootstrap':number,1::'/bootstrap':number),conj(minus(X,1,X1),conj(test:fib(X1,Y1),conj(minus(X,2,X2),conj(test:fib(X2,Y2),plus(Y1,Y2,Y))))))).
+'/bootstrap':signature(statement(S,File,VarNames)::'/bootstrap':statement,[S::'/bootstrap':statement,File::'/bootstrap':string,VarNames::'/bootstrap':list('/bootstrap':varName)]).

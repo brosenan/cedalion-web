@@ -405,9 +405,12 @@ function createBuiltins(det) {
 	det.addBuiltin('if', 3, {
 		'III': function(cond, then, els) {
 			var cp = this.createChoicePoint();
+//console.log('if condition');
 			if(this.call(cond)) {
+//console.log('if true');
 				return then;
 			} else {
+//console.log('if false');
 				this.rollbackChoicePoint(cp);
 				return els;
 			}
@@ -440,6 +443,9 @@ function createBuiltins(det) {
 			} else {
 				return [FAIL];
 			}
+		},
+		'III': function(a, b, c) {
+			return (a + b == c) ? [TRUE] : [FAIL];
 		}
 	});
 
@@ -447,7 +453,10 @@ function createBuiltins(det) {
 		'IIO': function(a, b, c) {
 			this.bind(c.ref, a+b);
 			return [TRUE];
-		}
+		},
+		'III': function(a, b, c) {
+			return (a + b == c) ? [TRUE] : [FAIL];
+		},
 	});
 
 	det.addBuiltin('minus', 3, {
@@ -480,8 +489,10 @@ function createBuiltins(det) {
 	det.addBuiltin('findAllMatches', 2, {
 		'IO': function(pattern, matches) {
 			var det = this;
-			this.resetRegs();
-			var matchArray = this.program.findAllMatches(pattern, this).map(function(x) {return det.unifyRead(x.st);});
+			var matchArray = this.program.findAllMatches(pattern, this).map(function(x) {
+				det.resetRegs();
+				return det.unifyRead(x.st);
+			});
 			this.bind(matches.ref, this.arrayToList(matchArray));
 			return [TRUE];
 		}
@@ -522,6 +533,40 @@ function createBuiltins(det) {
 		'II': function(title, value) {
 			console.log("[DBG] [" + title + "] " + JSON.stringify(this.deepDeref(value[1])));
 			return [TRUE];
+		},
+	});
+
+	det.addBuiltin('strrep', 4, {
+		'IIIO': function(src, rep, to, tgt) {
+			this.bind(tgt.ref, src.replace(rep, to));
+			return [TRUE];
+		},
+		'IIII': function(src, rep, to, tgt) {
+			return (src.replace(rep, to) == tgt) ? [TRUE] : [FAIL];
+		},
+	});
+
+	det.addBuiltin('compound', 1, {
+		'I': function(tterm) {
+			return Array.isArray(tterm[1]) ? [TRUE] : [FAIL];
+		},
+	});
+
+	det.addBuiltin('var', 1, {
+		'I': function(tterm) {
+			return this.deepDeref(tterm[1]).ref ? [TRUE] : [FAIL];
+		},
+	});
+
+	det.addBuiltin('string', 1, {
+		'I': function(tterm) {
+			return typeof(this.deepDeref(tterm[1])) == 'string' ? [TRUE] : [FAIL];
+		},
+	});
+
+	det.addBuiltin('number', 1, {
+		'I': function(tterm) {
+			return typeof(this.deepDeref(tterm[1])) == 'number' ? [TRUE] : [FAIL];
 		},
 	});
 

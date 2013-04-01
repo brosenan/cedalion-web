@@ -22,13 +22,12 @@ app.on(["detalion", "program"], function() {
 	}
 	console.log('fib emitted ' + JSON.stringify(det.deref(Y)));*/
 
-/*	var X = det.heapAllocate();
+	var X = det.heapAllocate();
 	var Y = det.heapAllocate();
 	if(!det.call(['/detalion/cedalion#cedalion', ['/detalion/cedalion#test', Y], Y, ['/bootstrap#number'], X])) {
 		console.error('Cedalion fib failed');
 	}
 	console.log('fib emitted ' + JSON.stringify(det.deepDeref(X)));
-*/
 
 
 /*	var L = det.heapAllocate();
@@ -39,13 +38,13 @@ app.on(["detalion", "program"], function() {
 	console.log('map emitted ' + JSON.stringify(det.deepDeref(L)));
 */	
 
-	var X = det.heapAllocate();
+/*	var X = det.heapAllocate();
 	var Y = det.heapAllocate();
-	if(!det.call(['/detalion/cedalion#cedalion', ['/detalion/cedalion#fib2', 12, Y], Y, ['/bootstrap#number'], X])) {
+	if(!det.call(['/detalion/cedalion#cedalion', ['/detalion/cedalion#fib2', 20, Y], Y, ['/bootstrap#number'], X])) {
 		console.error('Cedalion fib failed');
 	}
-	console.log('fib emitted ' + JSON.stringify(det.deepDeref(X)));
-
+	console.log('fib emitted ' + JSON.stringify(det.listToArray(det.deepDeref(X))));
+*/
 /*	var X = det.heapAllocate();
 	var Y = det.heapAllocate();
 	if(!det.call(['/detalion/cedalion#cedalion', ['/detalion/cedalion#toPeano', 2, Y], Y, ['/bootstrap#number'], X])) {
@@ -53,5 +52,25 @@ app.on(["detalion", "program"], function() {
 	}
 	console.log('fib emitted ' + JSON.stringify(det.deepDeref(X)));
 */
+
+	{
+		var unitTests = det.program.findAllMatches([":-",["/detalion/export#statement",["/bootstrap#unitTest", '_']], '_'], det).map(function(x) {
+			return x.st[1][1][1];
+		});
+		var num = 0;
+		unitTests.forEach(function(x) {
+			num++;
+			if(num != 86) return;
+			var cp = det.createChoicePoint();
+			det.resetRegs();
+			x = det.unifyRead(x);
+			var L = det.heapAllocate();
+			console.log('[' + num + '] Running unit test: ' + JSON.stringify(x));
+			var success = det.call(['/detalion/cedalion#cedalion', x, 'PASS', ['/bootstrap#string'], L]);
+			console.log('[' + num + '] ' + (success ? "PASS" : "FAIL"));
+			det.rollbackChoicePoint(cp);
+		});
+		
+	}
 	
 });
