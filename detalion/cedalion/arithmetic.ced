@@ -1,0 +1,3 @@
+'/detalion':clause(cedalion(builtin:plus(A,B,C),Term,Type,[Term]),'/detalion':plus(A,B,C)).
+'/detalion':clause(cedalion(builtin:minus(A,B,C),Term,Type,[Term]),'/detalion':minus(A,B,C)).
+'/detalion':clause(cedalion(builtin:greaterThen(A,B),Term,Type,[Term]),'/detalion':lt(B,A)).

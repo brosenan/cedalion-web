@@ -215,10 +215,12 @@ function Interpreter(program) {
 		term1 = this.deref(term1);
 		term2 = this.deref(term2);
 		if(term1.ref) {
+//console.log('binding ' + term1.ref + ' <- ' + JSON.stringify(this.deepDeref(term2)));
 			this.bind(term1.ref, term2);
 			return true;
 		}
 		if(term2.ref) {
+//console.log('binding ' + term2.ref + ' <- ' + JSON.stringify(this.deepDeref(term1)));
 			this.bind(term2.ref, term1);
 			return true;
 		}
@@ -260,7 +262,7 @@ function Interpreter(program) {
 	// The interpreter
 	this.call = function(goal) {
 		while(true) {
-console.log(goal);
+console.log(this.deepDeref(goal));
 			if(goal.length == 1) {
 				if(goal[0] == TRUE) {
 					return true;
@@ -272,7 +274,7 @@ console.log(goal);
 			if(nodes.length == 0) {
 				return false;
 			} else if(nodes.length > 1) {
-				throw Error("Ambiguous goal: " + goal);
+				throw Error("Ambiguous goal: " + JSON.stringify(goal));
 			}
 			var clause = nodes[0].st;
 			var head = clause[1];
@@ -284,6 +286,7 @@ console.log(goal);
 			var func = null;
 			if(nodes[0].builtins) {
 				var mode = this.calcMode();
+//console.log(mode);
 				func = nodes[0].builtins[mode];
 			}
 			if(func) {
@@ -321,14 +324,14 @@ console.log(goal);
 	};
 
 	// Save the state for a choice point
-	this.saveChoicePoint = function() {
+	this.createChoicePoint = function() {
 		var cp = { H: this.H, T: this.T, BH: this.BH};
 		this.BH = this.H;
 		return cp;
 	};
 
 	// Restore a choice-point, recovering tralied values
-	this.restoreChoicePoint = function(cp) {
+	this.rollbackChoicePoint = function(cp) {
 		while(this.T > cp.T) {
 			this.T--;
 			this.heap[this.trailRefs[this.T]] = this.trail[this.T];
@@ -336,6 +339,46 @@ console.log(goal);
 		this.H = cp.H;
 		this.BH = cp.BH;
 	}
+
+	// Convert an array to a list
+	this.arrayToList = function(array) {
+		var list = ['[]'];
+		for(var i = array.length - 1; i >= 0; i--) {
+			list = ['.', array[i], list];
+		}
+		return list;
+	};
+
+	// Convert a list to an array
+	this.listToArray = function(list) {
+		var array = [];
+		while(list.length == 3) {
+			array.push(list[1]);
+			list = list[2];
+		}
+		return array;
+	};
+
+	// Create a duplicate of a term, using fresh heap variables to replace all existing variables
+	this.copyTerm = function(term, map) {
+		map = map || {};
+		term = this.deref(term);
+		if(term.ref) {
+			if(!map[term.ref]) {
+				map[term.ref] = this.heapAllocate();
+			}
+			return map[term.ref];
+		} else if(Array.isArray(term)) {
+			var newTerm = Array(term.length);
+			newTerm[0] = term[0];
+			for(var i = 1; i < term.length; i++) {
+				newTerm[i] = this.copyTerm(term[i], map);
+			}
+			return newTerm;
+		} else {
+			return term;
+		}
+	};
 }
 
 function modeStrToNum(modeStr) {
@@ -361,11 +404,11 @@ function createBuiltins(det) {
 
 	det.addBuiltin('if', 3, {
 		'III': function(cond, then, els) {
-			var cp = this.saveChoicePoint();
+			var cp = this.createChoicePoint();
 			if(this.call(cond)) {
 				return then;
 			} else {
-				this.restoreChoicePoint(cp);
+				this.rollbackChoicePoint(cp);
 				return els;
 			}
 		}
@@ -434,6 +477,53 @@ function createBuiltins(det) {
 		}
 	});
 
+	det.addBuiltin('findAllMatches', 2, {
+		'IO': function(pattern, matches) {
+			var det = this;
+			this.resetRegs();
+			var matchArray = this.program.findAllMatches(pattern, this).map(function(x) {return det.unifyRead(x.st);});
+			this.bind(matches.ref, this.arrayToList(matchArray));
+			return [TRUE];
+		}
+	});
+
+	det.addBuiltin('copyTerm', 3, {
+		'IOI': function(source, target, type) {
+			this.bind(target.ref, this.copyTerm(source));
+			return [TRUE];
+		},
+		'III': function(source, target, type) {
+			return this.unify(target, this.copyTerm(source)) ? [TRUE] : [FAIL];
+		}
+	});
+
+	function evalPred(goal, term, type, result) {
+		var cp = this.createChoicePoint();
+		var status = [FAIL];
+		if(this.call(goal)) {
+			var tmp = this.deepDeref(term);
+//console.log(tmp);
+//console.log(this.deepDeref(goal));
+			this.rollbackChoicePoint(cp);
+			this.bind(result.ref, tmp);
+			status = [TRUE];
+		} else {
+			this.rollbackChoicePoint(cp);
+		}
+		return status;
+	}
+
+	det.addBuiltin('eval', 4, {
+		'IIIO': evalPred,
+		'IOIO': evalPred,
+	});
+
+	det.addBuiltin('debug', 2, {
+		'II': function(title, value) {
+			console.log("[DBG] [" + title + "] " + JSON.stringify(this.deepDeref(value[1])));
+			return [TRUE];
+		},
+	});
 
 	det.program.store([PREFIX + 'clause', [PREFIX + '=', {id:1}, {id:1}], [TRUE]]);
 }

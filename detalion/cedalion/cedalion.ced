@@ -1,0 +1,18 @@
+'/bootstrap':signature(cedalion(Goal,Term,T,L)::'/detalion':pred,[Goal::'/bootstrap':pred,Term::T,T::'/bootstrap':type,L::'/bootstrap':list(T)]).
+'/detalion':clause(cedalion(Goal,Term,T,L),'/detalion':conj('/detalion':findAllMatches((Goal:-_),Matches),'/detalion':conj(clauseToBodyGoal(Matches,Goal,Term,T,L2,L1),'/detalion':conj(evalList(L2,L1,'/bootstrap':list(T),L3),'/detalion':conj(concatAll(L3,L,T),'/detalion':eq(L::'/bootstrap':list(T),[_|_]::'/bootstrap':list(T))))))).
+annotation:shrink('/bootstrap':signature(map(List1,Elem1,T1,List2,Elem2,T2)::'/detalion':pred,[List1::'/bootstrap':list(T1),Elem1::T1,T1::'/bootstrap':type,List2::'/bootstrap':list(T2),Elem2::T2,T2::'/bootstrap':type])).
+annotation:shrink('/bootstrap':projection(map(List1,Elem1,T1,List2,Elem2,T2)::'/detalion':pred,'/bootstrap':horiz(['/bootstrap':label(!'map:'),'/bootstrap':vis(Elem1::T1),'/bootstrap':halfSize('/bootstrap':horiz(['/bootstrap':label(! (::)),'/bootstrap':vis(T1::'/bootstrap':type)])),'/bootstrap':symbol(8712),'/bootstrap':vis(List1::'/bootstrap':list(T1)),'/bootstrap':symbol(8658),'/bootstrap':vis(Elem2::T2),'/bootstrap':halfSize('/bootstrap':horiz(['/bootstrap':label(! (::)),'/bootstrap':vis(T2::'/bootstrap':type)])),'/bootstrap':symbol(8712),'/bootstrap':vis(List2::'/bootstrap':list(T2))]))).
+'/detalion':clause(map([],_,_,[],_,_),'/detalion':true).
+'/detalion':clause(map([E1Prime|L1],E1,T1,[E2Prime|L2],E2,T2),'/detalion':conj('/detalion':copyTerm('/Functional':pair(E1,E2),'/Functional':pair(E1Prime,E2Prime),'/Functional':pairType(T1,T2)),map(L1,E1,T1,L2,E2,T2))).
+'/bootstrap':signature(evalList(Goals,Term,Type,List)::'/detalion':pred,[Goals::'/bootstrap':list('/detalion':pred),Term::Type,Type::'/bootstrap':type,List::'/bootstrap':list(Type)]).
+'/detalion':clause(evalList([],_,_,[]),'/detalion':true).
+'/detalion':clause(evalList([First|Rest],Term,Type,List),'/detalion':conj('/detalion':if('/detalion':eval(First,Term,Type,Result),'/detalion':eq(List::'/bootstrap':list(Type),[Result|ListPrime]::'/bootstrap':list(Type)),'/detalion':eq(List::'/bootstrap':list(Type),ListPrime::'/bootstrap':list(Type))),evalList(Rest,Term,Type,ListPrime))).
+'/bootstrap':signature(concatAll(LoL,L,T)::'/detalion':pred,[LoL::'/bootstrap':list('/bootstrap':list(T)),L::'/bootstrap':list(T),T::'/bootstrap':type]).
+'/detalion':clause(concatAll([],[],_),'/detalion':true).
+'/detalion':clause(concatAll([L1|LoL],L,T),'/detalion':conj(concatAll(LoL,L2,T),conc(L1,L2,L,T))).
+'/bootstrap':signature(conc(L1,L2,L,T)::'/detalion':pred,[L1::'/bootstrap':list(T),L2::'/bootstrap':list(T),L::'/bootstrap':list(T),T::'/bootstrap':type]).
+'/detalion':clause(conc([],X,X,_),'/detalion':true).
+'/detalion':clause(conc([A|X],Y,[A|Z],T),conc(X,Y,Z,T)).
+'/bootstrap':signature(clauseToBodyGoal(Matches,Goal,Term,T,BodyGoals,Target)::'/detalion':pred,[Matches::'/bootstrap':list('/bootstrap':statement),Goal::'/bootstrap':pred,Term::T,T::'/bootstrap':type,BodyGoals::'/bootstrap':list('/detalion':pred),Target::'/bootstrap':list(T)]).
+'/detalion':clause(clauseToBodyGoal([],_,_,_,[],_),'/detalion':true).
+'/detalion':clause(clauseToBodyGoal([ (GoalPrime:-Body)|Clauses],Goal,Term,T,BodyGoals,Target),'/detalion':conj('/detalion':if('/detalion':eq(GoalPrime::'/bootstrap':pred,Goal::'/bootstrap':pred),'/detalion':eq(BodyGoals::'/bootstrap':list('/detalion':pred),[cedalion(Body,Term,T,Target)|RestBodyGoals]::'/bootstrap':list('/detalion':pred)),'/detalion':eq(BodyGoals::'/bootstrap':list('/detalion':pred),RestBodyGoals::'/bootstrap':list('/detalion':pred))),clauseToBodyGoal(Clauses,Goal,Term,T,RestBodyGoals,Target))).

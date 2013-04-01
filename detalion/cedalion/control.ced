@@ -1,0 +1,5 @@
+'/detalion':clause(cedalion((G1,G2),Term,Type,Result),'/detalion':conj(cedalion(G1,cedalion(G2,Term,Type,Results),'/detalion':pred,Goals),'/detalion':conj(evalList(Goals,Results,'/bootstrap':list(Type),LoResults),concatAll(LoResults,Result,Type)))).
+'/detalion':clause(cedalion(builtin:true,Term,Type,[Term]),'/detalion':true).
+'/detalion':clause(cedalion(builtin:fail,_,_,_),'/detalion':fail).
+'/detalion':clause(cedalion(builtin:if(Cond,Then,Else),Term,Type,Result),'/detalion':if(cedalion(Cond,Then,'/bootstrap':pred,[ThenPrime|_]),cedalion(ThenPrime,Term,Type,Result),cedalion(Else,Term,Type,Result))).
+'/detalion':clause(cedalion(A=B,Term,Type,[Term]),'/detalion':eq(A,B)).

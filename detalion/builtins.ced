@@ -1,0 +1,5 @@
+'/bootstrap':signature(findAllMatches(Prototype,Matches)::pred,[Prototype::'/bootstrap':statement,Matches::'/bootstrap':list('/bootstrap':statement)]).
+'/bootstrap':signature(eval(Goal,Term,Type,Result)::pred,[Goal::pred,Term::Type,Type::'/bootstrap':type,Result::Type]).
+'/bootstrap':signature(copyTerm(Src,Tgt,Type)::pred,[Src::Type,Tgt::Type,Type::'/bootstrap':type]).
+'/bootstrap':defAtom(fail::pred).
+'/bootstrap':signature(debug(Name,Value)::pred,[Name::'/bootstrap':string,Value::'/bootstrap':typedTerm]).

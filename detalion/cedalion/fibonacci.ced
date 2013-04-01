@@ -1,0 +1,12 @@
+'/bootstrap':defAtom(peano::'/bootstrap':type).
+'/bootstrap':defAtom(zero::peano).
+'/bootstrap':signature(s(P)::peano,[P::peano]).
+'/bootstrap':signature(fib(P,N)::'/bootstrap':pred,[P::peano,N::'/bootstrap':number]).
+fib(zero,0):-builtin:true.
+fib(s(zero),1):-builtin:true.
+fib(s(s(X)),N):-fib(X,N1),fib(s(X),N2),builtin:plus(N1,N2,N).
+'/bootstrap':signature(toPeano(N,P)::'/bootstrap':pred,[N::'/bootstrap':number,P::peano]).
+toPeano(N,P):-builtin:if(builtin:greaterThen(N,0), (builtin:minus(N,1,N1),toPeano(N1,P1),P::peano=s(P1)::peano),P::peano=zero::peano).
+'/bootstrap':signature('fib2'(N,Fib)::'/bootstrap':pred,[N::'/bootstrap':number,Fib::'/bootstrap':number]).
+'fib2'(N,Fib):-toPeano(N,P),fib(P,Fib).
+test(1):-builtin:true.
