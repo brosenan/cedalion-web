@@ -9,4 +9,4 @@ fib(s(s(X)),N):-fib(X,N1),fib(s(X),N2),builtin:plus(N1,N2,N).
 toPeano(N,P):-builtin:if(builtin:greaterThen(N,0), (builtin:minus(N,1,N1),toPeano(N1,P1),P::peano=s(P1)::peano),P::peano=zero::peano).
 '/bootstrap':signature('fib2'(N,Fib)::'/bootstrap':pred,[N::'/bootstrap':number,Fib::'/bootstrap':number]).
 'fib2'(N,Fib):-toPeano(N,P),fib(P,Fib).
-test(X):-'/Functional':eval('/Functional':applyBinOpList('/Functional':const([]),'/Functional':numPlus,'/Functional':const([])),'/bootstrap':list('/bootstrap':number),X).
+test(!yes):-'/Functional':eval('/Functional':max('/Functional':wrap(55),'/Functional':wrap(20)),'/bootstrap':number,12).

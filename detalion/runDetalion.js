@@ -60,13 +60,13 @@ app.on(["detalion", "program"], function() {
 		var num = 0;
 		unitTests.forEach(function(x) {
 			num++;
-			//if(num != 86) return;
+			//if(num != 12) return;
 			var cp = det.createChoicePoint();
 			det.resetRegs();
 			x = det.unifyRead(x);
 			var L = det.heapAllocate();
 			console.log('[' + num + '] Running unit test: ' + JSON.stringify(x));
-			var success = det.call(['/detalion/cedalion#cedalion', x, 'PASS', ['/bootstrap#string'], L]);
+			var success = det.call(['/detalion/cedalion#cedalion', x, ['/detalion/cedalion#dummyInst'], ['/bootstrap#number'], L]);
 			console.log('[' + num + '] ' + (success ? "PASS" : "FAIL"));
 			det.rollbackChoicePoint(cp);
 		});

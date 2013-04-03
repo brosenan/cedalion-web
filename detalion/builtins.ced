@@ -9,3 +9,6 @@
 '/bootstrap':signature(var(TTerm)::pred,[TTerm::'/bootstrap':typedTerm]).
 '/bootstrap':signature(string(TTerm)::pred,[TTerm::'/bootstrap':typedTerm]).
 '/bootstrap':signature(number(TTerm)::pred,[TTerm::'/bootstrap':typedTerm]).
+'/bootstrap':signature(parseTerm(TTerm,Name,Args)::pred,[TTerm::'/bootstrap':typedTerm,Name::'/bootstrap':string,Args::'/bootstrap':list('/bootstrap':typedTerm)]).
+'/bootstrap':signature(mult(A,B,C)::pred,[A::'/bootstrap':number,B::'/bootstrap':number,C::'/bootstrap':number]).
+'/bootstrap':signature(div(A,B,C)::pred,[A::'/bootstrap':number,B::'/bootstrap':number,C::'/bootstrap':number]).

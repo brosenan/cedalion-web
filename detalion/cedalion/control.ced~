@@ -1,0 +1,11 @@
+'/detalion':clause(cedalion((G1,G2),Inst,Type,Result),'/detalion':conj(cedalion(G1,cedalion(G2,Inst,Type,Results),'/detalion':pred,Goals),'/detalion':conj(evalList(Goals,Results,'/bootstrap':list(Type),LoResults),concatAll(LoResults,Result,Type)))).
+'/detalion':clause(cedalion(builtin:true,Inst,Type,[Term]),'/detalion':true).
+'/detalion':clause(cedalion(builtin:fail,_,_,_),'/detalion':fail).
+'/detalion':clause(cedalion(builtin:if(Cond,Then,Else),Inst,Type,Result),'/detalion':if(cedalion(Cond,Then,'/bootstrap':pred,[ThenPrime|_]),cedalion(ThenPrime,Term,Type,Result),cedalion(Else,Term,Type,Result))).
+'/detalion':clause(cedalion(A=A,Inst,Type,[Term]),'/detalion':true).
+'/detalion':clause(cedalion(builtin:compound(TTerm),Inst,Type,[Term]),'/detalion':compound(TTerm)).
+'/detalion':clause(cedalion(builtin:var(TTerm),Inst,Type,[Term]),'/detalion':var(TTerm)).
+'/detalion':clause(cedalion(builtin:string(TTerm),Inst,Type,[Term]),'/detalion':string(TTerm)).
+'/detalion':clause(cedalion(builtin:number(TTerm),Inst,Type,[Term]),'/detalion':number(TTerm)).
+'/detalion':clause(cedalion(\+G,Inst,Type,[Term]),'/detalion':if(cedalion(G,_,_,_),'/detalion':fail,'/detalion':true)).
+'/detalion':clause(cedalion(builtin:parseTerm(TTerm,Name,Args),Inst,Type,[Term]),'/detalion':parseTerm(TTerm,Name,Args)).

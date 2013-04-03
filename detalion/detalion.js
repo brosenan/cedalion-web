@@ -274,7 +274,7 @@ function Interpreter(program) {
 			if(nodes.length == 0) {
 				return false;
 			} else if(nodes.length > 1) {
-				throw Error("Ambiguous goal: " + JSON.stringify(goal));
+				throw Error("Ambiguous goal: " + JSON.stringify(this.deepDeref(goal)));
 			}
 			var clause = nodes[0].st;
 			var head = clause[1];
@@ -351,10 +351,11 @@ function Interpreter(program) {
 
 	// Convert a list to an array
 	this.listToArray = function(list) {
+		list = this.deref(list);
 		var array = [];
 		while(list.length == 3) {
 			array.push(list[1]);
-			list = list[2];
+			list = this.deref(list[2]);
 		}
 		return array;
 	};
@@ -463,6 +464,9 @@ function createBuiltins(det) {
 		'IIO': function(a, b, c) {
 			this.bind(c.ref, a-b);
 			return [TRUE];
+		},
+		'III': function(a, b, c) {
+			return (a - b == c) ? [TRUE] : [FAIL];
 		}
 	});
 
@@ -470,6 +474,9 @@ function createBuiltins(det) {
 		'IIO': function(a, b, c) {
 			this.bind(c.ref, a*b);
 			return [TRUE];
+		},
+		'III': function(a, b, c) {
+			return (a * b == c) ? [TRUE] : [FAIL];
 		}
 	});
 
@@ -477,6 +484,9 @@ function createBuiltins(det) {
 		'IIO': function(a, b, c) {
 			this.bind(c.ref, a/b);
 			return [TRUE];
+		},
+		'III': function(a, b, c) {
+			return (a / b == c) ? [TRUE] : [FAIL];
 		}
 	});
 
@@ -548,25 +558,67 @@ function createBuiltins(det) {
 
 	det.addBuiltin('compound', 1, {
 		'I': function(tterm) {
-			return Array.isArray(tterm[1]) ? [TRUE] : [FAIL];
+			return Array.isArray(this.deepDeref(tterm)[1]) ? [TRUE] : [FAIL];
 		},
 	});
 
 	det.addBuiltin('var', 1, {
 		'I': function(tterm) {
-			return this.deepDeref(tterm[1]).ref ? [TRUE] : [FAIL];
+			return this.deepDeref(tterm)[1].ref ? [TRUE] : [FAIL];
 		},
 	});
 
 	det.addBuiltin('string', 1, {
 		'I': function(tterm) {
-			return typeof(this.deepDeref(tterm[1])) == 'string' ? [TRUE] : [FAIL];
+			return typeof(this.deepDeref(tterm)[1]) == 'string' ? [TRUE] : [FAIL];
 		},
 	});
 
 	det.addBuiltin('number', 1, {
 		'I': function(tterm) {
-			return typeof(this.deepDeref(tterm[1])) == 'number' ? [TRUE] : [FAIL];
+			return typeof(this.deepDeref(tterm)[1]) == 'number' ? [TRUE] : [FAIL];
+		},
+	});
+
+	det.addBuiltin('parseTerm', 3, {
+		'IOO': function(tterm, name, args) {
+			var det = this;
+			var term = this.deref(tterm[1]);
+			this.bind(name.ref, term[0]);
+			this.bind(args.ref, this.arrayToList(term.slice(1).map(function(x){
+				return ['::', x, det.heapAllocate()];
+			})));
+			return [TRUE];
+		},
+		'IOI': function(tterm, name, args) {
+			var det = this;
+			var term = this.deref(tterm[1]);
+			this.bind(name.ref, term[0]);
+			var newArgs = this.arrayToList(term.slice(1).map(function(x){
+				return ['::', x, det.heapAllocate()];
+			}));
+			return this.unify(args, newArgs) ? [TRUE] : [FAIL];
+		},
+		'OII': function(tterm, name, args) {
+			var det = this;
+			args = this.listToArray(args).map(function(x) {
+				det.resetRegs();
+				det.unifyWrite(['::', {id:1}, {id:2}], x);
+				return det.unifyRead({id:1});
+			});
+			var term = [name].concat(args);
+			this.bind(tterm.ref, ['::', term, det.heapAllocate()]);
+			return [TRUE];
+		},
+		'III': function(tterm, name, args) {
+			var det = this;
+			args = this.listToArray(args).map(function(x) {
+				det.resetRegs();
+				det.unifyWrite(['::', {id:1}, {id:2}], x);
+				return det.unifyRead({id:1});
+			});
+			var term = [name].concat(args);
+			return this.unify(tterm, ['::', term, det.heapAllocate()]) ? [TRUE] : [FAIL];
 		},
 	});
 

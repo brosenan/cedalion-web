@@ -1,6 +1,9 @@
-'/detalion':clause(cedalion(builtin:plus(A,B,C),Term,Type,[Term]),'/detalion':plus(A,B,C)).
-'/detalion':clause(cedalion(builtin:minus(A,B,C),Term,Type,[Term]),'/detalion':minus(A,B,C)).
-'/detalion':clause(cedalion(builtin:greaterThen(A,B),Term,Type,[Term]),'/detalion':lt(B,A)).
-'/detalion':clause(cedalion(A>B,Term,Type,[Term]),'/detalion':lt(B,A)).
-'/detalion':clause(cedalion(builtin:strcat(A,B,C),Term,Type,[Term]),'/detalion':strcat(A,B,C)).
-'/detalion':clause(cedalion(builtin:strrep(Src,Rep,With,Tgt),Term,Type,[Term]),'/detalion':strrep(Src,Rep,With,Tgt)).
+'/detalion':clause(cedalion(builtin:plus(A,B,C),Inst,Type,List),'/detalion':conj('/detalion':plus(A,B,C),instantiate(Inst,Type,List))).
+'/detalion':clause(cedalion(builtin:minus(A,B,C),Inst,Type,List),'/detalion':conj('/detalion':minus(A,B,C),instantiate(Inst,Type,List))).
+'/detalion':clause(cedalion(builtin:mult(A,B,C),Inst,Type,List),'/detalion':conj('/detalion':mult(A,B,C),instantiate(Inst,Type,List))).
+'/detalion':clause(cedalion(builtin:div(A,B,C),Inst,Type,List),'/detalion':conj('/detalion':div(A,B,C),instantiate(Inst,Type,List))).
+'/detalion':clause(cedalion(builtin:greaterThen(A,B),Inst,Type,List),'/detalion':conj('/detalion':lt(B,A),instantiate(Inst,Type,List))).
+'/detalion':clause(cedalion(A>B,Inst,Type,List),'/detalion':conj('/detalion':lt(B,A),instantiate(Inst,Type,List))).
+'/detalion':clause(cedalion(builtin:strcat(A,B,C),Inst,Type,List),'/detalion':conj('/detalion':strcat(A,B,C),instantiate(Inst,Type,List))).
+'/detalion':clause(cedalion(builtin:strrep(Src,Rep,With,Tgt),Inst,Type,List),'/detalion':conj('/detalion':strrep(Src,Rep,With,Tgt),instantiate(Inst,Type,List))).
+'/detalion':clause(cedalion(builtin:succ(Y,X),Inst,Type,List),'/detalion':conj('/detalion':if('/detalion':var(X::'/bootstrap':number),'/detalion':plus(Y,1,X),'/detalion':minus(X,1,Y)),instantiate(Inst,Type,List))).
