@@ -123,7 +123,9 @@ vows.describe('detalion').addBatch({
 			program.store([PREFIX + 'clause', ['concat', ['[]'], {id:1}, {id:1}], [TRUE]]);
 			program.store([PREFIX + 'clause', ['concat', ['.', {id:1}, {id:2}], {id:3}, ['.', {id:1}, {id:4}]], 
 				['concat', {id:2}, {id:3}, {id:4}]]);
-			return new Interpreter(program);
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
 		})(),
 		'concat([1], [2], X) should succeed, emitting X=[1, 2]': function(det) {
 			var X = det.heapAllocate();
@@ -269,6 +271,24 @@ vows.describe('detalion').addBatch({
 			det.bind(Term.ref, ['a', ['b'], ['c']]);
 			assert.isTrue(det.call([PREFIX + 'parseTerm', ['::', Term, det.heapAllocate()], 
 				'a', ['.', ['::', ['b'], det.heapAllocate()], ['.', ['::', ['c'], det.heapAllocate()], ['[]']]]]));
+		},
+	},
+	'charCodes': {
+		topic :(function() {
+			var program = new ProgramDatabase();
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
+		})(),
+		'charCodes("ABC", X)': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call([PREFIX + 'charCodes', 'ABC', X]));
+			assert.deepEqual(det.listToArray(X), [65, 66, 67]);
+		},
+		'charCodes(X, [65, 66, 67])': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call([PREFIX + 'charCodes', 'ABC', X]));
+			assert.deepEqual(det.listToArray(X), [65, 66, 67]);
 		},
 	},
 }).run();

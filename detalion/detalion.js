@@ -455,6 +455,7 @@ function createBuiltins(det) {
 
 	det.addBuiltin('if', 3, {
 		'III': function(cond, then, els) {			
+//console.log(JSON.stringify(['if', cond, then, els]));
 			this.push([PREFIX + '__thenElse', then, els, this.createChoicePoint()]);
 			this.push(cond);
 		}
@@ -631,6 +632,12 @@ function createBuiltins(det) {
 				this.fail();
 			}
 		},
+		'OI': function(term, type) {
+			this.fail();
+		},
+		'OO': function(term, type) {
+			this.fail();
+		},
 	});
 
 	det.addBuiltin('var', 2, {
@@ -645,6 +652,10 @@ function createBuiltins(det) {
 			if(!term.ref) {
 				this.fail();
 			}
+		},
+		'OI': function(term, type) {
+		},
+		'OO': function(term, type) {
 		},
 	});
 
@@ -661,6 +672,12 @@ function createBuiltins(det) {
 				this.fail();
 			}
 		},
+		'OI': function(term, type) {
+			this.fail();
+		},
+		'OO': function(term, type) {
+			this.fail();
+		},
 	});
 
 	det.addBuiltin('number', 2, {
@@ -675,6 +692,12 @@ function createBuiltins(det) {
 			if(typeof(term) != 'string') {
 				this.fail();
 			}
+		},
+		'OI': function(term, type) {
+			this.fail();
+		},
+		'OO': function(term, type) {
+			this.fail();
 		},
 	});
 
@@ -725,6 +748,33 @@ function createBuiltins(det) {
 			});
 			var term = [name].concat(args);
 			if(!this.unify(tterm, ['::', term, det.heapAllocate()])) {
+				this.fail();
+			}
+		},
+	});
+
+	det.addBuiltin('charCodes', 2, {
+		'IO': function(str, codes) {
+			var list = ['[]'];
+			for(var i = str.length - 1; i >= 0; i--) {
+				list = ['.', str.charCodeAt(i), list];
+			}
+			this.bind(codes.ref, list);
+		},
+		'OI': function(str, codes) {
+			var s = '';
+			while(codes.length == 3) {
+				s = s + String.fromCharCode(this.deref(codes[1]));
+				codes = this.deref(codes[2]);
+			}
+			this.bind(str.ref, s);
+		},
+		'II': function(str, codes) {
+			var list = ['[]'];
+			for(var i = str.length - 1; i >= 0; i--) {
+				list = ['.', str.charCodeAt(i), list];
+			}
+			if(!this.unify(codes, list)) {
 				this.fail();
 			}
 		},

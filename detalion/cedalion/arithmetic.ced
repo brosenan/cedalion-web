@@ -6,4 +6,5 @@
 '/detalion':clause(cedalion(A>B,Inst,Type,List),'/detalion':conj('/detalion':lt(B,A),instantiate(Inst,Type,List))).
 '/detalion':clause(cedalion(builtin:strcat(A,B,C),Inst,Type,List),'/detalion':conj('/detalion':strcat(A,B,C),instantiate(Inst,Type,List))).
 '/detalion':clause(cedalion(builtin:strrep(Src,Rep,With,Tgt),Inst,Type,List),'/detalion':conj('/detalion':strrep(Src,Rep,With,Tgt),instantiate(Inst,Type,List))).
-'/detalion':clause(cedalion(builtin:succ(Y,X),Inst,Type,List),'/detalion':conj('/detalion':if('/detalion':var(X::'/bootstrap':number),'/detalion':plus(Y,1,X),'/detalion':minus(X,1,Y)),instantiate(Inst,Type,List))).
+'/detalion':clause(cedalion(builtin:succ(Y,X),Inst,Type,List),'/detalion':conj('/detalion':if('/detalion':var(X,'/bootstrap':number),'/detalion':plus(Y,1,X),'/detalion':minus(X,1,Y)),instantiate(Inst,Type,List))).
+'/detalion':clause(cedalion(builtin:charCodes(Str,Codes),Inst,Type,List),'/detalion':conj('/detalion':charCodes(Str,Codes),instantiate(Inst,Type,List))).
