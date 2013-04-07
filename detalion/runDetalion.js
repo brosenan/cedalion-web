@@ -24,7 +24,7 @@ app.on(["detalion", "program"], function() {
 
 	var X = det.heapAllocate();
 	var Y = det.heapAllocate();
-	if(!det.call(['/detalion/cedalion#cedalion', ['/detalion/cedalion#test', Y], Y, ['/bootstrap#number'], X])) {
+	if(!det.call(['/detalion/cedalion#cedalion', ['/detalion/cedalion#test', Y], ['/detalion/cedalion#term', Y], ['/bootstrap#number'], X])) {
 		console.error('Cedalion fib failed');
 	}
 	console.log('fib emitted ' + JSON.stringify(det.deepDeref(X)));
@@ -53,7 +53,7 @@ app.on(["detalion", "program"], function() {
 	console.log('fib emitted ' + JSON.stringify(det.deepDeref(X)));
 */
 
-	{
+/*	{
 		var unitTests = det.program.findAllMatches([":-",["/detalion/export#statement",["/bootstrap#unitTest", '_']], '_'], det).map(function(x) {
 			return x.st[1][1][1];
 		});
@@ -72,5 +72,5 @@ app.on(["detalion", "program"], function() {
 		});
 		
 	}
-	
+*/
 });

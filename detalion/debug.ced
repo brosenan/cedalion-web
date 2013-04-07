@@ -1,0 +1,3 @@
+'/bootstrap':signature(trace(Goal)::pred,[Goal::pred]).
+'/bootstrap':projection(trace(Goal)::pred,'/bootstrap':horiz(['/bootstrap':halfSize('/bootstrap':label(!'[trace]')),'/bootstrap':vis(Goal::pred)])).
+clause(trace(Goal),conj(debug(!'trace-in',Goal::pred),conj(Goal,debug(!'trace-out',Goal::pred)))).

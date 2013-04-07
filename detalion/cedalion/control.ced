@@ -3,7 +3,7 @@
 '/detalion':clause(cedalion((G1,G2),Inst,Type,Result),cedalion(G1,goalInst(G2,Inst),Type,Result)).
 '/detalion':clause(cedalion(builtin:true,Inst,Type,List),instantiate(Inst,Type,List)).
 '/detalion':clause(cedalion(builtin:fail,_,_,_),'/detalion':fail).
-'/detalion':clause(cedalion(builtin:if(Cond,Then,Else),Inst,Type,Result),'/detalion':conj('/detalion':debug(!if,Cond::'/bootstrap':pred),'/detalion':if(cedalion(Cond,term(Then),'/bootstrap':pred,[ThenPrime|_]),cedalion(ThenPrime,Inst,Type,Result),cedalion(Else,Inst,Type,Result)))).
+'/detalion':clause(cedalion(builtin:if(Cond,Then,Else),Inst,Type,Result),'/detalion':if(cedalion(Cond,dummyInst,'/bootstrap':number,[_|_]),cedalion(Then,Inst,Type,Result),cedalion(Else,Inst,Type,Result))).
 '/detalion':clause(cedalion(A=A,Inst,Type,List),instantiate(Inst,Type,List)).
 '/detalion':clause(cedalion(builtin:compound(TTerm),Inst,Type,List),'/detalion':conj('/detalion':compound(TTerm),instantiate(Inst,Type,List))).
 '/detalion':clause(cedalion(builtin:var(TTerm),Inst,Type,List),'/detalion':conj('/detalion':var(TTerm),instantiate(Inst,Type,List))).

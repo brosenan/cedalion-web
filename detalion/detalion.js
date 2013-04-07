@@ -340,6 +340,11 @@ function Interpreter(program) {
 		this.BH = cp.BH;
 	}
 
+	// Commit a choice-point
+	this.commitChoicePoint = function(cp) {
+		this.BH = cp.BH;
+	}
+
 	// Convert an array to a list
 	this.arrayToList = function(array) {
 		var list = ['[]'];
@@ -408,6 +413,7 @@ function createBuiltins(det) {
 			var cp = this.createChoicePoint();
 //console.log('if condition');
 			if(this.call(cond)) {
+				this.commitChoicePoint(cp);
 //console.log('if true');
 				return then;
 			} else {
@@ -558,49 +564,69 @@ function createBuiltins(det) {
 
 	det.addBuiltin('compound', 1, {
 		'I': function(tterm) {
-			return Array.isArray(this.deepDeref(tterm)[1]) ? [TRUE] : [FAIL];
+			this.resetRegs();
+			this.unifyWrite(['::', {id:1}, {id:2}], tterm);
+			var compound = Array.isArray(this.unifyRead({id:1}));
+			return compound ? [TRUE] : [FAIL];
 		},
 	});
 
 	det.addBuiltin('var', 1, {
 		'I': function(tterm) {
-			return this.deepDeref(tterm)[1].ref ? [TRUE] : [FAIL];
+			this.resetRegs();
+			this.unifyWrite(['::', {id:1}, {id:2}], tterm);
+			return this.unifyRead({id:1}).ref ? [TRUE] : [FAIL];
 		},
 	});
 
 	det.addBuiltin('string', 1, {
 		'I': function(tterm) {
-			return typeof(this.deepDeref(tterm)[1]) == 'string' ? [TRUE] : [FAIL];
+			this.resetRegs();
+			this.unifyWrite(['::', {id:1}, {id:2}], tterm);
+			return typeof(this.unifyRead({id:1})) == 'string' ? [TRUE] : [FAIL];
 		},
 	});
 
 	det.addBuiltin('number', 1, {
 		'I': function(tterm) {
-			return typeof(this.deepDeref(tterm)[1]) == 'number' ? [TRUE] : [FAIL];
+			this.resetRegs();
+			this.unifyWrite(['::', {id:1}, {id:2}], tterm);
+			return typeof(this.unifyRead({id:1})) == 'number' ? [TRUE] : [FAIL];
 		},
 	});
 
 	det.addBuiltin('parseTerm', 3, {
 		'IOO': function(tterm, name, args) {
 			var det = this;
+//console.log(1);
 			var term = this.deref(tterm[1]);
-			this.bind(name.ref, term[0]);
-			this.bind(args.ref, this.arrayToList(term.slice(1).map(function(x){
-				return ['::', x, det.heapAllocate()];
-			})));
+			if(Array.isArray(term)) {
+				this.bind(name.ref, term[0]);
+				this.bind(args.ref, this.arrayToList(term.slice(1).map(function(x){
+					return ['::', x, det.heapAllocate()];
+				})));
+			} else {
+				throw Error('parseTerm called with non-compound ' + JSON.stringify(term));
+			}
 			return [TRUE];
 		},
 		'IOI': function(tterm, name, args) {
 			var det = this;
+//console.log(2);
 			var term = this.deref(tterm[1]);
-			this.bind(name.ref, term[0]);
-			var newArgs = this.arrayToList(term.slice(1).map(function(x){
-				return ['::', x, det.heapAllocate()];
-			}));
+			if(Array.isArray(term)) {
+				this.bind(name.ref, term[0]);
+				var newArgs = this.arrayToList(term.slice(1).map(function(x){
+					return ['::', x, det.heapAllocate()];
+				}));
+			} else {
+				throw Error('parseTerm called with non-compound ' + JSON.stringify(term));
+			}
 			return this.unify(args, newArgs) ? [TRUE] : [FAIL];
 		},
 		'OII': function(tterm, name, args) {
 			var det = this;
+//console.log(3);
 			args = this.listToArray(args).map(function(x) {
 				det.resetRegs();
 				det.unifyWrite(['::', {id:1}, {id:2}], x);
@@ -618,6 +644,7 @@ function createBuiltins(det) {
 				return det.unifyRead({id:1});
 			});
 			var term = [name].concat(args);
+//console.log('parseTerm: ' + JSON.stringify(term));
 			return this.unify(tterm, ['::', term, det.heapAllocate()]) ? [TRUE] : [FAIL];
 		},
 	});

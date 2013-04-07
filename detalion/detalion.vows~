@@ -193,7 +193,7 @@ vows.describe('detalion').addBatch({
 			//		plus(Y1, Y2, Y)
 			//	).
 			var program = new ProgramDatabase();
-			program.store([PREFIX + 'clause', ['fib', {id:1}, {id:2}], [PREFIX + 'if', [PREFIX + '<', {id:1}, 2], 
+			program.store([PREFIX + 'clause', ['fib', {id:1}, {id:2}], [PREFIX + 'if', [PREFIX + 'lt', {id:1}, 2], 
 				[PREFIX + '=', {id:2}, 1],
 				[PREFIX + 'conj', [PREFIX + 'minus', {id:1}, 1, {id:3}], 
 				[PREFIX + 'conj', [PREFIX + 'minus', {id:1}, 2, {id:4}], 
@@ -219,6 +219,49 @@ vows.describe('detalion').addBatch({
 			assert.isTrue(det.call(['fib', 11, Y]));
 			assert.equal(det.deref(Y), 144);
 		},
-	}
+	},
+	'parseTerm': {
+		topic :(function() {
+			var program = new ProgramDatabase();
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
+		})(),
+		'parseTerm(a(b, c)::_, Name, Args)' : function(det) {
+			var Name = det.heapAllocate();
+			var Args = det.heapAllocate();
+			assert.isTrue(det.call([PREFIX + 'parseTerm', ['::', ['a', ['b'], ['c']], det.heapAllocate()], Name, Args]));
+			assert.equal(det.deref(Name), 'a');
+			assert.deepEqual(det.deepDeref(Args), ['.', ['::', ['b'], {ref:4}], ['.', ['::', ['c'], {ref:5}], ['[]']]]);
+		},
+		'parseTerm(a(b, c)::_, Name, Args) with the term being referenced' : function(det) {
+			var Name = det.heapAllocate();
+			var Args = det.heapAllocate();
+			var Term = det.heapAllocate();
+			det.bind(Term.ref, ['a', ['b'], ['c']]);
+			assert.isTrue(det.call([PREFIX + 'parseTerm', ['::', Term, det.heapAllocate()], Name, Args]));
+			assert.equal(det.deref(Name), 'a');
+			assert.deepEqual(det.deepDeref(Args), ['.', ['::', ['b'], {ref:10}], ['.', ['::', ['c'], {ref:11}], ['[]']]]);
+		},
+		'parseTerm(a(b, c)::_, Name, Args) where b is referenced' : function(det) {
+			var Name = det.heapAllocate();
+			var Args = det.heapAllocate();
+			var Term = det.heapAllocate();
+			det.bind(Term.ref, ['b']);
+			assert.isTrue(det.call([PREFIX + 'parseTerm', ['::', ['a', Term, ['c']], det.heapAllocate()], Name, Args]));
+			assert.equal(det.deref(Name), 'a');
+			assert.deepEqual(det.deepDeref(Args), ['.', ['::', ['b'], {ref:16}], ['.', ['::', ['c'], {ref:17}], ['[]']]]);
+		},
+		'parseTerm(a(b, c)::_, "a", [b::_, c::_]) ' : function(det) {
+			assert.isTrue(det.call([PREFIX + 'parseTerm', ['::', ['a', ['b'], ['c']], det.heapAllocate()], 
+				'a', ['.', ['::', ['b'], det.heapAllocate()], ['.', ['::', ['c'], det.heapAllocate()], ['[]']]]]));
+		},
+		'parseTerm(a(b, c)::_, "a", [b::_, c::_]) with the term referenced' : function(det) {
+			var Term = det.heapAllocate();
+			det.bind(Term.ref, ['a', ['b'], ['c']]);
+			assert.isTrue(det.call([PREFIX + 'parseTerm', ['::', Term], det.heapAllocate()], 
+				'a', ['.', ['::', ['b'], det.heapAllocate()], ['.', ['::', ['c'], det.heapAllocate()], ['[]']]]]));
+		},
+	},
 }).run();
 
