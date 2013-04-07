@@ -1,4 +1,5 @@
 var HEAP_SIZE = 64000;
+var STACK_SIZE = 64000;
 var TRAIL_SIZE = 1024;
 var NUM_REG = 17;
 //var PREFIX = 'detalion#';
@@ -13,16 +14,16 @@ function ProgramDatabase() {
 	this.store = function(statement) {
 		var node = this.db;
 		var term = statement;
-		var lastNode = null;
-		var lastTerm = null;
+		if(!node['*']) {
+			node['*'] = [];
+		}
+		node['*'].push({st: statement});
 		while(Array.isArray(term)) {
 			// Add matches for more general terms
 			if(!node['*']) {
 				node['*'] = [];
 			}
 			node['*'].push({st: statement});
-			lastNode = node;
-			lastTerm = term;
 			var key = term[0] + '/' + (term.length - 1);
 			if(!node[key]) {
 				node[key] = {};
@@ -90,6 +91,7 @@ function ProgramDatabase() {
 function Interpreter(program) {
 	this.program = program;
 	this.heap = new Array(HEAP_SIZE);
+	this.stack = new Array(STACK_SIZE);
 	this.registers = new Array(NUM_REG);
 	this.trail = new Array(TRAIL_SIZE);
 	this.trailRefs = new Array(TRAIL_SIZE);
@@ -102,6 +104,12 @@ function Interpreter(program) {
 	this.BH = 1;
 	// Trail pointer
 	this.T = 0;
+	// Position on the stack of the current goal on the stack
+	this.S = -1;
+	// Position on the stack of the goal to be evaluated after failure
+	this.FS = -1;
+	// Did the last operation fail?
+	this.failure = false;
 	// Allocate a new heap location and return a reference
 	this.heapAllocate = function() {
 		var ref = this.H;
@@ -133,6 +141,33 @@ function Interpreter(program) {
 			this.TR++;
 		}
 		this.registers[reg] = val;
+	};
+
+	// Push a goal to the top of the stack
+	this.push = function(goal) {
+		this.S++;
+		this.stack[this.S] = goal;
+	};
+
+	// Pop the last goal from the stack
+	this.pop = function () {
+		var goal = this.stack[this.S];
+		this.S--;
+		return goal;
+	};
+
+	// Collapse the stack as a result of failure
+	// (this method does not roll-back the choice point).
+	this.fail = function() {
+		this.S = this.FS;
+		this.failure = true;
+	};
+
+	// Was fail() called since the last time this method was called?
+	this.inFailure = function() {
+		var tmp = this.failure;
+		this.failure = false;
+		return tmp;
 	};
 	
 	// Bind a value to a variable
@@ -261,18 +296,14 @@ function Interpreter(program) {
 
 	// The interpreter
 	this.call = function(goal) {
-		while(true) {
+		this.push(goal);
+		while(this.S >= 0) {
+			goal = this.pop();
 //console.log(this.deepDeref(goal));
-			if(goal.length == 1) {
-				if(goal[0] == TRUE) {
-					return true;
-				} else if(goal[0] == FAIL) {
-					return false;
-				}
-			}
 			var nodes = this.program.findMostSpecific([PREFIX + 'clause', goal, '_'], this);
 			if(nodes.length == 0) {
-				return false;
+				this.fail();
+				continue;
 			} else if(nodes.length > 1) {
 				throw Error("Ambiguous goal: " + JSON.stringify(this.deepDeref(goal)));
 			}
@@ -281,7 +312,8 @@ function Interpreter(program) {
 			var body = clause[2];
 			this.resetRegs();
 			if(!this.unifyWrite(head, goal)) {
-				return false;
+				this.fail();
+				continue;
 			}
 			var func = null;
 			if(nodes[0].builtins) {
@@ -290,11 +322,12 @@ function Interpreter(program) {
 				func = nodes[0].builtins[mode];
 			}
 			if(func) {
-				goal = func.apply(this, this.registers.slice(1, this.TR + 1));
+				func.apply(this, this.registers.slice(1, this.TR + 1));
 			} else {
-				goal = this.unifyRead(body);
+				this.push(this.unifyRead(body));
 			}
 		}
+		return !this.inFailure();
 	};
 
 	// Add a builtin predicate
@@ -325,8 +358,9 @@ function Interpreter(program) {
 
 	// Save the state for a choice point
 	this.createChoicePoint = function() {
-		var cp = { H: this.H, T: this.T, BH: this.BH};
+		var cp = { H: this.H, T: this.T, BH: this.BH, FS : this.FS};
 		this.BH = this.H;
+		this.FS = this.S + 1;
 		return cp;
 	};
 
@@ -338,11 +372,13 @@ function Interpreter(program) {
 		}
 		this.H = cp.H;
 		this.BH = cp.BH;
+		this.FS = cp.FS;
 	}
 
 	// Commit a choice-point
 	this.commitChoicePoint = function(cp) {
 		this.BH = cp.BH;
+		this.FS = cp.FS;
 	}
 
 	// Convert an array to a list
@@ -399,27 +435,39 @@ function modeStrToNum(modeStr) {
 }
 
 function createBuiltins(det) {
+	det.addBuiltin('true', 0, {
+		'': function() {
+		}
+	});
+
+	det.addBuiltin('fail', 0, {
+		'': function() {
+			this.fail();
+		}
+	});
+
 	det.addBuiltin('conj', 2, {
 		'II': function(first, rest) {
-			if(this.call(first))
-				return rest;
-			else
-				return [FAIL];
+			this.push(rest);
+			this.push(first);
 		}
 	});
 
 	det.addBuiltin('if', 3, {
-		'III': function(cond, then, els) {
-			var cp = this.createChoicePoint();
-//console.log('if condition');
-			if(this.call(cond)) {
-				this.commitChoicePoint(cp);
-//console.log('if true');
-				return then;
-			} else {
-//console.log('if false');
+		'III': function(cond, then, els) {			
+			this.push([PREFIX + '__thenElse', then, els, this.createChoicePoint()]);
+			this.push(cond);
+		}
+	});
+
+	det.addBuiltin('__thenElse', 3, {
+		'III': function(then, els, cp) {			
+			if(this.inFailure()) {
 				this.rollbackChoicePoint(cp);
-				return els;
+				this.push(els);
+			} else {
+				this.commitChoicePoint(cp);
+				this.push(then);
 			}
 		}
 	});
@@ -433,72 +481,77 @@ function createBuiltins(det) {
 	det.addBuiltin('strcat', 3, {
 		'IIO': function(a, b, c) {
 			this.bind(c.ref, a+b);
-			return [TRUE];
 		},
 		'IOI': function(a, b, c) {
 			if(c.substr(0, a.length) == a) {
 				this.bind(b.ref, c.substr(a.length));
-				return [TRUE];
 			} else {
-				return [FAIL];
+				this.fail();
 			}
 		},
 		'OII': function(a, b, c) {
 			if(c.substr(c.length - b.length) == b) {
 				this.bind(a.ref, c.substr(0, c.length - b.length));
-				return [TRUE];
 			} else {
-				return [FAIL];
+				this.fail();
 			}
 		},
 		'III': function(a, b, c) {
-			return (a + b == c) ? [TRUE] : [FAIL];
+			if(a + b != c) {
+				this.fail();
+			}
 		}
 	});
 
 	det.addBuiltin('plus', 3, {
 		'IIO': function(a, b, c) {
 			this.bind(c.ref, a+b);
-			return [TRUE];
 		},
 		'III': function(a, b, c) {
-			return (a + b == c) ? [TRUE] : [FAIL];
+			if(a + b != c) {
+				this.fail();
+			}
 		},
 	});
 
 	det.addBuiltin('minus', 3, {
 		'IIO': function(a, b, c) {
 			this.bind(c.ref, a-b);
-			return [TRUE];
 		},
 		'III': function(a, b, c) {
-			return (a - b == c) ? [TRUE] : [FAIL];
+			if(a - b != c) {
+				this.fail();
+			}
 		}
 	});
 
 	det.addBuiltin('mult', 3, {
 		'IIO': function(a, b, c) {
 			this.bind(c.ref, a*b);
-			return [TRUE];
 		},
 		'III': function(a, b, c) {
-			return (a * b == c) ? [TRUE] : [FAIL];
+			if(a * b != c) {
+				this.fail();
+			}
 		}
 	});
 
 	det.addBuiltin('div', 3, {
 		'IIO': function(a, b, c) {
 			this.bind(c.ref, a/b);
-			return [TRUE];
 		},
 		'III': function(a, b, c) {
-			return (a / b == c) ? [TRUE] : [FAIL];
+			if(a / b != c) {
+				this.fail();
+			}
 		}
 	});
 
 	det.addBuiltin('lt', 2, {
 		'II': function(a, b) {
-			return (a<b) ? [TRUE] : [FAIL];
+			if(!(a<b)) {
+				this.fail();
+			}
 		}
 	});
 
@@ -510,95 +563,124 @@ function createBuiltins(det) {
 				return det.unifyRead(x.st);
 			});
 			this.bind(matches.ref, this.arrayToList(matchArray));
-			return [TRUE];
 		}
 	});
 
 	det.addBuiltin('copyTerm', 3, {
 		'IOI': function(source, target, type) {
 			this.bind(target.ref, this.copyTerm(source));
-			return [TRUE];
 		},
 		'III': function(source, target, type) {
-			return this.unify(target, this.copyTerm(source)) ? [TRUE] : [FAIL];
+			if(!this.unify(target, this.copyTerm(source))) {
+				this.fail();
+			}
 		}
 	});
 
 	function evalPred(goal, term, type, result) {
-		var cp = this.createChoicePoint();
-		var status = [FAIL];
-		if(this.call(goal)) {
-			var tmp = this.deepDeref(term);
-//console.log(tmp);
-//console.log(this.deepDeref(goal));
-			this.rollbackChoicePoint(cp);
-			this.bind(result.ref, tmp);
-			status = [TRUE];
-		} else {
-			this.rollbackChoicePoint(cp);
-		}
-		return status;
+		this.push([PREFIX + '__evalTerm', term, type, result, this.createChoicePoint()]);
+		this.push(goal);
 	}
 
 	det.addBuiltin('eval', 4, {
 		'IIIO': evalPred,
 		'IOIO': evalPred,
 	});
+	
+	function evalTermPred(term, type, result, cp) {
+		term = this.deepDeref(term);
+		this.rollbackChoicePoint(cp);
+		this.bind(result.ref, term);
+		if(this.inFailure()) {
+			this.fail();
+		}
+	}
+
+	det.addBuiltin('__evalTerm', 4, {
+		'IIOI': evalTermPred,
+		'OIOI': evalTermPred,
+	});
 
 	det.addBuiltin('debug', 2, {
 		'II': function(title, value) {
 			console.log("[DBG] [" + title + "] " + JSON.stringify(this.deepDeref(value[1])));
-			return [TRUE];
 		},
 	});
 
 	det.addBuiltin('strrep', 4, {
 		'IIIO': function(src, rep, to, tgt) {
 			this.bind(tgt.ref, src.replace(rep, to));
-			return [TRUE];
 		},
 		'IIII': function(src, rep, to, tgt) {
-			return (src.replace(rep, to) == tgt) ? [TRUE] : [FAIL];
+			if(src.replace(rep, to) != tgt) {
+				this.fail();
+			}
 		},
 	});
 
-	det.addBuiltin('compound', 1, {
-		'I': function(tterm) {
-			this.resetRegs();
-			this.unifyWrite(['::', {id:1}, {id:2}], tterm);
-			var compound = Array.isArray(this.unifyRead({id:1}));
-			return compound ? [TRUE] : [FAIL];
+	det.addBuiltin('compound', 2, {
+		'II': function(term, type) {
+			term = this.deref(term);
+			if(!Array.isArray(term)) {
+				this.fail();
+			}
+		},
+		'IO': function(term, type) {
+			term = this.deref(term);
+			if(!Array.isArray(term)) {
+				this.fail();
+			}
 		},
 	});
 
-	det.addBuiltin('var', 1, {
-		'I': function(tterm) {
-			this.resetRegs();
-			this.unifyWrite(['::', {id:1}, {id:2}], tterm);
-			return this.unifyRead({id:1}).ref ? [TRUE] : [FAIL];
+	det.addBuiltin('var', 2, {
+		'II': function(term, type) {
+			term = this.deref(term);
+			if(!term.ref) {
+				this.fail();
+			}
+		},
+		'IO': function(term, type) {
+			term = this.deref(term);
+			if(!term.ref) {
+				this.fail();
+			}
 		},
 	});
 
-	det.addBuiltin('string', 1, {
-		'I': function(tterm) {
-			this.resetRegs();
-			this.unifyWrite(['::', {id:1}, {id:2}], tterm);
-			return typeof(this.unifyRead({id:1})) == 'string' ? [TRUE] : [FAIL];
+	det.addBuiltin('string', 2, {
+		'II': function(term, type) {
+			term = this.deref(term);
+			if(typeof(term) != 'string') {
+				this.fail();
+			}
+		},
+		'IO': function(term, type) {
+			term = this.deref(term);
+			if(typeof(term) != 'string') {
+				this.fail();
+			}
 		},
 	});
 
-	det.addBuiltin('number', 1, {
-		'I': function(tterm) {
-			this.resetRegs();
-			this.unifyWrite(['::', {id:1}, {id:2}], tterm);
-			return typeof(this.unifyRead({id:1})) == 'number' ? [TRUE] : [FAIL];
+	det.addBuiltin('number', 2, {
+		'II': function(term, type) {
+			term = this.deref(term);
+			if(typeof(term) != 'number') {
+				this.fail();
+			}
+		},
+		'IO': function(term, type) {
+			term = this.deref(term);
+			if(typeof(term) != 'string') {
+				this.fail();
+			}
 		},
 	});
 
 	det.addBuiltin('parseTerm', 3, {
 		'IOO': function(tterm, name, args) {
 			var det = this;
-//console.log(1);
 			var term = this.deref(tterm[1]);
 			if(Array.isArray(term)) {
 				this.bind(name.ref, term[0]);
@@ -608,11 +690,9 @@ function createBuiltins(det) {
 			} else {
 				throw Error('parseTerm called with non-compound ' + JSON.stringify(term));
 			}
-			return [TRUE];
 		},
 		'IOI': function(tterm, name, args) {
 			var det = this;
-//console.log(2);
 			var term = this.deref(tterm[1]);
 			if(Array.isArray(term)) {
 				this.bind(name.ref, term[0]);
@@ -622,11 +702,12 @@ function createBuiltins(det) {
 			} else {
 				throw Error('parseTerm called with non-compound ' + JSON.stringify(term));
 			}
-			return this.unify(args, newArgs) ? [TRUE] : [FAIL];
+			if(!this.unify(args, newArgs)) {
+				this.fail();
+			}
 		},
 		'OII': function(tterm, name, args) {
 			var det = this;
-//console.log(3);
 			args = this.listToArray(args).map(function(x) {
 				det.resetRegs();
 				det.unifyWrite(['::', {id:1}, {id:2}], x);
@@ -634,7 +715,6 @@ function createBuiltins(det) {
 			});
 			var term = [name].concat(args);
 			this.bind(tterm.ref, ['::', term, det.heapAllocate()]);
-			return [TRUE];
 		},
 		'III': function(tterm, name, args) {
 			var det = this;
@@ -644,8 +724,9 @@ function createBuiltins(det) {
 				return det.unifyRead({id:1});
 			});
 			var term = [name].concat(args);
-//console.log('parseTerm: ' + JSON.stringify(term));
-			return this.unify(tterm, ['::', term, det.heapAllocate()]) ? [TRUE] : [FAIL];
+			if(!this.unify(tterm, ['::', term, det.heapAllocate()])) {
+				this.fail();
+			}
 		},
 	});
 

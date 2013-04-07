@@ -52,8 +52,8 @@ app.on(["detalion", "program"], function() {
 	}
 	console.log('fib emitted ' + JSON.stringify(det.deepDeref(X)));
 */
-
-/*	{
+///*
+	{
 		var unitTests = det.program.findAllMatches([":-",["/detalion/export#statement",["/bootstrap#unitTest", '_']], '_'], det).map(function(x) {
 			return x.st[1][1][1];
 		});
@@ -72,5 +72,5 @@ app.on(["detalion", "program"], function() {
 		});
 		
 	}
-*/
+//*/
 });

@@ -84,8 +84,16 @@ vows.describe('detalion').addBatch({
 			program.store([PREFIX + 'clause', ['a', {id: 1}, 'one'], [TRUE]]);
 			program.store([PREFIX + 'clause', ['a', ['b'], 'two'], [TRUE]]);
 			program.store([PREFIX + 'clause', ['a', ['c'], 'three'], [FAIL]]);
-			return new Interpreter(program);
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
 		})(),
+		'true should succeed': function(det) {
+			assert.isTrue(det.call([TRUE]));
+		},
+		'fail should succeed': function(det) {
+			assert.isFalse(det.call([FAIL]));
+		},
 		'evaluating a(Y, X) should emit X=one': function(det) {
 			var X = det.heapAllocate();
 			var Y = det.heapAllocate();
@@ -259,7 +267,7 @@ vows.describe('detalion').addBatch({
 		'parseTerm(a(b, c)::_, "a", [b::_, c::_]) with the term referenced' : function(det) {
 			var Term = det.heapAllocate();
 			det.bind(Term.ref, ['a', ['b'], ['c']]);
-			assert.isTrue(det.call([PREFIX + 'parseTerm', ['::', Term], det.heapAllocate()], 
+			assert.isTrue(det.call([PREFIX + 'parseTerm', ['::', Term, det.heapAllocate()], 
 				'a', ['.', ['::', ['b'], det.heapAllocate()], ['.', ['::', ['c'], det.heapAllocate()], ['[]']]]]));
 		},
 	},

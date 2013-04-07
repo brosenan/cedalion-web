@@ -84,8 +84,16 @@ vows.describe('detalion').addBatch({
 			program.store([PREFIX + 'clause', ['a', {id: 1}, 'one'], [TRUE]]);
 			program.store([PREFIX + 'clause', ['a', ['b'], 'two'], [TRUE]]);
 			program.store([PREFIX + 'clause', ['a', ['c'], 'three'], [FAIL]]);
-			return new Interpreter(program);
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
 		})(),
+		'true should succeed': function(det) {
+			assert.isTrue(det.call([TRUE]));
+		},
+		'fail should succeed': function(det) {
+			assert.isFalse(det.call([FAIL]));
+		},
 		'evaluating a(Y, X) should emit X=one': function(det) {
 			var X = det.heapAllocate();
 			var Y = det.heapAllocate();
@@ -115,7 +123,9 @@ vows.describe('detalion').addBatch({
 			program.store([PREFIX + 'clause', ['concat', ['[]'], {id:1}, {id:1}], [TRUE]]);
 			program.store([PREFIX + 'clause', ['concat', ['.', {id:1}, {id:2}], {id:3}, ['.', {id:1}, {id:4}]], 
 				['concat', {id:2}, {id:3}, {id:4}]]);
-			return new Interpreter(program);
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
 		})(),
 		'concat([1], [2], X) should succeed, emitting X=[1, 2]': function(det) {
 			var X = det.heapAllocate();

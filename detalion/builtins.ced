@@ -5,10 +5,10 @@
 '/bootstrap':signature(debug(Name,Value)::pred,[Name::'/bootstrap':string,Value::'/bootstrap':typedTerm]).
 '/bootstrap':signature(strcat(A,B,C)::pred,[A::'/bootstrap':string,B::'/bootstrap':string,C::'/bootstrap':string]).
 '/bootstrap':signature(strrep(Src,Rep,With,Tgt)::pred,[Src::'/bootstrap':string,Rep::'/bootstrap':string,With::'/bootstrap':string,Tgt::'/bootstrap':string]).
-'/bootstrap':signature(compound(TTerm)::pred,[TTerm::'/bootstrap':typedTerm]).
-'/bootstrap':signature(var(TTerm)::pred,[TTerm::'/bootstrap':typedTerm]).
-'/bootstrap':signature(string(TTerm)::pred,[TTerm::'/bootstrap':typedTerm]).
-'/bootstrap':signature(number(TTerm)::pred,[TTerm::'/bootstrap':typedTerm]).
+'/bootstrap':signature(compound(Term,Type)::pred,[Term::Type,Type::'/bootstrap':type]).
+'/bootstrap':signature(var(Term,Type)::pred,[Term::Type,Type::'/bootstrap':type]).
+'/bootstrap':signature(string(Term,Type)::pred,[Term::Type,Type::'/bootstrap':type]).
+'/bootstrap':signature(number(Term,Type)::pred,[Term::Type,Type::'/bootstrap':type]).
 '/bootstrap':signature(parseTerm(TTerm,Name,Args)::pred,[TTerm::'/bootstrap':typedTerm,Name::'/bootstrap':string,Args::'/bootstrap':list('/bootstrap':typedTerm)]).
 '/bootstrap':signature(mult(A,B,C)::pred,[A::'/bootstrap':number,B::'/bootstrap':number,C::'/bootstrap':number]).
 '/bootstrap':signature(div(A,B,C)::pred,[A::'/bootstrap':number,B::'/bootstrap':number,C::'/bootstrap':number]).

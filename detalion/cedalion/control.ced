@@ -5,10 +5,10 @@
 '/detalion':clause(cedalion(builtin:fail,_,_,_),'/detalion':fail).
 '/detalion':clause(cedalion(builtin:if(Cond,Then,Else),Inst,Type,Result),'/detalion':if(cedalion(Cond,dummyInst,'/bootstrap':number,[_|_]),cedalion(Then,Inst,Type,Result),cedalion(Else,Inst,Type,Result))).
 '/detalion':clause(cedalion(A=A,Inst,Type,List),instantiate(Inst,Type,List)).
-'/detalion':clause(cedalion(builtin:compound(TTerm),Inst,Type,List),'/detalion':conj('/detalion':compound(TTerm),instantiate(Inst,Type,List))).
-'/detalion':clause(cedalion(builtin:var(TTerm),Inst,Type,List),'/detalion':conj('/detalion':var(TTerm),instantiate(Inst,Type,List))).
-'/detalion':clause(cedalion(builtin:string(TTerm),Inst,Type,List),'/detalion':conj('/detalion':string(TTerm),instantiate(Inst,Type,List))).
-'/detalion':clause(cedalion(builtin:number(TTerm),Inst,Type,List),'/detalion':conj('/detalion':number(TTerm),instantiate(Inst,Type,List))).
+'/detalion':clause(cedalion(builtin:compound(Term::Type),Inst,Type,List),'/detalion':conj('/detalion':compound(Term,Type),instantiate(Inst,Type,List))).
+'/detalion':clause(cedalion(builtin:var(Term::Type),Inst,Type,List),'/detalion':conj('/detalion':var(Term,Type),instantiate(Inst,Type,List))).
+'/detalion':clause(cedalion(builtin:string(Term::Type),Inst,Type,List),'/detalion':conj('/detalion':string(Term,Type),instantiate(Inst,Type,List))).
+'/detalion':clause(cedalion(builtin:number(Term::Type),Inst,Type,List),'/detalion':conj('/detalion':number(Term,Type),instantiate(Inst,Type,List))).
 '/bootstrap':defAtom(dummyInst::instantiator('/bootstrap':number)).
 '/detalion':clause(instantiate(dummyInst,'/bootstrap':number,[0]),'/detalion':true).
 '/detalion':clause(cedalion(\+G,Inst,Type,List),'/detalion':conj('/detalion':if(cedalion(G,dummyInst,'/bootstrap':number,[_|_]),'/detalion':fail,'/detalion':true),instantiate(Inst,Type,List))).
