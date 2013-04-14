@@ -64,7 +64,7 @@ app.on(["detalion", "program"], function() {
 		var num = 0;
 		unitTests.forEach(function(x) {
 			num++;
-			//if(num != 57) return;
+			if(num != 89) return;
 			det.resetRegs();
 			x = det.unifyRead(x);
 			var L = det.heapAllocate();

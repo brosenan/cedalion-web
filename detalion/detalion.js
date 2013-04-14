@@ -461,6 +461,28 @@ function Interpreter(program) {
 		}
 	};
 
+	// Remove annotations from a term
+	this.removeAnnotations = function(term) {
+		if(Array.isArray(term)) {
+			// Escape: just provide the argument
+			if(term.length == 2 && term[0] == 'annotation#escape') {
+				return term[1];
+			}
+			// Annotation: recurse on the first argument
+			if(term[0].substr(0,11) == 'annotation#') {
+				return this.removeAnnotations(term[1]);
+			}
+			var newTerm = Array(term.length);
+			newTerm[0] = term[0];
+			for(var i = 1; i < term.length; i++) {
+				newTerm[i] = this.removeAnnotations(term[i]);
+			}
+			return newTerm;
+		} else {
+			return term;
+		}
+	};
+
 	this.termToDot = function(term, rand) {
 		s = '';
 		var rand = rand || Math.floor(Math.random() * 1000000000);
@@ -907,6 +929,36 @@ function createBuiltins(det) {
 			if(str != str.ref, term.toString()) {
 				this.fail();
 			}
+		},
+	});
+	det.addBuiltin('removeAnnotations', 3, {
+		'IOO': function(term1, term2, type) {
+			this.bind(term2.ref, this.removeAnnotations(term1));
+		},
+		'IOI': function(term1, term2, type) {
+			this.bind(term2.ref, this.removeAnnotations(term1));
+		},
+		'IIO': function(term1, term2, type) {
+			if(!this.unify(term2, this.removeAnnotations(term1))) {
+				this.fail();
+			}
+		},
+		'III': function(term1, term2, type) {
+			if(!this.unify(term2, this.removeAnnotations(term1))) {
+				this.fail();
+			}
+		},
+		'OOO': function(term1, term2, type) {
+			this.bind(term2.ref, term1);
+		},
+		'OOI': function(term1, term2, type) {
+			this.bind(term2.ref, term1);
+		},
+		'OIO': function(term1, term2, type) {
+			this.bind(term1.ref, term2);
+		},
+		'OII': function(term1, term2, type) {
+			this.bind(term1.ref, term2);
 		},
 	});
 	det.program.store([PREFIX + 'clause', [PREFIX + '=', {id:1}, {id:1}], [TRUE]]);

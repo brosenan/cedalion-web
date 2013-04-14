@@ -19,4 +19,4 @@
 '/bootstrap':signature(commaList(Prefix,Rest)::'/cedalionWeb/parsing':pattern('/cedalionWeb/parsing':token(tCed)),[Prefix::'/bootstrap':string,Rest::'/bootstrap':list(_)]).
 '/cedalionWeb/parsing':prod(commaList(Prefix,[]),'/cedalionWeb/parsing':token(tCed),'/cedalionWeb/parsing':empty).
 '/cedalionWeb/parsing':prod(commaList(Prefix,[First|Rest]),'/cedalionWeb/parsing':token(tCed),'/cedalionWeb/parsing':follow('/cedalionWeb/parsing':follow('/cedalionWeb/parsing':terminal('/cedalionWeb/parsing':symbol(! (,))),term(Prefix,First::_)),commaList(Prefix,Rest))).
-'/bootstrap':unitTest('/cedalionWeb/parsing':lexParseString(term(!test,[test:a,test:b,test:c,!hello,123]::'/bootstrap':list(_)),!'[a, b, c, "hello", 123]',tCed)).
+'/bootstrap':unitTest('/cedalionWeb/parsing':lexParseString(term(!test,[test:a,test:b,test:c,!hello,!world]::'/bootstrap':list('/bootstrap':string)),!'[a, b, c, "hello", "world"]',tCed)).

@@ -15,3 +15,4 @@
 '/bootstrap':signature(charCodes(Str,Codes)::pred,[Str::'/bootstrap':string,Codes::'/bootstrap':list('/bootstrap':number)]).
 '/bootstrap':signature(equals(Term1,Term2,T)::pred,[Term1::T,Term2::T,T::'/bootstrap':type]).
 '/bootstrap':signature(toString(Term,T,Str)::pred,[Term::T,T::'/bootstrap':type,Str::_]).
+'/bootstrap':signature(removeAnnotations(Term1,Term2,T)::pred,[Term1::T,Term2::T,T::'/bootstrap':type]).

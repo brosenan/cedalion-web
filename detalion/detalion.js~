@@ -305,8 +305,7 @@ function Interpreter(program) {
 		this.push(goal);
 		while(this.S >= 0) {
 			goal = this.pop();
-//console.log(goal);
-//console.log(this.deepDeref(goal));
+console.log(this.deepDeref(goal));
 			var nodes = this.program.findMostSpecific([PREFIX + 'clause', goal, '_'], this);
 			if(nodes.length == 0) {
 				this.fail();
@@ -459,6 +458,33 @@ function Interpreter(program) {
 			return true;
 		} else {
 			return t1 == t2;
+		}
+	};
+
+	// Remove annotations from a term
+	this.removeAnnotations = function(term) {
+console.log(7);
+		if(Array.isArray(term)) {
+			// Escape: just provide the argument
+			if(term.length == 2 && term[0] == 'annotation#escape') {
+console.log(8);
+				return term[1];
+			}
+			// Annotation: recurse on the first argument
+			if(term[0].substr(0,11) == 'annotation#') {
+console.log(9);
+				return this.removeAnnotations(term[1]);
+			}
+			var newTerm = Array(term.length);
+			newTerm[0] = term[0];
+			for(var i = 1; i < term.length; i++) {
+				newTerm[i] = this.removeAnnotations(term[i]);
+			}
+console.log(10);
+			return newTerm;
+		} else {
+console.log(11);
+			return term;
 		}
 	};
 
@@ -908,6 +934,40 @@ function createBuiltins(det) {
 			if(str != str.ref, term.toString()) {
 				this.fail();
 			}
+		},
+	});
+	det.addBuiltin('removeAnnotations', 3, {
+		'IOO': function(term1, term2, type) {
+console.log(1);
+			this.bind(term2.ref, this.removeAnnotations(term1));
+		},
+		'IOI': function(term1, term2, type) {
+console.log(2);
+			this.bind(term2.ref, this.removeAnnotations(term1));
+		},
+		'IIO': function(term1, term2, type) {
+console.log(3);
+			if(!this.unify(term2, this.removeAnnotations(term1))) {
+				this.fail();
+			}
+		},
+		'III': function(term1, term2, type) {
+console.log(4);
+			if(!this.unify(term2, this.removeAnnotations(term1))) {
+				this.fail();
+			}
+		},
+		'OOO': function(term1, term2, type) {
+			this.bind(term2.ref, term1);
+		},
+		'OOI': function(term1, term2, type) {
+			this.bind(term2.ref, term1);
+		},
+		'OIO': function(term1, term2, type) {
+			this.bind(term1.ref, term2);
+		},
+		'OII': function(term1, term2, type) {
+			this.bind(term1.ref, term2);
 		},
 	});
 	det.program.store([PREFIX + 'clause', [PREFIX + '=', {id:1}, {id:1}], [TRUE]]);
