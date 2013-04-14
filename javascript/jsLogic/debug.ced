@@ -1,4 +1,4 @@
 '/bootstrap':signature(compile(Source,Target)::'/bootstrap':pred,[Source::'/bootstrap':typedTerm,Target::'/javascript':expr]).
-compile(Source,Target):-'/bootstrap':saturate(Source,0,_),'/Functional':eval(jsTerm(Source),'/javascript':expr,Target).
-'/bootstrap':unitTest(compile(jsCommand('/bootstrap':'$SAT$'(0))::jsCommand,'/javascript':array(['/javascript':str(!'/javascript/jsLogic#jsCommand'),'/javascript':arrayElement('/javascript':varExpr(vars),'/javascript':const(0))]))).
+compile(Source,Target):-'/bootstrap':saturate(Source,1,_),'/Functional':eval(jsTerm(Source),'/javascript':expr,Target).
+'/bootstrap':unitTest(compile(jsCommand(X)::jsCommand,'/javascript':array(['/javascript':str(!'/javascript/jsLogic#jsCommand'),'/javascript':arrayElement('/javascript':varExpr(vars),'/javascript':const(1))]))).
 '/bootstrap':sandbox(jsCommand([])::jsCommand).

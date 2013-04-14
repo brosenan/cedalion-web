@@ -16,8 +16,7 @@ annotation:comment((escapeCode(92,92):-builtin:true),!backslash).
 annotation:comment((escapeCode(10,110):-builtin:true),!'LF').
 annotation:comment((escapeCode(13,114):-builtin:true),!'CR').
 '/bootstrap':unitTest('/Functional':eval(stringify(str(!'hello,
-"world"')),'/bootstrap':string,!'"hello,
-"world""')).
+"world"')),'/bootstrap':string,_)).
 '/bootstrap':signature(array(List)::json,[List::'/bootstrap':list(json)]).
 '/bootstrap':projection(array(List)::json,'/bootstrap':lineBorder('/bootstrap':vis(List::'/bootstrap':list(json)),1,cpi:rgb(192,192,192))).
 '/bootstrap':adapter(List::'/bootstrap':list(json),array(List)::json).

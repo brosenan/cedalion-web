@@ -22,13 +22,17 @@ app.on(["detalion", "program"], function() {
 	}
 	console.log('fib emitted ' + JSON.stringify(det.deref(Y)));*/
 
-	var X = det.heapAllocate();
-	var Y = det.heapAllocate();
-	if(!det.call(['/detalion/cedalion#cedalion', ['/detalion/cedalion#test', Y], ['/detalion/cedalion#term', Y], det.heapAllocate(), X])) {
-		console.error('Cedalion fib failed');
+	try {
+		var X = det.heapAllocate();
+		var Y = det.heapAllocate();
+		if(!det.call(['/detalion/cedalion#cedalion', ['/detalion/cedalion#test', Y], ['/detalion/cedalion#term', Y], det.heapAllocate(), X])) {
+			console.error('Cedalion fib failed');
+		}
+		console.log('fib emitted ' + JSON.stringify(det.deepDeref(X)));
+	} catch (e) {
+		console.error("Error: " + e);
+		console.error(e.stack);
 	}
-	console.log('fib emitted ' + JSON.stringify(det.deepDeref(X)));
-
 
 /*	var L = det.heapAllocate();
 	var X = det.heapAllocate();
@@ -53,24 +57,25 @@ app.on(["detalion", "program"], function() {
 	console.log('fib emitted ' + JSON.stringify(det.deepDeref(X)));
 */
 ///*
-	{
+	try {
 		var unitTests = det.program.findAllMatches([":-",["/detalion/export#statement",["/bootstrap#unitTest", '_']], '_'], det).map(function(x) {
 			return x.st[1][1][1];
 		});
 		var num = 0;
 		unitTests.forEach(function(x) {
 			num++;
-			//if(num != 12) return;
-			var cp = det.createChoicePoint();
+			//if(num != 57) return;
 			det.resetRegs();
 			x = det.unifyRead(x);
 			var L = det.heapAllocate();
-			console.log('[' + num + '] Running unit test: ' + JSON.stringify(x));
-			var success = det.call(['/detalion/cedalion#cedalion', x, ['/detalion/cedalion#dummyInst'], ['/bootstrap#number'], L]);
+			console.log('[' + num + '] Running unit: ' + JSON.stringify(x));
+			var success = det.call([PREFIX + 'eval', ['/detalion/cedalion#cedalion', x, ['/detalion/cedalion#dummyInst'], ['/bootstrap#number'], L], 0, 0, det.heapAllocate()]);
 			console.log('[' + num + '] ' + (success ? "PASS" : "FAIL"));
-			det.rollbackChoicePoint(cp);
 		});
 		
+	} catch(e) {
+		console.error(e);
+		console.error(e.stack);
 	}
 //*/
 });

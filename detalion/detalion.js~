@@ -194,6 +194,7 @@ function Interpreter(program) {
 
 	// Unify a prototype with a term, writing to registers
 	this.unifyWrite = function(proto, term) {
+//console.log('unifyWrite');
 		term = this.deref(term);
 		if(proto.id) {
 			var val = this.getReg(proto.id);
@@ -226,6 +227,7 @@ function Interpreter(program) {
 
 	// Returns a term corresponding to the given prototype with the current register values
 	this.unifyRead = function(proto) {
+//console.log('unifyRead');
 		if(proto.id) {
 			var val = this.getReg(proto.id);
 			if(val == null) {
@@ -247,6 +249,7 @@ function Interpreter(program) {
 
 	// Unify two terms
 	this.unify = function(term1, term2) {
+//console.log('unify');
 		term1 = this.deref(term1);
 		term2 = this.deref(term2);
 		if(term1.ref) {
@@ -282,6 +285,7 @@ function Interpreter(program) {
 
 	// Deep deref
 	this.deepDeref = function(term) {
+//console.log('deepDeref: ' + JSON.stringify(term));
 		term = this.deref(term);
 		if(Array.isArray(term)) {
 			var newTerm = new Array(term.length);
@@ -289,8 +293,10 @@ function Interpreter(program) {
 			for(var i = 1; i < term.length; i++) {
 				newTerm[i] = this.deepDeref(term[i]);
 			}
+//console.log('return deepDeref');
 			return newTerm;
 		}
+//console.log('return deepDeref (2)');
 		return term;
 	};
 
@@ -299,7 +305,8 @@ function Interpreter(program) {
 		this.push(goal);
 		while(this.S >= 0) {
 			goal = this.pop();
-console.log(this.deepDeref(goal));
+//console.log(goal);
+//console.log(this.deepDeref(goal));
 			var nodes = this.program.findMostSpecific([PREFIX + 'clause', goal, '_'], this);
 			if(nodes.length == 0) {
 				this.fail();
@@ -419,6 +426,68 @@ console.log(this.deepDeref(goal));
 			return newTerm;
 		} else {
 			return term;
+		}
+	};
+
+	// Returns whether the two given terms equal, including sharing variables.
+	this.termsEqual = function(t1, t2) {
+		t1 = this.deref(t1);
+		t2 = this.deref(t2);
+		if(t1.ref) {
+			if(!t2.ref) {
+				return false;
+			}
+			if(t2.ref != t1.ref) {
+				return false;
+			}
+			return true;
+		} else if(Array.isArray(t1)) {
+			if(!Array.isArray(t2)) {
+				return false;
+			}
+			if(t1.length != t2.length) {
+				return false;
+			}
+			if(t1[0] != t2[0]) {
+				return false;
+			}
+			for(var i = 1; i < t1.length; i++) {
+				if(!this.termsEqual(t1[i], t2[i])) {
+					return false;
+				}
+			}
+			return true;
+		} else {
+			return t1 == t2;
+		}
+	};
+
+	this.termToDot = function(term, rand) {
+		s = '';
+		var rand = rand || Math.floor(Math.random() * 1000000000);
+		if(term.rand && term.rand == rand) return '';
+		term.rand = rand;
+		if(term.ref) {
+			s += 'ref' + term.ref + ' -> ' + this.dotNodeForTerm(this.heap[term.ref]) + '\n';
+			s += this.termToDot(this.heap[term.ref], rand);
+		} else if(Array.isArray(term)) {
+			var node = this.dotNodeForTerm(term);
+			for(var i = 1; i < term.length; i++) {
+				s += node + ' -> ' + this.dotNodeForTerm(term[i]) + '\n';
+				s += this.termToDot(term[i], rand);
+			}
+		}
+		return s;
+	};
+	this.dotNodeForTerm = function(term) {
+		if(term.ref) {
+			return 'ref' + term.ref;
+		} else if(Array.isArray(term)) {
+			var id = term.id || Math.floor(Math.random() * 1000000000);
+			term.id = id;
+			return '"' + term[0] + '/' + (term.length - 1) + '@' + id + '"';
+		} else {
+			return '"' + term + '"';
 		}
 	};
 }
@@ -591,6 +660,7 @@ function createBuiltins(det) {
 	function evalTermPred(term, type, result, cp) {
 		term = this.deepDeref(term);
 		this.rollbackChoicePoint(cp);
+		term = this.copyTerm(term);
 		this.bind(result.ref, term);
 		if(this.inFailure()) {
 			this.fail();
@@ -710,6 +780,9 @@ function createBuiltins(det) {
 				this.bind(args.ref, this.arrayToList(term.slice(1).map(function(x){
 					return ['::', x, det.heapAllocate()];
 				})));
+			} else if(typeof(term) == 'string') {
+				this.bind(name.ref, term);
+				this.bind(args.ref, ['[]']);
 			} else {
 				throw Error('parseTerm called with non-compound ' + JSON.stringify(term));
 			}
@@ -722,11 +795,16 @@ function createBuiltins(det) {
 				var newArgs = this.arrayToList(term.slice(1).map(function(x){
 					return ['::', x, det.heapAllocate()];
 				}));
+				if(!this.unify(args, newArgs)) {
+					this.fail();
+				}
+			} else if(typeof(term) == 'string') {
+				this.bind(name.ref, term);
+				if(!this.unify(args, ['[]'])) {
+					this.fail();
+				}
 			} else {
 				throw Error('parseTerm called with non-compound ' + JSON.stringify(term));
-			}
-			if(!this.unify(args, newArgs)) {
-				this.fail();
 			}
 		},
 		'OII': function(tterm, name, args) {
@@ -780,6 +858,59 @@ function createBuiltins(det) {
 		},
 	});
 
+	det.addBuiltin('equals', 3, {
+		'III': function(term1, term2, type) {
+			if(!this.termsEqual(term1, term2)) {
+				this.fail();
+			}
+		},
+		'IIO': function(term1, term2, type) {
+			if(!this.termsEqual(term1, term2)) {
+				this.fail();
+			}
+		},
+		'OOI': function(term1, term2) {
+			if(term1.ref != term2.ref) {
+				this.fail();
+			}
+		},
+		'OOO': function(term1, term2) {
+			if(term1.ref != term2.ref) {
+				this.fail();
+			}
+		},
+		'IOI': function() {
+			this.fail();
+		},
+		'OII': function() {
+			this.fail();
+		},
+		'IOO': function() {
+			this.fail();
+		},
+		'OIO': function() {
+			this.fail();
+		},
+	});
+	det.addBuiltin('toString', 3, {
+		'IIO': function(term, type, str) {
+			this.bind(str.ref, term.toString());
+		},
+		'IOO': function(term, type, str) {
+			this.bind(str.ref, term.toString());
+		},
+		'III': function(term, type, str) {
+			if(str != str.ref, term.toString()) {
+				this.fail();
+			}
+		},
+		'IOI': function(term, type, str) {
+			if(str != str.ref, term.toString()) {
+				this.fail();
+			}
+		},
+	});
 	det.program.store([PREFIX + 'clause', [PREFIX + '=', {id:1}, {id:1}], [TRUE]]);
 }
+
 
