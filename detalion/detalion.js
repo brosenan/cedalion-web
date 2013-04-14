@@ -676,13 +676,18 @@ function createBuiltins(det) {
 	det.addBuiltin('eval', 4, {
 		'IIIO': evalPred,
 		'IOIO': evalPred,
+		'IIII': evalPred,
+		'IOII': evalPred,
 	});
 	
 	function evalTermPred(term, type, result, cp) {
 		term = this.deepDeref(term);
 		this.rollbackChoicePoint(cp);
 		term = this.copyTerm(term);
-		this.bind(result.ref, term);
+		if(!this.unify(result, term)) {
+			this.fail();
+			return;
+		}
 		if(this.inFailure()) {
 			this.fail();
 		}
@@ -691,6 +696,8 @@ function createBuiltins(det) {
 	det.addBuiltin('__evalTerm', 4, {
 		'IIOI': evalTermPred,
 		'OIOI': evalTermPred,
+		'IIII': evalTermPred,
+		'OIII': evalTermPred,
 	});
 
 	det.addBuiltin('debug', 2, {

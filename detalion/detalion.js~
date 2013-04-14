@@ -463,16 +463,13 @@ console.log(this.deepDeref(goal));
 
 	// Remove annotations from a term
 	this.removeAnnotations = function(term) {
-console.log(7);
 		if(Array.isArray(term)) {
 			// Escape: just provide the argument
 			if(term.length == 2 && term[0] == 'annotation#escape') {
-console.log(8);
 				return term[1];
 			}
 			// Annotation: recurse on the first argument
 			if(term[0].substr(0,11) == 'annotation#') {
-console.log(9);
 				return this.removeAnnotations(term[1]);
 			}
 			var newTerm = Array(term.length);
@@ -480,10 +477,8 @@ console.log(9);
 			for(var i = 1; i < term.length; i++) {
 				newTerm[i] = this.removeAnnotations(term[i]);
 			}
-console.log(10);
 			return newTerm;
 		} else {
-console.log(11);
 			return term;
 		}
 	};
@@ -681,13 +676,18 @@ function createBuiltins(det) {
 	det.addBuiltin('eval', 4, {
 		'IIIO': evalPred,
 		'IOIO': evalPred,
+		'IIII': evalPred,
+		'IOII': evalPred,
 	});
 	
 	function evalTermPred(term, type, result, cp) {
 		term = this.deepDeref(term);
 		this.rollbackChoicePoint(cp);
 		term = this.copyTerm(term);
-		this.bind(result.ref, term);
+		if(!this.unify(result, term)) {
+			this.fail();
+			return;
+		}
 		if(this.inFailure()) {
 			this.fail();
 		}
@@ -696,6 +696,8 @@ function createBuiltins(det) {
 	det.addBuiltin('__evalTerm', 4, {
 		'IIOI': evalTermPred,
 		'OIOI': evalTermPred,
+		'IIII': evalTermPred,
+		'OIII': evalTermPred,
 	});
 
 	det.addBuiltin('debug', 2, {
@@ -938,21 +940,17 @@ function createBuiltins(det) {
 	});
 	det.addBuiltin('removeAnnotations', 3, {
 		'IOO': function(term1, term2, type) {
-console.log(1);
 			this.bind(term2.ref, this.removeAnnotations(term1));
 		},
 		'IOI': function(term1, term2, type) {
-console.log(2);
 			this.bind(term2.ref, this.removeAnnotations(term1));
 		},
 		'IIO': function(term1, term2, type) {
-console.log(3);
 			if(!this.unify(term2, this.removeAnnotations(term1))) {
 				this.fail();
 			}
 		},
 		'III': function(term1, term2, type) {
-console.log(4);
 			if(!this.unify(term2, this.removeAnnotations(term1))) {
 				this.fail();
 			}

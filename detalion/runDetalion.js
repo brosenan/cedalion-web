@@ -25,7 +25,13 @@ app.on(["detalion", "program"], function() {
 	try {
 		var X = det.heapAllocate();
 		var Y = det.heapAllocate();
-		if(!det.call(['/detalion/cedalion#cedalion', ['/detalion/cedalion#test', Y], ['/detalion/cedalion#term', Y], det.heapAllocate(), X])) {
+		var W = det.heapAllocate();
+		if(!det.call(['/detalion/cedalion#cedalion', 
+			['/detalion/cedalion#test', Y], 
+			['/detalion/cedalion#term', Y], 
+			det.heapAllocate(), 
+			['/detalion/cedalion#diffList', W, W], 
+			['/detalion/cedalion#diffList', X, ['[]']]])) {
 			console.error('Cedalion fib failed');
 		}
 		console.log('fib emitted ' + JSON.stringify(det.deepDeref(X)));
@@ -64,12 +70,19 @@ app.on(["detalion", "program"], function() {
 		var num = 0;
 		unitTests.forEach(function(x) {
 			num++;
-			//if(num != 89) return;
+			//if(num != 76) return;
 			det.resetRegs();
 			x = det.unifyRead(x);
 			var L = det.heapAllocate();
+			var W = det.heapAllocate();
 			console.log('[' + num + '] Running unit: ' + JSON.stringify(x));
-			var success = det.call([PREFIX + 'eval', ['/detalion/cedalion#cedalion', x, ['/detalion/cedalion#dummyInst'], ['/bootstrap#number'], L], 0, 0, det.heapAllocate()]);
+			var success = det.call([PREFIX + 'eval', 
+				['/detalion/cedalion#cedalion', 
+					x, 
+					['/detalion/cedalion#dummyInst'], 
+					['/bootstrap#number'], 
+					['/detalion/cedalion#diffList', W, W],
+					['/detalion/cedalion#diffList', L, ['[]']]], 0, 0, det.heapAllocate()]);
 			console.log('[' + num + '] ' + (success ? "PASS" : "FAIL"));
 		});
 		
