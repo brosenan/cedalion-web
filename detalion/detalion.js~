@@ -305,7 +305,7 @@ function Interpreter(program) {
 		this.push(goal);
 		while(this.S >= 0) {
 			goal = this.pop();
-console.log(this.deepDeref(goal));
+//console.log(this.deepDeref(goal));
 			var nodes = this.program.findMostSpecific([PREFIX + 'clause', goal, '_'], this);
 			if(nodes.length == 0) {
 				this.fail();

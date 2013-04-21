@@ -9,10 +9,9 @@ fib(s(s(X)),N):-fib(X,N1),fib(s(X),N2),builtin:plus(N1,N2,N).
 toPeano(N,P):-builtin:if(builtin:greaterThen(N,0), (builtin:minus(N,1,N1),toPeano(N1,P1),P::peano=s(P1)::peano),P::peano=zero::peano).
 '/bootstrap':signature('fib2'(N,Fib)::'/bootstrap':pred,[N::'/bootstrap':number,Fib::'/bootstrap':number]).
 'fib2'(N,Fib):-toPeano(N,P),fib(P,Fib).
-test(V1):-'/bootstrap':or(builtin:true,builtin:fail).
-'/bootstrap':unitTest(builtin:charCodes(!'123hello456',Str)).
-'/bootstrap':unitTest('/cedalionWeb/parsing':parse('/cedalionWeb/parsing':charRange(!'0',!'9'),[49],'/bootstrap':number,[])).
-'/bootstrap':unitTest('/Functional':ge('/Functional':const(49),'/cedalionWeb/parsing':charCode(!'0'),'/bootstrap':number)).
-'/bootstrap':unitTest('/bootstrap':or('/Functional':gt('/Functional':const(49),'/cedalionWeb/parsing':charCode(!'0'),'/bootstrap':number),'/Functional':eq('/Functional':const(49),'/cedalionWeb/parsing':charCode(!'0'),'/bootstrap':number))).
-'/bootstrap':unitTest('/Functional':gt('/Functional':const(49),'/cedalionWeb/parsing':charCode(!'0'),'/bootstrap':number)).
-'/bootstrap':unitTest('/Functional':eq('/Functional':const(49),'/cedalionWeb/parsing':charCode(!'0'),'/bootstrap':number)).
+test(X):-builtin:if('/bootstrap':append(V1,[2|V2],[1,2,3],'/bootstrap':number),builtin:true,builtin:fail).
+'/bootstrap':unitTest('/javascript/optimization':isBuiltin(builtin:succ(V0,V1))).
+'/bootstrap':unitTest(builtin:parseTerm(builtin:succ(V2,V3)::'/bootstrap':pred,V4,V5)).
+'/bootstrap':unitTest(builtin:charCodes(!'builtin#succ',V4)).
+'/bootstrap':unitTest(builtin:charCodes(!'#',[V1])).
+'/bootstrap':unitTest(builtin:if('/bootstrap':append(V1,[35|V2],[98,117,105,108,116,105,110,35,115,117,99,99],'/bootstrap':number),builtin:charCodes(!builtin,V1),builtin:true)).

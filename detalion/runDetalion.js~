@@ -70,10 +70,10 @@ app.on(["detalion", "program"], function() {
 		var num = 0;
 		unitTests.forEach(function(x) {
 			num++;
-			/if(num != 76) return;
+			if(num != 65) return;
 			det.resetRegs();
 			x = det.unifyRead(x);
-			var L = det.heapAllocate();
+			//var L = det.heapAllocate();
 			var W = det.heapAllocate();
 			console.log('[' + num + '] Running unit: ' + JSON.stringify(x));
 			var success = det.call([PREFIX + 'eval', 
@@ -82,7 +82,7 @@ app.on(["detalion", "program"], function() {
 					['/detalion/cedalion#dummyInst'], 
 					['/bootstrap#number'], 
 					['/detalion/cedalion#diffList', W, W],
-					['/detalion/cedalion#diffList', L, ['[]']]], 0, 0, det.heapAllocate()]);
+					['/detalion/cedalion#diffList', ['.', det.heapAllocate(), det.heapAllocate()], ['[]']]], 0, 0, det.heapAllocate()]);
 			console.log('[' + num + '] ' + (success ? "PASS" : "FAIL"));
 		});
 		

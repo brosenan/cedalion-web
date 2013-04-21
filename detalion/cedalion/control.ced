@@ -3,7 +3,7 @@
 '/detalion':clause(cedalion((G1,G2),Inst,Type,LIn,LOut),cedalion(G1,goalInst(G2,Inst),Type,LIn,LOut)).
 '/detalion':clause(cedalion(builtin:true,Inst,Type,LIn,LOut),instantiate(Inst,Type,LIn,LOut)).
 '/detalion':clause(cedalion(builtin:fail,_,_,_,_),'/detalion':fail).
-'/detalion':clause(cedalion(builtin:if(Cond,Then,Else),Inst,Type,LIn,LOut),'/detalion':if(cedalion(Cond,term(Cond),'/bootstrap':pred,diffList(X,X),diffList([CondPrime|_],[])),'/detalion':conj('/detalion':eq(CondPrime::'/bootstrap':pred,Cond::'/bootstrap':pred),cedalion(Then,Inst,Type,LIn,LOut)),cedalion(Else,Inst,Type,LIn,LOut))).
+'/detalion':clause(cedalion(builtin:if(Cond,Then,Else),Inst,Type,LIn,LOut),'/detalion':if('/detalion':eval(cedalion(Cond,term(Cond),'/bootstrap':pred,diffList(X,X),diffList([CondPrime|_],[])),CondPrime,'/bootstrap':pred,Cond),cedalion(Then,Inst,Type,LIn,LOut),cedalion(Else,Inst,Type,LIn,LOut))).
 '/detalion':clause(cedalion(A=A,Inst,Type,LIn,LOut),instantiate(Inst,Type,LIn,LOut)).
 '/detalion':clause(cedalion(builtin:compound(Term::Type),Inst,T,LIn,LOut),'/detalion':conj('/detalion':compound(Term,Type),instantiate(Inst,T,LIn,LOut))).
 '/detalion':clause(cedalion(builtin:var(Term::Type),Inst,T,LIn,LOut),'/detalion':conj('/detalion':var(Term,Type),instantiate(Inst,T,LIn,LOut))).
