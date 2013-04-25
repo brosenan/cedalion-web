@@ -1,0 +1,2 @@
+'/bootstrap':signature(encloseGoal(Goal,GoalPrime,Seed,ClIn,ClOut)::'/detalion':pred,[Goal::'/detalion':pred,GoalPrime::'/detalion':pred,Seed::'/bootstrap':string,ClIn::'/bootstrap':list('/bootstrap':statement),ClOut::'/bootstrap':list('/bootstrap':statement)]).
+'/detalion':clause(encloseGoal(Goal,GoalPrime,Seed,ClIn,['/detalion':clause(GoalPrime,Goal)|ClIn]),'/detalion':hashGoal(Goal,Seed,GoalPrime)).

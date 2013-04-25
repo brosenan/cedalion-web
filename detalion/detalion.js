@@ -12,6 +12,7 @@ function ProgramDatabase() {
 	this.db = {};
 
 	this.store = function(statement) {
+//console.log('Storing: ' + JSON.stringify(statement));
 		var node = this.db;
 		var term = statement;
 		if(!node['*']) {
@@ -55,26 +56,39 @@ function ProgramDatabase() {
 		return results;
 	};
 
-	this.findMostSpecific = function(pattern, det) {
-		var fallback = [];
+	this.findMostSpecificNode = function(pattern, det) {
 		var node = this.db;
+		var fallback = node;
 		var term = det.deref(pattern);
+		var prevTerm = term;
 		while(Array.isArray(term) && node) {
-			if(node['.'])
-				fallback = node['.'];
+			if(node['.']) {
+				fallback = node;
+				prevTerm = term;
+			}
 			node = node[term[0] + '/' + (term.length - 1)];
 			term = det.deref(term[1]);
 		}
-		if(node && node['.'])
-			return node['.'];
-		if(node && node['*'])
-			return node['*'];
-		return fallback;
+		if(Array.isArray(term) && !node && !fallback.fixed) {
+			var lifted = det.lift(fallback, prevTerm[0], prevTerm.length-1);
+			if(lifted) {
+				var newNode = {'.': [{'st': lifted}]};
+				fallback[prevTerm[0] + '/' + (prevTerm.length - 1)] = newNode;
+				return newNode;
+			}
+		}
+		return node || fallback;
+	};
+	
+	this.findMostSpecific = function(pattern, det) {
+		var node = this.findMostSpecificNode(pattern, det);
+		return node['.'] || [];
 	};
 	
 	// Store a function for handling a specific mode of a clause
 	this.storeBuiltin = function(pattern, det, mode, func, numRegs) {
-		var options = this.findMostSpecific(pattern, det);
+		var dbNode = this.findMostSpecificNode(pattern, det);
+		var options = dbNode['.'] || [];
 		if(options.length != 1) {
 			throw Error('Pattern not found or not specific: ' + pattern);
 		}
@@ -83,13 +97,15 @@ function ProgramDatabase() {
 			node.builtins = new Array(1<<numRegs);
 		}
 		node.builtins[mode] = func;
+		dbNode.fixed = true;
 	};
 
 }
 
 // The interpreter
-function Interpreter(program) {
+function Interpreter(program, jit) {
 	this.program = program;
+	this.jit = jit;
 	this.heap = new Array(HEAP_SIZE);
 	this.stack = new Array(STACK_SIZE);
 	this.registers = new Array(NUM_REG);
@@ -302,15 +318,20 @@ function Interpreter(program) {
 
 	// The interpreter
 	this.call = function(goal) {
+		var baseline = this.S;
 		this.push(goal);
-		while(this.S >= 0) {
+		while(this.S > baseline) {
 			goal = this.pop();
+//console.log(this.termToDot(goal));
 //console.log(this.deepDeref(goal));
 			var nodes = this.program.findMostSpecific([PREFIX + 'clause', goal, '_'], this);
 			if(nodes.length == 0) {
 				this.fail();
 				continue;
 			} else if(nodes.length > 1) {
+				for(var i = 0; i < nodes.length; i++) {
+					console.log(i + ") " + JSON.stringify(nodes[i].st));
+				}
 				throw Error("Ambiguous goal: " + JSON.stringify(this.deepDeref(goal)));
 			}
 			var clause = nodes[0].st;
@@ -511,6 +532,102 @@ function Interpreter(program) {
 			return '"' + term + '"';
 		}
 	};
+
+	// Handle the situation when the program finds a solution that is not specific enough and can be specialized
+	// This function either returns a clause to enter the program privately (i.e., only as a solution for such a case),
+	// or undefined, if there is nothing to do.
+	this.lift = function(node, name, arity) {
+		if(this.jit) {
+			return this.jit.lift(this, node, name, arity);
+		}
+	};
+
+	// Returns a hash value for the term
+	this.termHash = function(term) {
+		term = this.toPrototype(term);
+		if(Array.isArray(term)) {
+			var hash = 0;
+			for(var i = 0; i < term.length; i++) {
+				hash *= 31;
+				hash = hash % (1<<63);
+				hash += this.termHash(term[i]);
+			}
+			return hash % (1<<63);
+		} else if(term.id) {
+			return term.id
+		} else {
+			var s = term.toString();
+			var hash = 0;
+			for(var i = 0; i < s.length; i++) {
+				hash *= 31;
+				hash = hash % (1<<63);
+				hash += s.charCodeAt(i);
+			}
+			return hash % (1<<63);
+		}
+	};
+
+	this.collectTermVars = function(term, vars, map) {
+		term = this.deref(term);
+		if(term.ref) {
+			if(!map[term.ref]) {
+				vars.push(term);
+				map[term.ref] = 1;
+			}
+		} else if(Array.isArray(term)) {
+			for(var i = 1; i < term.length; i++) {
+				this.collectTermVars(term[i], vars, map);
+			}
+		}
+	};
+
+	this.toPrototype = function(term, map, arr) {
+		term = this.deref(term);
+		map = map || {};
+		arr = arr || [];
+		if(term.ref) {
+			if(!map[term.ref]) {
+				var count = arr.push(term.ref);
+				map[term.ref] = count;
+			}
+			return {id: map[term.ref]};
+		} else if(Array.isArray(term)) {
+			var newTerm = Array(term.length);
+			newTerm[0] = term[0];
+			for(var i = 1; i < term.length; i++) {
+				newTerm[i] = this.toPrototype(term[i], map, arr);
+			}
+			return newTerm
+		} else {
+			return term;
+		}
+	};
+
+	this.collectVariables = function(term, map) {
+		if(term.ref) {
+			map[term.ref] = true;
+		} else if(Array.isArray(term)) {
+			for(var i = 1; i < term.length; i++) {
+				this.collectVariables(term[i], map);
+			}
+		}
+	};
+
+	this.hasVariablesFromMap = function(term, map) {
+		if(term.ref && map[term.ref]) {
+			return true;
+		} else if(Array.isArray(term)) {
+			for(var i = 1; i < term.length; i++) {
+				if(this.hasVariablesFromMap(term[i], map)) {
+					return true;
+				}
+			}
+			return false;
+		} else {
+			return false;
+		}
+	};
+
 }
 
 function modeStrToNum(modeStr) {
@@ -553,6 +670,10 @@ function createBuiltins(det) {
 
 	det.addBuiltin('__thenElse', 3, {
 		'III': function(then, els, cp) {			
+//console.log(JSON.stringify(['thenElse', then, els]));
+//console.log(this.termToDot(then));
+//console.log("=====");
+
 			if(this.inFailure()) {
 				this.rollbackChoicePoint(cp);
 				this.push(els);
@@ -702,7 +823,8 @@ function createBuiltins(det) {
 
 	det.addBuiltin('debug', 2, {
 		'II': function(title, value) {
-			console.log("[DBG] [" + title + "] " + JSON.stringify(this.deepDeref(value[1])));
+			//console.log("[DBG] [" + title + "] " + JSON.stringify(this.deepDeref(value[1])));
+//console.log(this.termToDot(value[1]));
 		},
 	});
 
@@ -968,7 +1090,142 @@ function createBuiltins(det) {
 			this.bind(term1.ref, term2);
 		},
 	});
+
+	function findMostSpecific(pattern, result, numMoreSpecific) {
+		var node = this.program.findMostSpecificNode(pattern, this);
+		var matches = node['.'] || [];
+		if(matches.length > 1) {
+			throw Error('Ambiguous query: ' + JSON.stringify(pattern));
+		} else if (matches.length == 0) {
+			this.fail();
+		} else {
+			this.resetRegs();
+			if(!this.unifyWrite(matches[0].st, result)) {
+				this.fail();
+				return;
+			}
+			var moreSpecCount = 0;
+			if(node['*']) {
+				moreSpecCount = node['*'].length;
+			}
+			if(!this.unify(numMoreSpecific, moreSpecCount)) {
+				this.fail();
+				return;
+			}
+		}
+	}
+	det.addBuiltin('findMostSpecific', 3, {
+		'IOO': findMostSpecific,
+		'IIO': findMostSpecific,
+		'IOI': findMostSpecific,
+		'III': findMostSpecific,
+	});
+
+	det.addBuiltin('hashGoal', 3, {
+		'IIO': function(goal, seed, hashed) {
+			var vars = [];
+			this.collectTermVars(goal, vars, {});
+			this.bind(hashed.ref, [seed + '_' + this.termHash(goal)].concat(vars))
+		},
+	});
+
+	det.addBuiltin('shareVariables', 2, {
+		'II': function(term1, term2) {
+			var map = {};
+			det.collectVariables(term1, map);
+			if(!det.hasVariablesFromMap(term2, map)) {
+				this.fail();
+			}
+		},
+	});
+
 	det.program.store([PREFIX + 'clause', [PREFIX + '=', {id:1}, {id:1}], [TRUE]]);
+}
+
+function Jit(thresholds) {
+	this.thresholds = thresholds;
+	this.locked = false;
+	this.cached = {};
+	
+	this.lift = function(det, node, name, arity) {
+		if(!this.thresholds.lifting) {
+			return;
+		}
+		if(this.locked) {
+			return;
+		}
+		this.locked = true;
+		var result = (function() {
+			if(!node.lifting) {
+				node.lifting = {};
+			}
+			var key = name + "/" + arity;
+			if(!node.lifting[key]) {
+				node.lifting[key] = 1;
+			} else {
+				node.lifting[key]++;
+			}
+			if(node.lifting[key] < this.thresholds.lifting) {
+				return;
+			}
+			var matches = node['.'];
+			if(!matches) {
+				return;
+			}
+			if(matches.length != 1) {
+				throw Error('Non-determinism detected when lifting ' + key);
+			}
+			var clause = matches[0].st;
+			if(clause.length != 3 || clause[0] != PREFIX + 'clause') {
+				return;
+			}
+			det.resetRegs();
+			clause = det.unifyRead(clause);
+			// Do not lift trivial clauses
+			if(Array.isArray(clause[2]) && clause[2].length == 1 && clause[2][0] == TRUE) {
+				return;
+			}
+		
+			// Do the actual lifting
+			var curr = clause[1];
+			while(Array.isArray(curr) && curr.length > 1) {
+				curr = curr[1];
+			}
+			if(curr.ref) {
+				var newTerm = [name];
+				for(i = 0; i < arity; i++) {
+					newTerm.push(det.heapAllocate());
+				}
+				det.bind(curr.ref, newTerm);
+			} else {
+				return;
+			}
+//console.log('about to lift ' + JSON.stringify(det.deepDeref(clause[1])));
+			// Specialize the body
+			var specialized = det.heapAllocate();
+			var newClauses = det.heapAllocate();
+			var b = det.call(['det#specialize', clause[2], specialized, ['[]'], newClauses, clause[1]]);
+			if(b) {
+				newClauses = det.listToArray(newClauses);
+				for(var i = 0; i < newClauses.length; i++) {
+					var key = det.deref(det.deref(newClauses[i])[1])[0];
+					if(!this.cached[key]) {
+						this.cached[key] = true;
+						det.program.store(det.toPrototype(newClauses[i]));
+					}
+				}
+//console.log('Added: ' + JSON.stringify(det.deepDeref(clause[1])) + ' :- \n\t' + JSON.stringify(det.deepDeref(specialized)));
+				return det.toPrototype([PREFIX + 'clause', clause[1], specialized]);
+			} else {
+//console.log('specialization failed');
+/*console.log('Added: ' + JSON.stringify(det.deepDeref(clause[1])) + ' :- FAIL');*/
+				return det.toPrototype([PREFIX + 'clause', clause[1], [FAIL]]);
+				return;
+			}
+		}).call(this);
+		this.locked = false;
+		return result;
+	};
 }
 
 

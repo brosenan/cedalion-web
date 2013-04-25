@@ -1,4 +1,5 @@
 '/bootstrap':signature(findAllMatches(Prototype,Matches)::pred,[Prototype::'/bootstrap':statement,Matches::'/bootstrap':list('/bootstrap':statement)]).
+'/bootstrap':signature(findMostSpecific(Pattern,Statement,NumMoreSpecific)::pred,[Pattern::'/bootstrap':statement,Statement::'/bootstrap':statement,NumMoreSpecific::'/bootstrap':number]).
 '/bootstrap':signature(eval(Goal,Term,Type,Result)::pred,[Goal::pred,Term::Type,Type::'/bootstrap':type,Result::Type]).
 '/bootstrap':signature(copyTerm(Src,Tgt,Type)::pred,[Src::Type,Tgt::Type,Type::'/bootstrap':type]).
 '/bootstrap':defAtom(fail::pred).
@@ -16,3 +17,6 @@
 '/bootstrap':signature(equals(Term1,Term2,T)::pred,[Term1::T,Term2::T,T::'/bootstrap':type]).
 '/bootstrap':signature(toString(Term,T,Str)::pred,[Term::T,T::'/bootstrap':type,Str::_]).
 '/bootstrap':signature(removeAnnotations(Term1,Term2,T)::pred,[Term1::T,Term2::T,T::'/bootstrap':type]).
+'/bootstrap':signature(error(Str)::pred,[Str::'/bootstrap':string]).
+'/bootstrap':signature(hashGoal(Goal,Seed,GoalPrime)::pred,[Goal::pred,Seed::'/bootstrap':string,GoalPrime::pred]).
+'/bootstrap':signature(shareVariables(Goal1,Goal2)::pred,[Goal1::pred,Goal2::pred]).

@@ -13,7 +13,9 @@ app.on(["detalion", "program"], function() {
 		program.store(s);
 	}
 	eval(app.program);
-	var det = new Interpreter(program);
+	var jit;
+	jit = new Jit({lifting: 2});
+	var det = new Interpreter(program, jit);
 	createBuiltins(det);
 
 /*	var Y = det.heapAllocate();
@@ -38,6 +40,7 @@ app.on(["detalion", "program"], function() {
 	} catch (e) {
 		console.error("Error: " + e);
 		console.error(e.stack);
+		throw e;
 	}
 
 /*	var L = det.heapAllocate();
@@ -62,30 +65,31 @@ app.on(["detalion", "program"], function() {
 	}
 	console.log('fib emitted ' + JSON.stringify(det.deepDeref(X)));
 */
-///*
+//*
 	try {
 		var unitTests = det.program.findAllMatches([":-",["/detalion/export#statement",["/bootstrap#unitTest", '_']], '_'], det).map(function(x) {
 			return x.st[1][1][1];
 		});
-		var num = 0;
-		unitTests.forEach(function(x) {
-			num++;
-			//if(num != 65) return;
-			det.resetRegs();
-			x = det.unifyRead(x);
-			//var L = det.heapAllocate();
-			var W = det.heapAllocate();
-			console.log('[' + num + '] Running unit: ' + JSON.stringify(x));
-			var success = det.call([PREFIX + 'eval', 
-				['/detalion/cedalion#cedalion', 
-					x, 
-					['/detalion/cedalion#dummyInst'], 
-					['/bootstrap#number'], 
-					['/detalion/cedalion#diffList', W, W],
-					['/detalion/cedalion#diffList', ['.', det.heapAllocate(), det.heapAllocate()], ['[]']]], 0, 0, det.heapAllocate()]);
-			console.log('[' + num + '] ' + (success ? "PASS" : "FAIL"));
-		});
-		
+		for(var i = 0; i < 1; i++) {
+			var num = 0;
+			unitTests.forEach(function(x) {
+				num++;
+				//if(num != 12) return;
+				det.resetRegs();
+				x = det.unifyRead(x);
+				//var L = det.heapAllocate();
+				var W = det.heapAllocate();
+				console.log('[' + num + '] Running unit: ' + JSON.stringify(x));
+				var success = det.call([PREFIX + 'eval', 
+					['/detalion/cedalion#cedalion', 
+						x, 
+						['/detalion/cedalion#dummyInst'], 
+						['/bootstrap#number'], 
+						['/detalion/cedalion#diffList', W, W],
+						['/detalion/cedalion#diffList', ['.', det.heapAllocate(), det.heapAllocate()], ['[]']]], 0, 0, det.heapAllocate()]);
+				console.log('[' + num + '] ' + (success ? "PASS" : "FAIL"));
+			});
+		}
 	} catch(e) {
 		console.error(e);
 		console.error(e.stack);

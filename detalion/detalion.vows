@@ -38,12 +38,9 @@ vows.describe('detalion').addBatch({
             assert.equal(matches.length, 1);
             assert.deepEqual(matches[0].st, ['clause', ['a', ['c', 'X']], ['b', 'X']]);
 		},
-		'in a case of a tie, findMostSpecific() should return all answers': function(db) {
+		'findMostSpecific() should only return matches that are as or less specific than the pattern': function(db) {
 			var matches = db.findMostSpecific(['clause', 'X', 'Y'], new Interpreter(db));
-            assert.equal(matches.length, 3);
-            assert.deepEqual(matches[0].st, ['clause', ['a', 'X'], ['b', 'X']]);
-            assert.deepEqual(matches[1].st, ['clause', ['b', 'X'], ['c', 'X']]);
-            assert.deepEqual(matches[2].st, ['clause', ['a', ['c', 'X']], ['b', 'X']]);
+            assert.equal(matches.length, 0);
 		},
 		'When there is a generic and a specific answer, findMostSpecific() should return the generic one': function(db) {
 			var matches = db.findMostSpecific(['clause', ['a', 'Z'], 'Y'], new Interpreter(db));
@@ -76,7 +73,24 @@ vows.describe('detalion').addBatch({
 		'Writing a(2, 7) into a(X, Y) shoud turn p(X, 1, Y) into p(2, 1, 7)': function(det) {
 			assert.isTrue(det.unifyWrite(['a', {id:1}, {id:2}], ['a', 2, 7]));
 			assert.deepEqual(det.unifyRead(['p', {id:1}, 1, {id:2}]), ['p', 2, 1, 7]);
-		}
+		},
+		'toPrototype(a(X, b(Y, X))) should run correctly': function(det) {
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			assert.deepEqual(det.toPrototype(['a', X, ['b', Y, X]]), ['a', {id:1}, ['b', {id:2}, {id:1}]]);
+		},
+		'collectTermVars(a(X, b(Y, X))) collect X and Y': function(det) {
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			var vars = [];
+			det.collectTermVars(['a', X, ['b', Y, X]], vars, {})
+			assert.deepEqual(vars, [X, Y]);
+		},
+		'termHash(a(X, b(Y, X))) should run correctly': function(det) {
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			assert.equal(det.termHash(['a', X, ['b', Y, X]]), 187458);
+		},
 	},
 	'A simple program': {
 		topic: (function() {
@@ -123,7 +137,7 @@ vows.describe('detalion').addBatch({
 			program.store([PREFIX + 'clause', ['concat', ['[]'], {id:1}, {id:1}], [TRUE]]);
 			program.store([PREFIX + 'clause', ['concat', ['.', {id:1}, {id:2}], {id:3}, ['.', {id:1}, {id:4}]], 
 				['concat', {id:2}, {id:3}, {id:4}]]);
-			var det = new Interpreter(program);
+			var det = new Interpreter(program, new Jit({lifting: 0}));
 			createBuiltins(det);
 			return det;
 		})(),
