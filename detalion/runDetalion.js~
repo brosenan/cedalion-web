@@ -70,11 +70,11 @@ app.on(["detalion", "program"], function() {
 		var unitTests = det.program.findAllMatches([":-",["/detalion/export#statement",["/bootstrap#unitTest", '_']], '_'], det).map(function(x) {
 			return x.st[1][1][1];
 		});
-		for(var i = 0; i < 5; i++) {
+		for(var i = 0; i < 1; i++) {
 			var num = 0;
 			unitTests.forEach(function(x) {
 				num++;
-				//if(num != 12) return;
+				//if(num != 2) return;
 				det.resetRegs();
 				x = det.unifyRead(x);
 				//var L = det.heapAllocate();

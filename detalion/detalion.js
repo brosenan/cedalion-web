@@ -175,6 +175,7 @@ function Interpreter(program, jit) {
 	// Collapse the stack as a result of failure
 	// (this method does not roll-back the choice point).
 	this.fail = function() {
+		//this.trace('Failed');
 		this.S = this.FS;
 		this.failure = true;
 	};
@@ -318,43 +319,48 @@ function Interpreter(program, jit) {
 
 	// The interpreter
 	this.call = function(goal) {
-		var baseline = this.S;
-		this.push(goal);
-		while(this.S > baseline) {
-			goal = this.pop();
-//console.log(this.termToDot(goal));
-//console.log(this.deepDeref(goal));
-			var nodes = this.program.findMostSpecific([PREFIX + 'clause', goal, '_'], this);
-			if(nodes.length == 0) {
-				this.fail();
-				continue;
-			} else if(nodes.length > 1) {
-				for(var i = 0; i < nodes.length; i++) {
-					console.log(i + ") " + JSON.stringify(nodes[i].st));
+		try {
+			var baseline = this.S;
+			this.push(goal);
+			while(this.S > baseline) {
+				goal = this.pop();
+	//console.log(this.deepDeref(goal));
+	//console.log(this.termToDot(goal));
+				var nodes = this.program.findMostSpecific([PREFIX + 'clause', goal, '_'], this);
+				if(nodes.length == 0) {
+					this.fail();
+					continue;
+				} else if(nodes.length > 1) {
+					for(var i = 0; i < nodes.length; i++) {
+						console.log(i + ") " + JSON.stringify(nodes[i].st));
+					}
+					throw Error("Ambiguous goal: " + JSON.stringify(this.deepDeref(goal)));
 				}
-				throw Error("Ambiguous goal: " + JSON.stringify(this.deepDeref(goal)));
+				var clause = nodes[0].st;
+				var head = clause[1];
+				var body = clause[2];
+				this.resetRegs();
+				if(!this.unifyWrite(head, goal)) {
+					this.fail();
+					continue;
+				}
+				var func = null;
+				if(nodes[0].builtins) {
+					var mode = this.calcMode();
+	//console.log(mode);
+					func = nodes[0].builtins[mode];
+				}
+				if(func) {
+					func.apply(this, this.registers.slice(1, this.TR + 1));
+				} else {
+					this.push(this.unifyRead(body));
+				}
 			}
-			var clause = nodes[0].st;
-			var head = clause[1];
-			var body = clause[2];
-			this.resetRegs();
-			if(!this.unifyWrite(head, goal)) {
-				this.fail();
-				continue;
-			}
-			var func = null;
-			if(nodes[0].builtins) {
-				var mode = this.calcMode();
-//console.log(mode);
-				func = nodes[0].builtins[mode];
-			}
-			if(func) {
-				func.apply(this, this.registers.slice(1, this.TR + 1));
-			} else {
-				this.push(this.unifyRead(body));
-			}
+			return !this.inFailure();
+		} catch(e) {
+			this.trace(e);
+			throw e;
 		}
-		return !this.inFailure();
 	};
 
 	// Add a builtin predicate
@@ -604,6 +610,7 @@ function Interpreter(program, jit) {
 	};
 
 	this.collectVariables = function(term, map) {
+		term = this.deref(term);
 		if(term.ref) {
 			map[term.ref] = true;
 		} else if(Array.isArray(term)) {
@@ -614,6 +621,7 @@ function Interpreter(program, jit) {
 	};
 
 	this.hasVariablesFromMap = function(term, map) {
+		term = this.deref(term);
 		if(term.ref && map[term.ref]) {
 			return true;
 		} else if(Array.isArray(term)) {
@@ -627,6 +635,14 @@ function Interpreter(program, jit) {
 			return false;
 		}
 	};
+
+	this.trace = function(reason) {
+		console.error('Trace: ' + reason);
+		for(var i = 0; i < 5; i++) {
+			var index = this.S - i + 1;
+			console.error('\t' + index + ') ' + JSON.stringify(this.deepDeref(this.stack[index])));
+		}
+	}
 
 }
 
@@ -823,7 +839,7 @@ function createBuiltins(det) {
 
 	det.addBuiltin('debug', 2, {
 		'II': function(title, value) {
-			//console.log("[DBG] [" + title + "] " + JSON.stringify(this.deepDeref(value[1])));
+			console.log("[DBG] [" + title + "] " + JSON.stringify(this.deepDeref(value[1])));
 //console.log(this.termToDot(value[1]));
 		},
 	});
@@ -932,6 +948,27 @@ function createBuiltins(det) {
 				})));
 			} else if(typeof(term) == 'string') {
 				this.bind(name.ref, term);
+				this.bind(args.ref, ['[]']);
+			} else {
+				throw Error('parseTerm called with non-compound ' + JSON.stringify(term));
+			}
+		},
+		'IIO': function(tterm, name, args) {
+			var det = this;
+			var term = this.deref(tterm[1]);
+			if(Array.isArray(term)) {
+				if(!this.unify(name, term[0])) {
+					this.fail();
+					return;
+				}
+				this.bind(args.ref, this.arrayToList(term.slice(1).map(function(x){
+					return ['::', x, det.heapAllocate()];
+				})));
+			} else if(typeof(term) == 'string') {
+				if(!this.unify(name, term)) {
+					this.fail();
+					return;
+				}
 				this.bind(args.ref, ['[]']);
 			} else {
 				throw Error('parseTerm called with non-compound ' + JSON.stringify(term));
@@ -1130,7 +1167,9 @@ function createBuiltins(det) {
 	});
 
 	det.addBuiltin('shareVariables', 2, {
-		'II': function(term1, term2) {
+		'II': function(tterm1, tterm2) {
+			var term1 = this.deref(tterm1)[1];
+			var term2 = this.deref(tterm2)[1];
 			var map = {};
 			det.collectVariables(term1, map);
 			if(!det.hasVariablesFromMap(term2, map)) {
@@ -1200,7 +1239,7 @@ function Jit(thresholds) {
 			} else {
 				return;
 			}
-//console.log('about to lift ' + JSON.stringify(det.deepDeref(clause[1])));
+//console.log('Lifting: ' + JSON.stringify(det.deepDeref(clause[1])));
 			// Specialize the body
 			var specialized = det.heapAllocate();
 			var newClauses = det.heapAllocate();

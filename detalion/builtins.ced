@@ -19,4 +19,4 @@
 '/bootstrap':signature(removeAnnotations(Term1,Term2,T)::pred,[Term1::T,Term2::T,T::'/bootstrap':type]).
 '/bootstrap':signature(error(Str)::pred,[Str::'/bootstrap':string]).
 '/bootstrap':signature(hashGoal(Goal,Seed,GoalPrime)::pred,[Goal::pred,Seed::'/bootstrap':string,GoalPrime::pred]).
-'/bootstrap':signature(shareVariables(Goal1,Goal2)::pred,[Goal1::pred,Goal2::pred]).
+'/bootstrap':signature(shareVariables(TTerm1,TTerm2)::pred,[TTerm1::'/bootstrap':typedTerm,TTerm2::'/bootstrap':typedTerm]).
