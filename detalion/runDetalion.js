@@ -65,16 +65,35 @@ app.on(["detalion", "program"], function() {
 	}
 	console.log('fib emitted ' + JSON.stringify(det.deepDeref(X)));
 */
+/*
+	{
+		var unitTests = det.program.findAllMatches([":-",["/detalion/export#statement",["/detalion#unitTest", '_']], '_'], det).map(function(x) {
+			return x.st[1][1][1];
+		});
+		for(var i = 0; i < 10; i++) {
+			var num = 0;
+			unitTests.forEach(function(x) {
+				num++;
+				//if(num != 3) return;
+				det.resetRegs();
+				x = det.unifyRead(x);
+				console.log('[' + num + '] Running unit: ' + JSON.stringify(x));
+				var success = det.call(x);
+				console.log('[' + num + '] ' + (success ? "PASS" : "FAIL"));
+			});
+		}		
+	}
+//*/
 //*
 	try {
 		var unitTests = det.program.findAllMatches([":-",["/detalion/export#statement",["/bootstrap#unitTest", '_']], '_'], det).map(function(x) {
 			return x.st[1][1][1];
 		});
-		for(var i = 0; i < 3; i++) {
+		for(var i = 0; i < 1; i++) {
 			var num = 0;
 			unitTests.forEach(function(x) {
 				num++;
-				//if(num != 2) return;
+				//if(num != 12) return;
 				det.resetRegs();
 				x = det.unifyRead(x);
 				//var L = det.heapAllocate();

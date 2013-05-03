@@ -1,0 +1,14 @@
+'/bootstrap':signature(dynamicMarker(Zero,Var)::Type,[Zero::'/bootstrap':number,Var::Type]).
+'/bootstrap':projection(dynamicMarker(Zero,Var)::Type,'/bootstrap':brackets('/bootstrap':horiz(['/bootstrap':halfSize('/bootstrap':vis(Zero::'/bootstrap':number)),'/bootstrap':vis(Var::Type)]),60,62)).
+'/bootstrap':signature(markDynamic(TTerm)::'/detalion':pred,[TTerm::'/bootstrap':typedTerm]).
+'/detalion':clause(markDynamic(Term::Type),'/detalion':if('/detalion':var(Term,Type),'/detalion':eq(Term::Type,dynamicMarker(0,_)::Type),'/detalion':if(isDynamic(Term,Type,_),'/detalion':true,'/detalion':if('/detalion':compound(Term,Type),'/detalion':conj('/detalion':parseTerm(Term::Type,_,Args),markDynamicList(Args)),'/detalion':true)))).
+'/bootstrap':signature(markDynamicList(Args)::'/detalion':pred,[Args::'/bootstrap':list('/bootstrap':typedTerm)]).
+'/detalion':clause(markDynamicList([]),'/detalion':true).
+'/detalion':clause(markDynamicList([First|Rest]),'/detalion':conj(markDynamic(First),markDynamicList(Rest))).
+'/bootstrap':signature(unmarkDynamic(TTerm1,TTerm2)::'/detalion':pred,[TTerm1::'/bootstrap':typedTerm,TTerm2::'/bootstrap':typedTerm]).
+'/detalion':clause(unmarkDynamic(Term1::Type,Term2::Type),'/detalion':if('/detalion':var(Term1,Type),'/detalion':eq(Term2::Type,Term1::Type),'/detalion':if(isDynamic(Term1,Type,Var),'/detalion':eq(Term2::Type,Var::Type),'/detalion':if('/detalion':compound(Term1,Type),'/detalion':conj('/detalion':parseTerm(Term1::Type,Name,Args1),'/detalion':conj(unmarkDynamiceList(Args1,Args2),'/detalion':parseTerm(Term2::Type,Name,Args2))),'/detalion':eq(Term2::Type,Term1::Type))))).
+'/bootstrap':signature(unmarkDynamiceList(Args1,Args2)::'/detalion':pred,[Args1::'/bootstrap':list('/bootstrap':typedTerm),Args2::'/bootstrap':list('/bootstrap':typedTerm)]).
+'/detalion':clause(unmarkDynamiceList([],[]),'/detalion':true).
+'/detalion':clause(unmarkDynamiceList([First1|Rest1],[First2|Rest2]),'/detalion':conj(unmarkDynamic(First1,First2),unmarkDynamiceList(Rest1,Rest2))).
+'/bootstrap':signature(isDynamic(Term,Type,V)::'/detalion':pred,[Term::Type,Type::'/bootstrap':type,V::Type]).
+'/detalion':clause(isDynamic(Term,Type,V),'/detalion':conj('/detalion':eq(Term::Type,dynamicMarker(Z,V)::Type),'/detalion':equals(Z,0,'/bootstrap':number))).

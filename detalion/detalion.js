@@ -69,7 +69,7 @@ function ProgramDatabase() {
 			node = node[term[0] + '/' + (term.length - 1)];
 			term = det.deref(term[1]);
 		}
-		if(Array.isArray(term) && !node && !fallback.fixed) {
+		if(Array.isArray(prevTerm) && !node && !fallback.fixed) {
 			var lifted = det.lift(fallback, prevTerm[0], prevTerm.length-1);
 			if(lifted) {
 				var newNode = {'.': [{'st': lifted}]};
@@ -324,8 +324,8 @@ function Interpreter(program, jit) {
 			this.push(goal);
 			while(this.S > baseline) {
 				goal = this.pop();
-	//console.log(this.deepDeref(goal));
-	//console.log(this.termToDot(goal));
+//console.log(this.deepDeref(goal));
+//console.log(this.termToDot(goal));
 				var nodes = this.program.findMostSpecific([PREFIX + 'clause', goal, '_'], this);
 				if(nodes.length == 0) {
 					this.fail();
@@ -791,6 +791,16 @@ function createBuiltins(det) {
 				return det.unifyRead(x.st);
 			});
 			this.bind(matches.ref, this.arrayToList(matchArray));
+		},
+		'II': function(pattern, matches) {
+			var det = this;
+			var matchArray = this.program.findAllMatches(pattern, this).map(function(x) {
+				det.resetRegs();
+				return det.unifyRead(x.st);
+			});
+			if(!this.unify(matches, this.arrayToList(matchArray))) {
+				this.fail();
+			}
 		}
 	});
 
@@ -815,6 +825,10 @@ function createBuiltins(det) {
 		'IOIO': evalPred,
 		'IIII': evalPred,
 		'IOII': evalPred,
+		'IIOO': evalPred,
+		'IOOO': evalPred,
+		'IIOI': evalPred,
+		'IOOI': evalPred,
 	});
 	
 	function evalTermPred(term, type, result, cp) {
@@ -835,6 +849,10 @@ function createBuiltins(det) {
 		'OIOI': evalTermPred,
 		'IIII': evalTermPred,
 		'OIII': evalTermPred,
+		'IOOI': evalTermPred,
+		'OOOI': evalTermPred,
+		'IOII': evalTermPred,
+		'OOII': evalTermPred,
 	});
 
 	det.addBuiltin('debug', 2, {
@@ -1158,12 +1176,14 @@ function createBuiltins(det) {
 		'III': findMostSpecific,
 	});
 
+	function hashGoal(goal, seed, hashed) {
+		var vars = [];
+		this.collectTermVars(goal, vars, {});
+		this.bind(hashed.ref, [seed + '_' + this.termHash(goal)].concat(vars))
+	}
 	det.addBuiltin('hashGoal', 3, {
-		'IIO': function(goal, seed, hashed) {
-			var vars = [];
-			this.collectTermVars(goal, vars, {});
-			this.bind(hashed.ref, [seed + '_' + this.termHash(goal)].concat(vars))
-		},
+		'IIO': hashGoal,
+		'OIO': hashGoal,
 	});
 
 	det.addBuiltin('shareVariables', 2, {
@@ -1243,18 +1263,19 @@ function Jit(thresholds) {
 			// Specialize the body
 			var specialized = det.heapAllocate();
 			var newClauses = det.heapAllocate();
-			var b = det.call(['det#specialize', clause[2], specialized, ['[]'], newClauses, clause[1]]);
+			var b = det.call(['det#specialize', clause, specialized, newClauses]);
 			if(b) {
 				newClauses = det.listToArray(newClauses);
 				for(var i = 0; i < newClauses.length; i++) {
 					var key = det.deref(det.deref(newClauses[i])[1])[0];
 					if(!this.cached[key]) {
 						this.cached[key] = true;
+//console.log('Added enclosed: ' + JSON.stringify(det.toPrototype(newClauses[i])));
 						det.program.store(det.toPrototype(newClauses[i]));
 					}
 				}
-//console.log('Added: ' + JSON.stringify(det.deepDeref(clause[1])) + ' :- \n\t' + JSON.stringify(det.deepDeref(specialized)));
-				return det.toPrototype([PREFIX + 'clause', clause[1], specialized]);
+//console.log('Added: ' + JSON.stringify(det.deepDeref(specialized)));
+				return det.toPrototype(specialized);
 			} else {
 //console.log('specialization failed');
 /*console.log('Added: ' + JSON.stringify(det.deepDeref(clause[1])) + ' :- FAIL');*/

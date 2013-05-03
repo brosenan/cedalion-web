@@ -1,0 +1,24 @@
+'/bootstrap':signature(eval(Expr,T,Val)::pred,[Expr::'/Functional':expr(T),T::'/bootstrap':type,Val::T]).
+clause(eval('/Functional':const(X),T,X),true).
+clause(eval('/Functional':applyBinOp(A,Op,B),T,V),conj(eval(A,T,APrime),conj(eval(B,T,BPrime),eval(applyOp(Op,T,APrime,BPrime,VPrime),VPrime,T,V)))).
+'/bootstrap':signature(applyOp(Op,T,A,B,V)::pred,[Op::'/Functional':binOp(T),T::'/bootstrap':type,A::T,B::T,V::T]).
+clause(applyOp('/Functional':numPlus,'/bootstrap':number,A,B,V),plus(A,B,V)).
+clause(applyOp('/Functional':minus,'/bootstrap':number,A,B,V),minus(A,B,V)).
+clause(applyOp('/Functional':times,'/bootstrap':number,A,B,V),mult(A,B,V)).
+clause(applyOp('/Functional':divBy,'/bootstrap':number,A,B,V),div(A,B,V)).
+clause(applyOp('/Functional':concat,'/bootstrap':string,A,B,V),strcat(A,B,V)).
+'/bootstrap':signature(unitTest(Test)::'/bootstrap':statement,[Test::pred]).
+unitTest(eval('/Functional':applyBinOp('/Functional':const(2),'/Functional':numPlus,'/Functional':const(3)),'/bootstrap':number,5)).
+unitTest(eval('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':const(1),'/Functional':times,'/Functional':const(3)),'/Functional':minus,'/Functional':const(2)),'/bootstrap':number,1)).
+unitTest('/detalion/cedalion':cedalion('/bootstrap':safeParseTerm(builtin:succ(Y,X)::'/bootstrap':pred,Name,Args),'/detalion/cedalion':term('/Functional':pair(Name,Args)),'/Functional':pairType('/bootstrap':string,'/bootstrap':list('/bootstrap':typedTerm)),'/detalion/cedalion':diffList(L,L),'/detalion/cedalion':diffList(['/Functional':pair(_,_)],[]))).
+'/bootstrap':defAtom(foo::'/bootstrap':type).
+'/bootstrap':signature('t1'(X,Y)::pred,[X::foo,Y::'/bootstrap':string]).
+'/bootstrap':defAtom(a::foo).
+clause('t1'(X,Y),conj(myEq(Y,Z,'/bootstrap':string),'t2'(X,Z))).
+'/bootstrap':signature('t2'(X,Y)::pred,[X::foo,Y::'/bootstrap':string]).
+clause('t2'(X,Y),if(myEq(X,a,foo),myEq(Y,!a,'/bootstrap':string),myEq(Y,!'not a','/bootstrap':string))).
+unitTest('t1'(a,!a)).
+'/bootstrap':defAtom(b::foo).
+unitTest('t1'(b,!'not a')).
+'/bootstrap':signature(myEq(X,Y,T)::pred,[X::T,Y::T,T::'/bootstrap':type]).
+clause(myEq(X,X,T),true).
