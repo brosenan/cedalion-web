@@ -1,101 +1,1543 @@
-[app] detalion = ...
-[app] program = ...
-fib emitted [".",{"ref":2},["[]"]]
-[12] Running unit: ["/Functional#eval",["/Functional#apply",["/Functional#plus",["/Functional#g",["/Functional#wrap",3]],["/Functional#g",["/Functional#wrap",2]]],["/bootstrap#number"],["/Functional#wrap",2]],["/bootstrap#number"],9]
-Lifting: ["/detalion/cedalion#evalClauses",[".",[":-",["/detalion/export#statement",{"ref":272}],{"ref":260}],{"ref":261}],{"ref":262},{"ref":263},{"ref":264},["/detalion/cedalion#diffList",{"ref":265},{"ref":266}],["/detalion/cedalion#diffList",{"ref":267},{"ref":268}]]
-Added: ["/detalion/cedalion#evalClauses",[".",[":-",["/detalion/export#statement",{"ref":272}],{"ref":260}],{"ref":261}],{"ref":262},{"ref":263},{"ref":264},["/detalion/cedalion#diffList",{"ref":265},{"ref":266}],["/detalion/cedalion#diffList",{"ref":267},{"ref":268}]] :- 
-	["/detalion#if",["/detalion#eq",["::",{"ref":261},["/bootstrap#list",["/bootstrap#statement"]]],["::",["[]"],["/bootstrap#list",["/bootstrap#statement"]]]],["then_130450689",{"ref":272},{"ref":262},{"ref":260},{"ref":263},{"ref":264},{"ref":265},{"ref":266},{"ref":267},{"ref":268}],["else_446802097",{"ref":272},{"ref":262},{"ref":260},{"ref":263},{"ref":264},{"ref":269},{"ref":270},{"ref":266},{"ref":271},{"ref":261},{"ref":265},{"ref":267},{"ref":268}]]
-Lifting: ["/detalion/cedalion#evalClauses",[".",[":-",["/bootstrap#checkSignature",{"ref":225},{"ref":226},{"ref":227}],{"ref":213}],{"ref":214}],{"ref":215},{"ref":216},{"ref":217},["/detalion/cedalion#diffList",{"ref":218},{"ref":219}],["/detalion/cedalion#diffList",{"ref":220},{"ref":221}]]
-Added: ["/detalion/cedalion#evalClauses",[".",[":-",["/bootstrap#checkSignature",{"ref":225},{"ref":226},{"ref":227}],{"ref":213}],{"ref":214}],{"ref":215},{"ref":216},{"ref":217},["/detalion/cedalion#diffList",{"ref":218},{"ref":219}],["/detalion/cedalion#diffList",{"ref":220},{"ref":221}]] :- 
-	["/detalion#if",["/detalion#eq",["::",{"ref":214},["/bootstrap#list",["/bootstrap#statement"]]],["::",["[]"],["/bootstrap#list",["/bootstrap#statement"]]]],["then_1894542562",{"ref":225},{"ref":226},{"ref":227},{"ref":215},{"ref":213},{"ref":216},{"ref":217},{"ref":218},{"ref":219},{"ref":220},{"ref":221}],["else_1662528238",{"ref":225},{"ref":226},{"ref":227},{"ref":215},{"ref":213},{"ref":216},{"ref":217},{"ref":222},{"ref":223},{"ref":219},{"ref":224},{"ref":214},{"ref":218},{"ref":220},{"ref":221}]]
-Lifting: ["/detalion/cedalion#cedalion",["/bootstrap#checkSignature",{"ref":202},{"ref":203},{"ref":204}],{"ref":196},{"ref":197},{"ref":198},{"ref":199}]
-Added: ["/detalion/cedalion#cedalion",["/bootstrap#checkSignature",{"ref":202},{"ref":203},{"ref":204}],{"ref":196},{"ref":197},{"ref":198},{"ref":199}] :- 
-	["/detalion#conj",["/detalion#findAllMatches",[":-",["/bootstrap#checkSignature",{"ref":202},{"ref":203},{"ref":204}],{"ref":200}],{"ref":201}],["/detalion/cedalion#evalClauses",{"ref":201},["/bootstrap#checkSignature",{"ref":202},{"ref":203},{"ref":204}],{"ref":196},{"ref":197},{"ref":198},{"ref":199}]]
-Lifting: ["/detalion/cedalion#cedalion",[",",["/detalion/export#statement",{"ref":155}],{"ref":150}],{"ref":151},{"ref":152},{"ref":153},{"ref":154}]
-Added: ["/detalion/cedalion#cedalion",[",",["/detalion/export#statement",{"ref":155}],{"ref":150}],{"ref":151},{"ref":152},{"ref":153},{"ref":154}] :- 
-	["/detalion/cedalion#cedalion",["/detalion/export#statement",{"ref":155}],["/detalion/cedalion#goalInst",{"ref":150},{"ref":151}],{"ref":152},{"ref":153},{"ref":154}]
-Lifting: ["/detalion/cedalion#cedalion",["/detalion/export#statement",{"ref":178}],{"ref":172},{"ref":173},{"ref":174},{"ref":175}]
-Added: ["/detalion/cedalion#cedalion",["/detalion/export#statement",{"ref":178}],{"ref":172},{"ref":173},{"ref":174},{"ref":175}] :- 
-	["/detalion#conj",["/detalion#findAllMatches",[":-",["/detalion/export#statement",{"ref":178}],{"ref":176}],{"ref":177}],["/detalion/cedalion#evalClauses",{"ref":177},["/detalion/export#statement",{"ref":178}],{"ref":172},{"ref":173},{"ref":174},{"ref":175}]]
-Lifting: ["/detalion/cedalion#instantiate",["/detalion/cedalion#goalInst",[",",{"ref":393},{"ref":394}],{"ref":389}],{"ref":390},{"ref":391},{"ref":392}]
-Added: ["/detalion/cedalion#instantiate",["/detalion/cedalion#goalInst",[",",{"ref":403},{"ref":404}],{"ref":405}],{"ref":406},{"ref":407},{"ref":408}] :- 
-	["/detalion/cedalion#cedalion",{"ref":403},["/detalion/cedalion#goalInst",{"ref":404},{"ref":405}],{"ref":406},{"ref":407},{"ref":408}]
-Lifting: ["/detalion/cedalion#cedalion",["/bootstrap#checkSignature",[".",{"ref":487},{"ref":488}],{"ref":479},{"ref":480}],{"ref":481},{"ref":482},{"ref":483},{"ref":484}]
-Added: ["/detalion/cedalion#cedalion",["/bootstrap#checkSignature",[".",{"ref":487},{"ref":488}],{"ref":479},{"ref":480}],{"ref":481},{"ref":482},{"ref":483},{"ref":484}] :- 
-	["/detalion#conj",["/detalion#findAllMatches",[":-",["/bootstrap#checkSignature",[".",{"ref":487},{"ref":488}],{"ref":479},{"ref":480}],{"ref":485}],{"ref":486}],["/detalion/cedalion#evalClauses",{"ref":486},["/bootstrap#checkSignature",[".",{"ref":487},{"ref":488}],{"ref":479},{"ref":480}],{"ref":481},{"ref":482},{"ref":483},{"ref":484}]]
-Lifting: ["/detalion/cedalion#cedalion",["\\+",["builtin#equals",{"ref":580},{"ref":581}]],{"ref":573},{"ref":574},{"ref":575},{"ref":576}]
-Added: ["/detalion/cedalion#cedalion",["\\+",["builtin#equals",{"ref":580},{"ref":581}]],{"ref":573},{"ref":574},{"ref":575},{"ref":576}] :- 
-	["/detalion#conj",["/detalion#if",["/detalion/cedalion#cedalion",["builtin#equals",{"ref":580},{"ref":581}],["/detalion/cedalion#dummyInst"],["/bootstrap#number"],["/detalion/cedalion#diffList",{"ref":577},{"ref":577}],["/detalion/cedalion#diffList",[".",{"ref":578},{"ref":579}],["[]"]]],["then_156350568"],["else_156784344"]],["/detalion/cedalion#instantiate",{"ref":573},{"ref":574},{"ref":575},{"ref":576}]]
-Lifting: ["/detalion/cedalion#cedalion",["\\+",["/bootstrap#checkSignature",{"ref":486},{"ref":487},{"ref":488}]],{"ref":479},{"ref":480},{"ref":481},{"ref":482}]
-Added: ["/detalion/cedalion#cedalion",["\\+",["/bootstrap#checkSignature",{"ref":505},{"ref":506},{"ref":507}]],{"ref":479},{"ref":480},{"ref":481},{"ref":482}] :- 
-	["/detalion#conj",["/detalion#if",["/detalion#conj",["/detalion#findAllMatches",[":-",["/bootstrap#checkSignature",{"ref":505},{"ref":506},{"ref":507}],{"ref":512}],{"ref":513}],["/detalion/cedalion#evalClauses",{"ref":513},["/bootstrap#checkSignature",{"ref":505},{"ref":506},{"ref":507}],["/detalion/cedalion#dummyInst"],["/bootstrap#number"],["/detalion/cedalion#diffList",{"ref":483},{"ref":483}],["/detalion/cedalion#diffList",[".",{"ref":484},{"ref":485}],["[]"]]]],["then_156350568"],["else_156784344"]],["/detalion/cedalion#instantiate",{"ref":479},{"ref":480},{"ref":481},{"ref":482}]]
-Lifting: ["/detalion/cedalion#cedalion",["/bootstrap#checkSignature",[".",["::",{"ref":578},{"ref":579}],{"ref":569}],{"ref":570},{"ref":571}],{"ref":572},{"ref":573},{"ref":574},{"ref":575}]
-Added: ["/detalion/cedalion#cedalion",["/bootstrap#checkSignature",[".",["::",{"ref":578},{"ref":579}],{"ref":569}],{"ref":570},{"ref":571}],{"ref":572},{"ref":573},{"ref":574},{"ref":575}] :- 
-	["/detalion#conj",["/detalion#findAllMatches",[":-",["/bootstrap#checkSignature",[".",["::",{"ref":578},{"ref":579}],{"ref":569}],{"ref":570},{"ref":571}],{"ref":576}],{"ref":577}],["/detalion/cedalion#evalClauses",{"ref":577},["/bootstrap#checkSignature",[".",["::",{"ref":578},{"ref":579}],{"ref":569}],{"ref":570},{"ref":571}],{"ref":572},{"ref":573},{"ref":574},{"ref":575}]]
-Lifting: ["/detalion/cedalion#cedalion",["builtin#parseTerm",["::",{"ref":594},{"ref":595}],{"ref":588},{"ref":589}],{"ref":590},{"ref":591},{"ref":592},{"ref":593}]
-Added: ["/detalion/cedalion#cedalion",["builtin#parseTerm",["::",{"ref":594},{"ref":595}],{"ref":588},{"ref":589}],{"ref":590},{"ref":591},{"ref":592},{"ref":593}] :- 
-	["/detalion#conj",["/detalion#parseTerm",["::",{"ref":594},{"ref":595}],{"ref":588},{"ref":589}],["/detalion/cedalion#instantiate",{"ref":590},{"ref":591},{"ref":592},{"ref":593}]]
-Lifting: ["/detalion/cedalion#instantiate",["/detalion/cedalion#goalInst",["\\+",{"ref":678}],{"ref":674}],{"ref":675},{"ref":676},{"ref":677}]
-Added: ["/detalion/cedalion#instantiate",["/detalion/cedalion#goalInst",["\\+",{"ref":687}],{"ref":688}],{"ref":689},{"ref":690},{"ref":691}] :- 
-	["/detalion#conj",["/detalion#if",["/detalion/cedalion#cedalion",{"ref":687},["/detalion/cedalion#dummyInst"],["/bootstrap#number"],["/detalion/cedalion#diffList",{"ref":692},{"ref":692}],["/detalion/cedalion#diffList",[".",{"ref":693},{"ref":694}],["[]"]]],["then_156350568"],["else_156784344"]],["/detalion/cedalion#instantiate",{"ref":688},{"ref":689},{"ref":690},{"ref":691}]]
-Lifting: ["/detalion/cedalion#cedalion",["\\+",["/bootstrap#checkSignature",[".",{"ref":776},{"ref":777}],{"ref":765},{"ref":766}]],{"ref":767},{"ref":768},{"ref":769},{"ref":770}]
-Added: ["/detalion/cedalion#cedalion",["\\+",["/bootstrap#checkSignature",[".",{"ref":776},{"ref":777}],{"ref":765},{"ref":766}]],{"ref":767},{"ref":768},{"ref":769},{"ref":770}] :- 
-	["/detalion#conj",["/detalion#if",["/detalion#conj",["/detalion#findAllMatches",[":-",["/bootstrap#checkSignature",[".",{"ref":776},{"ref":777}],{"ref":765},{"ref":766}],{"ref":771}],{"ref":772}],["/detalion/cedalion#evalClauses",{"ref":772},["/bootstrap#checkSignature",[".",{"ref":776},{"ref":777}],{"ref":765},{"ref":766}],["/detalion/cedalion#dummyInst"],["/bootstrap#number"],["/detalion/cedalion#diffList",{"ref":773},{"ref":773}],["/detalion/cedalion#diffList",[".",{"ref":774},{"ref":775}],["[]"]]]],["then_1302771289"],["else_39859500"]],["/detalion/cedalion#instantiate",{"ref":767},{"ref":768},{"ref":769},{"ref":770}]]
-Lifting: ["/detalion/cedalion#cedalion",["\\+",["builtin#equals",["::",{"ref":850},{"ref":851}],{"ref":842}]],{"ref":843},{"ref":844},{"ref":845},{"ref":846}]
-Added: ["/detalion/cedalion#cedalion",["\\+",["builtin#equals",["::",{"ref":868},{"ref":869}],["::",{"ref":870},{"ref":869}]]],{"ref":843},{"ref":844},{"ref":845},{"ref":846}] :- 
-	["/detalion#conj",["/detalion#if",["/detalion#conj",["/detalion#equals",{"ref":868},{"ref":870},{"ref":869}],["/detalion#eq",["::",[".",{"ref":848},{"ref":849}],{"ref":978}],["::",[".",0,["[]"]],{"ref":978}]]],["then_1302771289"],["else_39859500"]],["/detalion/cedalion#instantiate",{"ref":843},{"ref":844},{"ref":845},{"ref":846}]]
-Lifting: ["/detalion/cedalion#instantiate",["/detalion/cedalion#goalInst",[",",["\\+",{"ref":791}],{"ref":786}],{"ref":787}],{"ref":788},{"ref":789},{"ref":790}]
-Added: ["/detalion/cedalion#instantiate",["/detalion/cedalion#goalInst",[",",["\\+",{"ref":800}],{"ref":874}],{"ref":875}],{"ref":876},{"ref":877},{"ref":878}] :- 
-	["/detalion#conj",["/detalion#if",["/detalion/cedalion#cedalion",{"ref":800},["/detalion/cedalion#dummyInst"],["/bootstrap#number"],["/detalion/cedalion#diffList",{"ref":805},{"ref":805}],["/detalion/cedalion#diffList",[".",{"ref":806},{"ref":807}],["[]"]]],["then_156350568"],["else_156784344"]],["/detalion/cedalion#cedalion",{"ref":874},{"ref":875},{"ref":876},{"ref":877},{"ref":878}]]
-Lifting: ["/detalion/cedalion#cedalion",["/bootstrap#checkSignature",{"ref":746},{"ref":747}],{"ref":740},{"ref":741},{"ref":742},{"ref":743}]
-Added: ["/detalion/cedalion#cedalion",["/bootstrap#checkSignature",{"ref":746},{"ref":747}],{"ref":740},{"ref":741},{"ref":742},{"ref":743}] :- 
-	["/detalion#conj",["/detalion#findAllMatches",[":-",["/bootstrap#checkSignature",{"ref":746},{"ref":747}],{"ref":744}],{"ref":745}],["/detalion/cedalion#evalClauses",{"ref":745},["/bootstrap#checkSignature",{"ref":746},{"ref":747}],{"ref":740},{"ref":741},{"ref":742},{"ref":743}]]
-Lifting: ["/detalion/cedalion#evalClauses",[".",[":-",["/detalion/export#statement",["/bootstrap#signature",{"ref":822},{"ref":823}]],{"ref":810}],{"ref":811}],{"ref":812},{"ref":813},{"ref":814},["/detalion/cedalion#diffList",{"ref":815},{"ref":816}],["/detalion/cedalion#diffList",{"ref":817},{"ref":818}]]
-Added: ["/detalion/cedalion#evalClauses",[".",[":-",["/detalion/export#statement",["/bootstrap#signature",{"ref":822},{"ref":823}]],{"ref":810}],{"ref":811}],{"ref":812},{"ref":813},{"ref":814},["/detalion/cedalion#diffList",{"ref":815},{"ref":816}],["/detalion/cedalion#diffList",{"ref":817},{"ref":818}]] :- 
-	["/detalion#if",["/detalion#eq",["::",{"ref":811},["/bootstrap#list",["/bootstrap#statement"]]],["::",["[]"],["/bootstrap#list",["/bootstrap#statement"]]]],["then_1541299397",{"ref":822},{"ref":823},{"ref":812},{"ref":810},{"ref":813},{"ref":814},{"ref":815},{"ref":816},{"ref":817},{"ref":818}],["else_1043778103",{"ref":822},{"ref":823},{"ref":812},{"ref":810},{"ref":813},{"ref":814},{"ref":819},{"ref":820},{"ref":816},{"ref":821},{"ref":811},{"ref":815},{"ref":817},{"ref":818}]]
-Lifting: ["then_130450689",["/bootstrap#signature",{"ref":844},{"ref":845}],{"ref":836},{"ref":837},{"ref":838},{"ref":839},{"ref":840},{"ref":841},{"ref":842},{"ref":843}]
-Added: ["then_130450689",["/bootstrap#signature",{"ref":844},{"ref":845}],{"ref":836},{"ref":837},{"ref":838},{"ref":839},{"ref":840},{"ref":841},{"ref":842},{"ref":843}] :- 
-	["/detalion#if",["/detalion#conj",["/detalion#eq",["::",["/detalion/export#statement",["/bootstrap#signature",{"ref":844},{"ref":845}]],["/bootstrap#pred"]],["::",{"ref":836},["/bootstrap#pred"]]],["/detalion/cedalion#cedalion",{"ref":837},{"ref":838},{"ref":839},["/detalion/cedalion#diffList",{"ref":840},{"ref":841}],["/detalion/cedalion#diffList",{"ref":842},{"ref":843}]]],["then_156784344"],["else_263285142",{"ref":840},{"ref":841},{"ref":839},{"ref":842},{"ref":843}]]
-Lifting: ["/detalion/cedalion#cedalion",["/Functional#eval",{"ref":951},{"ref":952},{"ref":953}],{"ref":945},{"ref":946},{"ref":947},{"ref":948}]
-Added: ["/detalion/cedalion#cedalion",["/Functional#eval",{"ref":951},{"ref":952},{"ref":953}],{"ref":945},{"ref":946},{"ref":947},{"ref":948}] :- 
-	["/detalion#conj",["/detalion#findAllMatches",[":-",["/Functional#eval",{"ref":951},{"ref":952},{"ref":953}],{"ref":949}],{"ref":950}],["/detalion/cedalion#evalClauses",{"ref":950},["/Functional#eval",{"ref":951},{"ref":952},{"ref":953}],{"ref":945},{"ref":946},{"ref":947},{"ref":948}]]
-Lifting: ["/detalion/cedalion#cedalion",[",",["/detalion/export#statement",["/bootstrap#docSignature",{"ref":1059},{"ref":1060},{"ref":1061}]],{"ref":1054}],{"ref":1055},{"ref":1056},{"ref":1057},{"ref":1058}]
-Added: ["/detalion/cedalion#cedalion",[",",["/detalion/export#statement",["/bootstrap#docSignature",{"ref":1059},{"ref":1060},{"ref":1061}]],{"ref":1054}],{"ref":1055},{"ref":1072},{"ref":1073},{"ref":1074}] :- 
-	["/detalion#conj",["/detalion#findAllMatches",[":-",["/detalion/export#statement",["/bootstrap#docSignature",{"ref":1059},{"ref":1060},{"ref":1061}]],{"ref":1075}],{"ref":1076}],["/detalion/cedalion#evalClauses",{"ref":1076},["/detalion/export#statement",["/bootstrap#docSignature",{"ref":1059},{"ref":1060},{"ref":1061}]],["/detalion/cedalion#goalInst",{"ref":1054},{"ref":1055}],{"ref":1072},{"ref":1073},{"ref":1074}]]
-Lifting: ["/detalion/cedalion#cedalion",[",",["/detalion/export#statement",["/bootstrap#sigProj",{"ref":1068},{"ref":1069},{"ref":1070}]],{"ref":1063}],{"ref":1064},{"ref":1065},{"ref":1066},{"ref":1067}]
-Added: ["/detalion/cedalion#cedalion",[",",["/detalion/export#statement",["/bootstrap#sigProj",{"ref":1068},{"ref":1069},{"ref":1070}]],{"ref":1063}],{"ref":1064},{"ref":1081},{"ref":1082},{"ref":1083}] :- 
-	["/detalion#conj",["/detalion#findAllMatches",[":-",["/detalion/export#statement",["/bootstrap#sigProj",{"ref":1068},{"ref":1069},{"ref":1070}]],{"ref":1084}],{"ref":1085}],["/detalion/cedalion#evalClauses",{"ref":1085},["/detalion/export#statement",["/bootstrap#sigProj",{"ref":1068},{"ref":1069},{"ref":1070}]],["/detalion/cedalion#goalInst",{"ref":1063},{"ref":1064}],{"ref":1081},{"ref":1082},{"ref":1083}]]
-Lifting: ["/detalion/cedalion#cedalion",[",",["/detalion/export#statement",["/bootstrap#signature",{"ref":1039},{"ref":1040}]],{"ref":1034}],{"ref":1035},{"ref":1036},{"ref":1037},{"ref":1038}]
-Added: ["/detalion/cedalion#cedalion",[",",["/detalion/export#statement",["/bootstrap#signature",{"ref":1039},{"ref":1040}]],{"ref":1034}],{"ref":1035},{"ref":1051},{"ref":1052},{"ref":1053}] :- 
-	["/detalion#conj",["/detalion#findAllMatches",[":-",["/detalion/export#statement",["/bootstrap#signature",{"ref":1039},{"ref":1040}]],{"ref":1054}],{"ref":1055}],["/detalion/cedalion#evalClauses",{"ref":1055},["/detalion/export#statement",["/bootstrap#signature",{"ref":1039},{"ref":1040}]],["/detalion/cedalion#goalInst",{"ref":1034},{"ref":1035}],{"ref":1051},{"ref":1052},{"ref":1053}]]
-Lifting: ["/detalion/cedalion#cedalion",["/Functional#evalArgs",{"ref":1158},{"ref":1159}],{"ref":1152},{"ref":1153},{"ref":1154},{"ref":1155}]
-Added: ["/detalion/cedalion#cedalion",["/Functional#evalArgs",{"ref":1158},{"ref":1159}],{"ref":1152},{"ref":1153},{"ref":1154},{"ref":1155}] :- 
-	["/detalion#conj",["/detalion#findAllMatches",[":-",["/Functional#evalArgs",{"ref":1158},{"ref":1159}],{"ref":1156}],{"ref":1157}],["/detalion/cedalion#evalClauses",{"ref":1157},["/Functional#evalArgs",{"ref":1158},{"ref":1159}],{"ref":1152},{"ref":1153},{"ref":1154},{"ref":1155}]]
-Lifting: ["/detalion/cedalion#evalClauses",[".",[":-",["/Functional#evalArgs",{"ref":1194},{"ref":1195}],{"ref":1182}],{"ref":1183}],{"ref":1184},{"ref":1185},{"ref":1186},["/detalion/cedalion#diffList",{"ref":1187},{"ref":1188}],["/detalion/cedalion#diffList",{"ref":1189},{"ref":1190}]]
-Added: ["/detalion/cedalion#evalClauses",[".",[":-",["/Functional#evalArgs",{"ref":1194},{"ref":1195}],{"ref":1182}],{"ref":1183}],{"ref":1184},{"ref":1185},{"ref":1186},["/detalion/cedalion#diffList",{"ref":1187},{"ref":1188}],["/detalion/cedalion#diffList",{"ref":1189},{"ref":1190}]] :- 
-	["/detalion#if",["/detalion#eq",["::",{"ref":1183},["/bootstrap#list",["/bootstrap#statement"]]],["::",["[]"],["/bootstrap#list",["/bootstrap#statement"]]]],["then_1437196803",{"ref":1194},{"ref":1195},{"ref":1184},{"ref":1182},{"ref":1185},{"ref":1186},{"ref":1187},{"ref":1188},{"ref":1189},{"ref":1190}],["else_1397740878",{"ref":1194},{"ref":1195},{"ref":1184},{"ref":1182},{"ref":1185},{"ref":1186},{"ref":1191},{"ref":1192},{"ref":1188},{"ref":1193},{"ref":1183},{"ref":1187},{"ref":1189},{"ref":1190}]]
-Lifting: ["/detalion/cedalion#evalClauses",[".",[":-",["/Functional#eval",{"ref":1251},{"ref":1252},{"ref":1253}],{"ref":1239}],{"ref":1240}],{"ref":1241},{"ref":1242},{"ref":1243},["/detalion/cedalion#diffList",{"ref":1244},{"ref":1245}],["/detalion/cedalion#diffList",{"ref":1246},{"ref":1247}]]
-Added: ["/detalion/cedalion#evalClauses",[".",[":-",["/Functional#eval",{"ref":1251},{"ref":1252},{"ref":1253}],{"ref":1239}],{"ref":1240}],{"ref":1241},{"ref":1242},{"ref":1243},["/detalion/cedalion#diffList",{"ref":1244},{"ref":1245}],["/detalion/cedalion#diffList",{"ref":1246},{"ref":1247}]] :- 
-	["/detalion#if",["/detalion#eq",["::",{"ref":1240},["/bootstrap#list",["/bootstrap#statement"]]],["::",["[]"],["/bootstrap#list",["/bootstrap#statement"]]]],["then_1471590491",{"ref":1251},{"ref":1252},{"ref":1253},{"ref":1241},{"ref":1239},{"ref":1242},{"ref":1243},{"ref":1244},{"ref":1245},{"ref":1246},{"ref":1247}],["else_783943893",{"ref":1251},{"ref":1252},{"ref":1253},{"ref":1241},{"ref":1239},{"ref":1242},{"ref":1243},{"ref":1248},{"ref":1249},{"ref":1245},{"ref":1250},{"ref":1240},{"ref":1244},{"ref":1246},{"ref":1247}]]
-Lifting: ["/detalion/cedalion#cedalion",[",",["/Functional#eval",{"ref":1295},{"ref":1296},{"ref":1297}],{"ref":1290}],{"ref":1291},{"ref":1292},{"ref":1293},{"ref":1294}]
-Added: ["/detalion/cedalion#cedalion",[",",["/Functional#eval",{"ref":1306},{"ref":1307},{"ref":1308}],{"ref":1290}],{"ref":1291},{"ref":1310},{"ref":1311},{"ref":1312}] :- 
-	["/detalion#conj",["/detalion#findAllMatches",[":-",["/Functional#eval",{"ref":1306},{"ref":1307},{"ref":1308}],{"ref":1313}],{"ref":1314}],["/detalion/cedalion#evalClauses",{"ref":1314},["/Functional#eval",{"ref":1306},{"ref":1307},{"ref":1308}],["/detalion/cedalion#goalInst",{"ref":1290},{"ref":1291}],{"ref":1310},{"ref":1311},{"ref":1312}]]
-Lifting: ["/detalion/cedalion#cedalion",["builtin#if",["builtin#compound",{"ref":1415}],{"ref":1406},{"ref":1407}],{"ref":1408},{"ref":1409},{"ref":1410},{"ref":1411}]
-Added: ["/detalion/cedalion#cedalion",["builtin#if",["builtin#compound",{"ref":1425}],{"ref":1406},{"ref":1407}],{"ref":1408},{"ref":1409},{"ref":1410},{"ref":1411}] :- 
-	["/detalion#if",["/detalion#eval",["/detalion/cedalion#cedalion",["builtin#compound",{"ref":1425}],["/detalion/cedalion#term",["builtin#compound",{"ref":1425}]],["/bootstrap#pred"],["/detalion/cedalion#diffList",{"ref":1426},{"ref":1426}],["/detalion/cedalion#diffList",[".",{"ref":1427},{"ref":1428}],["[]"]]],{"ref":1427},["/bootstrap#pred"],["builtin#compound",{"ref":1425}]],["then_419708982",{"ref":1406},{"ref":1408},{"ref":1409},{"ref":1410},{"ref":1411}],["else_419708982",{"ref":1407},{"ref":1408},{"ref":1409},{"ref":1410},{"ref":1411}]]
-Lifting: ["/detalion/cedalion#instantiate",["/detalion/cedalion#goalInst",[",",["builtin#parseTerm",{"ref":1512},{"ref":1513},{"ref":1514}],{"ref":1507}],{"ref":1508}],{"ref":1509},{"ref":1510},{"ref":1511}]
-Added: ["/detalion/cedalion#instantiate",["/detalion/cedalion#goalInst",[",",["builtin#parseTerm",{"ref":1523},{"ref":1524},{"ref":1525}],{"ref":1599}],{"ref":1600}],{"ref":1601},{"ref":1602},{"ref":1603}] :- 
-	["/detalion#conj",["/detalion#parseTerm",{"ref":1523},{"ref":1524},{"ref":1525}],["/detalion/cedalion#cedalion",{"ref":1599},{"ref":1600},{"ref":1601},{"ref":1602},{"ref":1603}]]
-Lifting: ["/detalion/cedalion#cedalion",[",",["/detalion/export#statement",["/Functional#def",{"ref":1557},{"ref":1558},{"ref":1559}]],{"ref":1552}],{"ref":1553},{"ref":1554},{"ref":1555},{"ref":1556}]
-Added: ["/detalion/cedalion#cedalion",[",",["/detalion/export#statement",["/Functional#def",{"ref":1557},{"ref":1558},{"ref":1559}]],{"ref":1552}],{"ref":1553},{"ref":1570},{"ref":1571},{"ref":1572}] :- 
-	["/detalion#conj",["/detalion#findAllMatches",[":-",["/detalion/export#statement",["/Functional#def",{"ref":1557},{"ref":1558},{"ref":1559}]],{"ref":1573}],{"ref":1574}],["/detalion/cedalion#evalClauses",{"ref":1574},["/detalion/export#statement",["/Functional#def",{"ref":1557},{"ref":1558},{"ref":1559}]],["/detalion/cedalion#goalInst",{"ref":1552},{"ref":1553}],{"ref":1570},{"ref":1571},{"ref":1572}]]
-Lifting: ["/detalion/cedalion#cedalion",[",",["builtin#parseTerm",{"ref":1582},{"ref":1583},{"ref":1584}],{"ref":1577}],{"ref":1578},{"ref":1579},{"ref":1580},{"ref":1581}]
-Added: ["/detalion/cedalion#cedalion",[",",["builtin#parseTerm",{"ref":1593},{"ref":1594},{"ref":1595}],{"ref":1669}],{"ref":1670},{"ref":1671},{"ref":1672},{"ref":1673}] :- 
-	["/detalion#conj",["/detalion#parseTerm",{"ref":1593},{"ref":1594},{"ref":1595}],["/detalion/cedalion#cedalion",{"ref":1669},{"ref":1670},{"ref":1671},{"ref":1672},{"ref":1673}]]
-Lifting: ["/detalion/cedalion#instantiate",["/detalion/cedalion#goalInst",["/Functional#evalArgs",{"ref":1963},{"ref":1964}],{"ref":1959}],{"ref":1960},{"ref":1961},{"ref":1962}]
-Added: ["/detalion/cedalion#instantiate",["/detalion/cedalion#goalInst",["/Functional#evalArgs",{"ref":1973},{"ref":1974}],{"ref":1975}],{"ref":1976},{"ref":1977},{"ref":1978}] :- 
-	["/detalion#conj",["/detalion#findAllMatches",[":-",["/Functional#evalArgs",{"ref":1973},{"ref":1974}],{"ref":1979}],{"ref":1980}],["/detalion/cedalion#evalClauses",{"ref":1980},["/Functional#evalArgs",{"ref":1973},{"ref":1974}],{"ref":1975},{"ref":1976},{"ref":1977},{"ref":1978}]]
-Lifting: ["/detalion/cedalion#cedalion",["builtin#if",["=",{"ref":2090},{"ref":2091}],{"ref":2081},{"ref":2082}],{"ref":2083},{"ref":2084},{"ref":2085},{"ref":2086}]
-Added: ["/detalion/cedalion#cedalion",["builtin#if",["=",{"ref":2101},{"ref":2101}],{"ref":2081},{"ref":2082}],{"ref":2083},{"ref":2084},{"ref":2085},{"ref":2086}] :- 
-	["/detalion#if",["/detalion#eval",["/detalion#conj",["/detalion#eq",["::",["/detalion/cedalion#term",["=",{"ref":2101},{"ref":2101}]],{"ref":2102}],["::",{"ref":2103},{"ref":2102}]],["/detalion/cedalion#instantiate",{"ref":2103},["/bootstrap#pred"],["/detalion/cedalion#diffList",{"ref":2104},{"ref":2104}],["/detalion/cedalion#diffList",[".",{"ref":2105},{"ref":2106}],["[]"]]]],{"ref":2105},["/bootstrap#pred"],["=",{"ref":2101},{"ref":2101}]],["then_419708982",{"ref":2081},{"ref":2083},{"ref":2084},{"ref":2085},{"ref":2086}],["else_419708982",{"ref":2082},{"ref":2083},{"ref":2084},{"ref":2085},{"ref":2086}]]
-[12] FAIL
+[
+  "\/detalion#clause",
+  [
+    "\/detalion\/cedalion#cedalion",
+    [
+      "\/Functional#eval",
+      [
+        "\/Functional#applyBinOpList",
+        [
+          "\/Functional#const",
+          [
+            "[]"
+          ]
+        ],
+        [
+          "\/Functional#numPlus"
+        ],
+        [
+          "\/Functional#const",
+          [
+            "[]"
+          ]
+        ]
+      ],
+      [
+        "\/bootstrap#list",
+        [
+          "\/bootstrap#number"
+        ]
+      ],
+      {
+        "id": 1$
+      }
+    ],
+    [
+      "\/detalion\/cedalion#term",
+      "foo"
+    ],
+    [
+      "\/bootstrap#string"
+    ],
+    [
+      "\/detalion\/cedalion#diffList",
+      {
+        "id": 2$
+      },
+      {
+        "id": 2$
+      }
+    ],
+    [
+      "\/detalion\/cedalion#diffList",
+      [
+        ".",
+        "foo",
+        [
+          "[]"
+        ]
+      ],
+      [
+        "[]"
+      ]
+    ]
+  ],
+  [
+    "\/detalion#conj",
+    [
+      "\/detalion#conj",
+      [
+        "\/detalion#eq",
+        [
+          "::",
+          [
+            "\/detalion\/cedalion#diffList",
+            [
+              ".",
+              "foo",
+              [
+                "[]"
+              ]
+            ],
+            [
+              "[]"
+            ]
+          ],
+          {
+            "id": 3$
+          }
+        ],
+        [
+          "::",
+          [
+            "\/detalion\/cedalion#diffList",
+            {
+              "id": 4$
+            },
+            {
+              "id": 5$
+            }
+          ],
+          {
+            "id": 3$
+          }
+        ]
+      ],
+      [
+        "\/detalion#true"
+      ]
+    ],
+    [
+      "\/detalion#conj",
+      [
+        "\/detalion#conj",
+        [
+          "\/detalion#eq",
+          [
+            "::",
+            [
+              "\/detalion\/cedalion#diffList",
+              {
+                "id": 2$
+              },
+              {
+                "id": 2$
+              }
+            ],
+            {
+              "id": 6$
+            }
+          ],
+          [
+            "::",
+            [
+              "\/detalion\/cedalion#diffList",
+              {
+                "id": 7$
+              },
+              {
+                "id": 8$
+              }
+            ],
+            {
+              "id": 6$
+            }
+          ]
+        ],
+        [
+          "\/detalion#true"
+        ]
+      ],
+      [
+        "\/detalion#if",
+        [
+          "\/detalion#if",
+          [
+            "\/detalion#eval",
+            [
+              "\/detalion#conj",
+              [
+                "\/detalion#conj",
+                [
+                  "\/detalion#eq",
+                  [
+                    "::",
+                    [
+                      "\/bootstrap#list",
+                      {
+                        "id": 9$
+                      }
+                    ],
+                    {
+                      "id": 10$
+                    }
+                  ],
+                  [
+                    "::",
+                    [
+                      "\/bootstrap#list",
+                      [
+                        "\/bootstrap#number"
+                      ]
+                    ],
+                    {
+                      "id": 10$
+                    }
+                  ]
+                ],
+                [
+                  "\/detalion#true"
+                ]
+              ],
+              [
+                "\/detalion#if",
+                [
+                  "\/detalion#eval",
+                  [
+                    "\/detalion#true"
+                  ],
+                  [
+                    "\/detalion\/cedalion#diffList",
+                    {
+                      "id": 11$
+                    },
+                    {
+                      "id": 11$
+                    }
+                  ],
+                  [
+                    "\/detalion\/cedalion#diffList",
+                    [
+                      "\/bootstrap#string"
+                    ]
+                  ],
+                  [
+                    "\/detalion\/cedalion#diffList",
+                    {
+                      "id": 12$
+                    },
+                    {
+                      "id": 13$
+                    }
+                  ]
+                ],
+                [
+                  "\/detalion\/cedalion#evalClauses",
+                  [
+                    ".",
+                    [
+                      ":-",
+                      [
+                        "\/Functional#eval",
+                        [
+                          "\/Functional#where",
+                          {
+                            "id": 14$
+                          },
+                          {
+                            "id": 15$
+                          }
+                        ],
+                        {
+                          "id": 16$
+                        },
+                        {
+                          "id": 17$
+                        }
+                      ],
+                      [
+                        ",",
+                        {
+                          "id": 15$
+                        },
+                        [
+                          "\/Functional#eval",
+                          {
+                            "id": 14$
+                          },
+                          {
+                            "id": 16$
+                          },
+                          {
+                            "id": 17$
+                          }
+                        ]
+                      ]
+                    ],
+                    [
+                      "[]"
+                    ]
+                  ],
+                  [
+                    "\/Functional#eval",
+                    [
+                      "\/Functional#where",
+                      [
+                        "\/Functional#const",
+                        [
+                          ".",
+                          {
+                            "id": 18$
+                          },
+                          {
+                            "id": 19$
+                          }
+                        ]
+                      ],
+                      [
+                        ",",
+                        [
+                          "\/Functional#eval",
+                          [
+                            "\/Functional#const",
+                            [
+                              "[]"
+                            ]
+                          ],
+                          [
+                            "\/bootstrap#list",
+                            {
+                              "id": 9$
+                            }
+                          ],
+                          [
+                            ".",
+                            {
+                              "id": 20$
+                            },
+                            {
+                              "id": 21$
+                            }
+                          ]
+                        ],
+                        [
+                          ",",
+                          [
+                            "\/Functional#eval",
+                            [
+                              "\/Functional#const",
+                              [
+                                "[]"
+                              ]
+                            ],
+                            [
+                              "\/bootstrap#list",
+                              {
+                                "id": 9$
+                              }
+                            ],
+                            [
+                              ".",
+                              {
+                                "id": 22$
+                              },
+                              {
+                                "id": 23$
+                              }
+                            ]
+                          ],
+                          [
+                            ",",
+                            [
+                              "\/Functional#eval",
+                              [
+                                "\/Functional#applyBinOpList",
+                                [
+                                  "\/Functional#const",
+                                  {
+                                    "id": 21$
+                                  }
+                                ],
+                                [
+                                  "\/Functional#numPlus"
+                                ],
+                                [
+                                  "\/Functional#const",
+                                  {
+                                    "id": 23$
+                                  }
+                                ]
+                              ],
+                              [
+                                "\/bootstrap#list",
+                                {
+                                  "id": 9$
+                                }
+                              ],
+                              {
+                                "id": 19$
+                              }
+                            ],
+                            [
+                              "\/Functional#eval",
+                              [
+                                "\/Functional#applyBinOp",
+                                [
+                                  "\/Functional#const",
+                                  {
+                                    "id": 20$
+                                  }
+                                ],
+                                [
+                                  "\/Functional#numPlus"
+                                ],
+                                [
+                                  "\/Functional#const",
+                                  {
+                                    "id": 22$
+                                  }
+                                ]
+                              ],
+                              {
+                                "id": 9$
+                              },
+                              {
+                                "id": 18$
+                              }
+                            ]
+                          ]
+                        ]
+                      ]
+                    ],
+                    [
+                      "\/bootstrap#list",
+                      [
+                        "\/bootstrap#number"
+                      ]
+                    ],
+                    {
+                      "id": 1$
+                    }
+                  ],
+                  [
+                    "\/detalion\/cedalion#term",
+                    "foo"
+                  ],
+                  [
+                    "\/bootstrap#string"
+                  ],
+                  [
+                    "\/detalion\/cedalion#diffList",
+                    {
+                      "id": 12$
+                    },
+                    {
+                      "id": 13$
+                    }
+                  ],
+                  [
+                    "\/detalion\/cedalion#diffList",
+                    {
+                      "id": 24$
+                    },
+                    {
+                      "id": 25$
+                    }
+                  ]
+                ],
+                [
+                  "\/detalion\/cedalion#evalClauses",
+                  [
+                    ".",
+                    [
+                      ":-",
+                      [
+                        "\/Functional#eval",
+                        [
+                          "\/Functional#where",
+                          {
+                            "id": 14$
+                          },
+                          {
+                            "id": 15$
+                          }
+                        ],
+                        {
+                          "id": 16$
+                        },
+                        {
+                          "id": 17$
+                        }
+                      ],
+                      [
+                        ",",
+                        {
+                          "id": 15$
+                        },
+                        [
+                          "\/Functional#eval",
+                          {
+                            "id": 14$
+                          },
+                          {
+                            "id": 16$
+                          },
+                          {
+                            "id": 17$
+                          }
+                        ]
+                      ]
+                    ],
+                    [
+                      "[]"
+                    ]
+                  ],
+                  [
+                    "\/Functional#eval",
+                    [
+                      "\/Functional#where",
+                      [
+                        "\/Functional#const",
+                        [
+                          ".",
+                          {
+                            "id": 18$
+                          },
+                          {
+                            "id": 19$
+                          }
+                        ]
+                      ],
+                      [
+                        ",",
+                        [
+                          "\/Functional#eval",
+                          [
+                            "\/Functional#const",
+                            [
+                              "[]"
+                            ]
+                          ],
+                          [
+                            "\/bootstrap#list",
+                            {
+                              "id": 9$
+                            }
+                          ],
+                          [
+                            ".",
+                            {
+                              "id": 20$
+                            },
+                            {
+                              "id": 21$
+                            }
+                          ]
+                        ],
+                        [
+                          ",",
+                          [
+                            "\/Functional#eval",
+                            [
+                              "\/Functional#const",
+                              [
+                                "[]"
+                              ]
+                            ],
+                            [
+                              "\/bootstrap#list",
+                              {
+                                "id": 9$
+                              }
+                            ],
+                            [
+                              ".",
+                              {
+                                "id": 22$
+                              },
+                              {
+                                "id": 23$
+                              }
+                            ]
+                          ],
+                          [
+                            ",",
+                            [
+                              "\/Functional#eval",
+                              [
+                                "\/Functional#applyBinOpList",
+                                [
+                                  "\/Functional#const",
+                                  {
+                                    "id": 21$
+                                  }
+                                ],
+                                [
+                                  "\/Functional#numPlus"
+                                ],
+                                [
+                                  "\/Functional#const",
+                                  {
+                                    "id": 23$
+                                  }
+                                ]
+                              ],
+                              [
+                                "\/bootstrap#list",
+                                {
+                                  "id": 9$
+                                }
+                              ],
+                              {
+                                "id": 19$
+                              }
+                            ],
+                            [
+                              "\/Functional#eval",
+                              [
+                                "\/Functional#applyBinOp",
+                                [
+                                  "\/Functional#const",
+                                  {
+                                    "id": 20$
+                                  }
+                                ],
+                                [
+                                  "\/Functional#numPlus"
+                                ],
+                                [
+                                  "\/Functional#const",
+                                  {
+                                    "id": 22$
+                                  }
+                                ]
+                              ],
+                              {
+                                "id": 9$
+                              },
+                              {
+                                "id": 18$
+                              }
+                            ]
+                          ]
+                        ]
+                      ]
+                    ],
+                    [
+                      "\/bootstrap#list",
+                      [
+                        "\/bootstrap#number"
+                      ]
+                    ],
+                    {
+                      "id": 1$
+                    }
+                  ],
+                  [
+                    "\/detalion\/cedalion#term",
+                    "foo"
+                  ],
+                  [
+                    "\/bootstrap#string"
+                  ],
+                  [
+                    "\/detalion\/cedalion#diffList",
+                    {
+                      "id": 12$
+                    },
+                    {
+                      "id": 12$
+                    }
+                  ],
+                  [
+                    "\/detalion\/cedalion#diffList",
+                    {
+                      "id": 24$
+                    },
+                    {
+                      "id": 25$
+                    }
+                  ]
+                ]
+              ]
+            ],
+            [
+              "\/detalion\/cedalion#diffList",
+              {
+                "id": 24$
+              },
+              {
+                "id": 25$
+              }
+            ],
+            [
+              "\/detalion\/cedalion#diffList",
+              [
+                "\/bootstrap#string"
+              ]
+            ],
+            [
+              "\/detalion\/cedalion#diffList",
+              {
+                "id": 8$
+              },
+              {
+                "id": 26$
+              }
+            ]
+          ],
+          [
+            "\/detalion\/cedalion#evalClauses",
+            [
+              ".",
+              [
+                ":-",
+                [
+                  "\/detalion\/export#statement",
+                  [
+                    "\/Functional#def",
+                    [
+                      "\/Functional#applyBinOpList",
+                      {
+                        "id": 27$
+                      },
+                      {
+                        "id": 28$
+                      },
+                      {
+                        "id": 29$
+                      }
+                    ],
+                    [
+                      "\/bootstrap#list",
+                      {
+                        "id": 30$
+                      }
+                    ],
+                    [
+                      "\/Functional#where",
+                      [
+                        "\/Functional#const",
+                        [
+                          "[]"
+                        ]
+                      ],
+                      [
+                        ",",
+                        [
+                          "\/Functional#eval",
+                          {
+                            "id": 27$
+                          },
+                          [
+                            "\/bootstrap#list",
+                            {
+                              "id": 30$
+                            }
+                          ],
+                          [
+                            "[]"
+                          ]
+                        ],
+                        [
+                          "\/Functional#eval",
+                          {
+                            "id": 29$
+                          },
+                          [
+                            "\/bootstrap#list",
+                            {
+                              "id": 30$
+                            }
+                          ],
+                          [
+                            "[]"
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "builtin#true"
+                ]
+              ],
+              [
+                "[]"
+              ]
+            ],
+            [
+              "\/detalion\/export#statement",
+              [
+                "\/Functional#def",
+                [
+                  "\/Functional#applyBinOpList",
+                  [
+                    "\/Functional#const",
+                    [
+                      "[]"
+                    ]
+                  ],
+                  [
+                    "\/Functional#numPlus"
+                  ],
+                  [
+                    "\/Functional#const",
+                    [
+                      "[]"
+                    ]
+                  ]
+                ],
+                [
+                  "\/bootstrap#list",
+                  [
+                    "\/bootstrap#number"
+                  ]
+                ],
+                [
+                  "\/Functional#where",
+                  [
+                    "\/Functional#const",
+                    [
+                      ".",
+                      {
+                        "id": 18$
+                      },
+                      {
+                        "id": 19$
+                      }
+                    ]
+                  ],
+                  [
+                    ",",
+                    [
+                      "\/Functional#eval",
+                      [
+                        "\/Functional#const",
+                        [
+                          "[]"
+                        ]
+                      ],
+                      [
+                        "\/bootstrap#list",
+                        {
+                          "id": 9$
+                        }
+                      ],
+                      [
+                        ".",
+                        {
+                          "id": 20$
+                        },
+                        {
+                          "id": 21$
+                        }
+                      ]
+                    ],
+                    [
+                      ",",
+                      [
+                        "\/Functional#eval",
+                        [
+                          "\/Functional#const",
+                          [
+                            "[]"
+                          ]
+                        ],
+                        [
+                          "\/bootstrap#list",
+                          {
+                            "id": 9$
+                          }
+                        ],
+                        [
+                          ".",
+                          {
+                            "id": 22$
+                          },
+                          {
+                            "id": 23$
+                          }
+                        ]
+                      ],
+                      [
+                        ",",
+                        [
+                          "\/Functional#eval",
+                          [
+                            "\/Functional#applyBinOpList",
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 21$
+                              }
+                            ],
+                            [
+                              "\/Functional#numPlus"
+                            ],
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 23$
+                              }
+                            ]
+                          ],
+                          [
+                            "\/bootstrap#list",
+                            {
+                              "id": 9$
+                            }
+                          ],
+                          {
+                            "id": 19$
+                          }
+                        ],
+                        [
+                          "\/Functional#eval",
+                          [
+                            "\/Functional#applyBinOp",
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 20$
+                              }
+                            ],
+                            [
+                              "\/Functional#numPlus"
+                            ],
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 22$
+                              }
+                            ]
+                          ],
+                          {
+                            "id": 9$
+                          },
+                          {
+                            "id": 18$
+                          }
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            [
+              "\/detalion\/cedalion#goalInst",
+              [
+                "\/Functional#eval",
+                [
+                  "\/Functional#where",
+                  [
+                    "\/Functional#const",
+                    [
+                      ".",
+                      {
+                        "id": 18$
+                      },
+                      {
+                        "id": 19$
+                      }
+                    ]
+                  ],
+                  [
+                    ",",
+                    [
+                      "\/Functional#eval",
+                      [
+                        "\/Functional#const",
+                        [
+                          "[]"
+                        ]
+                      ],
+                      [
+                        "\/bootstrap#list",
+                        {
+                          "id": 9$
+                        }
+                      ],
+                      [
+                        ".",
+                        {
+                          "id": 20$
+                        },
+                        {
+                          "id": 21$
+                        }
+                      ]
+                    ],
+                    [
+                      ",",
+                      [
+                        "\/Functional#eval",
+                        [
+                          "\/Functional#const",
+                          [
+                            "[]"
+                          ]
+                        ],
+                        [
+                          "\/bootstrap#list",
+                          {
+                            "id": 9$
+                          }
+                        ],
+                        [
+                          ".",
+                          {
+                            "id": 22$
+                          },
+                          {
+                            "id": 23$
+                          }
+                        ]
+                      ],
+                      [
+                        ",",
+                        [
+                          "\/Functional#eval",
+                          [
+                            "\/Functional#applyBinOpList",
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 21$
+                              }
+                            ],
+                            [
+                              "\/Functional#numPlus"
+                            ],
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 23$
+                              }
+                            ]
+                          ],
+                          [
+                            "\/bootstrap#list",
+                            {
+                              "id": 9$
+                            }
+                          ],
+                          {
+                            "id": 19$
+                          }
+                        ],
+                        [
+                          "\/Functional#eval",
+                          [
+                            "\/Functional#applyBinOp",
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 20$
+                              }
+                            ],
+                            [
+                              "\/Functional#numPlus"
+                            ],
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 22$
+                              }
+                            ]
+                          ],
+                          {
+                            "id": 9$
+                          },
+                          {
+                            "id": 18$
+                          }
+                        ]
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "\/bootstrap#list",
+                  [
+                    "\/bootstrap#number"
+                  ]
+                ],
+                {
+                  "id": 1$
+                }
+              ],
+              [
+                "\/detalion\/cedalion#term",
+                "foo"
+              ]
+            ],
+            [
+              "\/bootstrap#string"
+            ],
+            [
+              "\/detalion\/cedalion#diffList",
+              {
+                "id": 7$
+              },
+              {
+                "id": 26$
+              }
+            ],
+            [
+              "\/detalion\/cedalion#diffList",
+              {
+                "id": 4$
+              },
+              {
+                "id": 5$
+              }
+            ]
+          ],
+          [
+            "\/detalion\/cedalion#evalClauses",
+            [
+              ".",
+              [
+                ":-",
+                [
+                  "\/detalion\/export#statement",
+                  [
+                    "\/Functional#def",
+                    [
+                      "\/Functional#applyBinOpList",
+                      {
+                        "id": 27$
+                      },
+                      {
+                        "id": 28$
+                      },
+                      {
+                        "id": 29$
+                      }
+                    ],
+                    [
+                      "\/bootstrap#list",
+                      {
+                        "id": 30$
+                      }
+                    ],
+                    [
+                      "\/Functional#where",
+                      [
+                        "\/Functional#const",
+                        [
+                          "[]"
+                        ]
+                      ],
+                      [
+                        ",",
+                        [
+                          "\/Functional#eval",
+                          {
+                            "id": 27$
+                          },
+                          [
+                            "\/bootstrap#list",
+                            {
+                              "id": 30$
+                            }
+                          ],
+                          [
+                            "[]"
+                          ]
+                        ],
+                        [
+                          "\/Functional#eval",
+                          {
+                            "id": 29$
+                          },
+                          [
+                            "\/bootstrap#list",
+                            {
+                              "id": 30$
+                            }
+                          ],
+                          [
+                            "[]"
+                          ]
+                        ]
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "builtin#true"
+                ]
+              ],
+              [
+                "[]"
+              ]
+            ],
+            [
+              "\/detalion\/export#statement",
+              [
+                "\/Functional#def",
+                [
+                  "\/Functional#applyBinOpList",
+                  [
+                    "\/Functional#const",
+                    [
+                      "[]"
+                    ]
+                  ],
+                  [
+                    "\/Functional#numPlus"
+                  ],
+                  [
+                    "\/Functional#const",
+                    [
+                      "[]"
+                    ]
+                  ]
+                ],
+                [
+                  "\/bootstrap#list",
+                  [
+                    "\/bootstrap#number"
+                  ]
+                ],
+                [
+                  "\/Functional#where",
+                  [
+                    "\/Functional#const",
+                    [
+                      ".",
+                      {
+                        "id": 18$
+                      },
+                      {
+                        "id": 19$
+                      }
+                    ]
+                  ],
+                  [
+                    ",",
+                    [
+                      "\/Functional#eval",
+                      [
+                        "\/Functional#const",
+                        [
+                          "[]"
+                        ]
+                      ],
+                      [
+                        "\/bootstrap#list",
+                        {
+                          "id": 9$
+                        }
+                      ],
+                      [
+                        ".",
+                        {
+                          "id": 20$
+                        },
+                        {
+                          "id": 21$
+                        }
+                      ]
+                    ],
+                    [
+                      ",",
+                      [
+                        "\/Functional#eval",
+                        [
+                          "\/Functional#const",
+                          [
+                            "[]"
+                          ]
+                        ],
+                        [
+                          "\/bootstrap#list",
+                          {
+                            "id": 9$
+                          }
+                        ],
+                        [
+                          ".",
+                          {
+                            "id": 22$
+                          },
+                          {
+                            "id": 23$
+                          }
+                        ]
+                      ],
+                      [
+                        ",",
+                        [
+                          "\/Functional#eval",
+                          [
+                            "\/Functional#applyBinOpList",
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 21$
+                              }
+                            ],
+                            [
+                              "\/Functional#numPlus"
+                            ],
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 23$
+                              }
+                            ]
+                          ],
+                          [
+                            "\/bootstrap#list",
+                            {
+                              "id": 9$
+                            }
+                          ],
+                          {
+                            "id": 19$
+                          }
+                        ],
+                        [
+                          "\/Functional#eval",
+                          [
+                            "\/Functional#applyBinOp",
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 20$
+                              }
+                            ],
+                            [
+                              "\/Functional#numPlus"
+                            ],
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 22$
+                              }
+                            ]
+                          ],
+                          {
+                            "id": 9$
+                          },
+                          {
+                            "id": 18$
+                          }
+                        ]
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            [
+              "\/detalion\/cedalion#goalInst",
+              [
+                "\/Functional#eval",
+                [
+                  "\/Functional#where",
+                  [
+                    "\/Functional#const",
+                    [
+                      ".",
+                      {
+                        "id": 18$
+                      },
+                      {
+                        "id": 19$
+                      }
+                    ]
+                  ],
+                  [
+                    ",",
+                    [
+                      "\/Functional#eval",
+                      [
+                        "\/Functional#const",
+                        [
+                          "[]"
+                        ]
+                      ],
+                      [
+                        "\/bootstrap#list",
+                        {
+                          "id": 9$
+                        }
+                      ],
+                      [
+                        ".",
+                        {
+                          "id": 20$
+                        },
+                        {
+                          "id": 21$
+                        }
+                      ]
+                    ],
+                    [
+                      ",",
+                      [
+                        "\/Functional#eval",
+                        [
+                          "\/Functional#const",
+                          [
+                            "[]"
+                          ]
+                        ],
+                        [
+                          "\/bootstrap#list",
+                          {
+                            "id": 9$
+                          }
+                        ],
+                        [
+                          ".",
+                          {
+                            "id": 22$
+                          },
+                          {
+                            "id": 23$
+                          }
+                        ]
+                      ],
+                      [
+                        ",",
+                        [
+                          "\/Functional#eval",
+                          [
+                            "\/Functional#applyBinOpList",
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 21$
+                              }
+                            ],
+                            [
+                              "\/Functional#numPlus"
+                            ],
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 23$
+                              }
+                            ]
+                          ],
+                          [
+                            "\/bootstrap#list",
+                            {
+                              "id": 9$
+                            }
+                          ],
+                          {
+                            "id": 19$
+                          }
+                        ],
+                        [
+                          "\/Functional#eval",
+                          [
+                            "\/Functional#applyBinOp",
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 20$
+                              }
+                            ],
+                            [
+                              "\/Functional#numPlus"
+                            ],
+                            [
+                              "\/Functional#const",
+                              {
+                                "id": 22$
+                              }
+                            ]
+                          ],
+                          {
+                            "id": 9$
+                          },
+                          {
+                            "id": 18$
+                          }
+                        ]
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "\/bootstrap#list",
+                  [
+                    "\/bootstrap#number"
+                  ]
+                ],
+                {
+                  "id": 1$
+                }
+              ],
+              [
+                "\/detalion\/cedalion#term",
+                "foo"
+              ]
+            ],
+            [
+              "\/bootstrap#string"
+            ],
+            [
+              "\/detalion\/cedalion#diffList",
+              {
+                "id": 7$
+              },
+              {
+                "id": 8$
+              }
+            ],
+            [
+              "\/detalion\/cedalion#diffList",
+              {
+                "id": 4$
+              },
+              {
+                "id": 5$
+              }
+            ]
+          ]
+        ],
+        [
+          "\/detalion#true"
+        ],
+        [
+          "\/detalion#eq",
+          [
+            "::",
+            [
+              "\/detalion\/cedalion#diffList",
+              {
+                "id": 7$
+              },
+              {
+                "id": 8$
+              }
+            ],
+            [
+              "\/detalion\/cedalion#diffList",
+              [
+                "\/bootstrap#string"
+              ]
+            ]
+          ],
+          [
+            "::",
+            [
+              "\/detalion\/cedalion#diffList",
+              {
+                "id": 4$
+              },
+              {
+                "id": 5$
+              }
+            ],
+            [
+              "\/detalion\/cedalion#diffList",
+              [
+                "\/bootstrap#string"
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  ]
+]

@@ -1,0 +1,654 @@
+[
+  "\/detalion#clause",
+  [
+    "\/detalion\/cedalion#cedalion",
+    [
+      "\/Functional#eval",
+      [
+        "\/Functional#wrap",
+        3
+      ],
+      [
+        "\/bootstrap#number"
+      ],
+      {
+        TheNumber3
+      }
+    ],
+    [
+      "\/detalion\/cedalion#goalInst",
+      [
+        "builtin#greaterThen",
+        2,
+        {
+          TheNumber3
+        }
+      ],
+      [
+        "\/detalion\/cedalion#term",
+        [
+          "\/Functional#gt",
+          [
+            "\/Functional#wrap",
+            2
+          ],
+          [
+            "\/Functional#wrap",
+            3
+          ],
+          [
+            "\/bootstrap#number"
+          ]
+        ]
+      ]
+    ],
+    [
+      "\/bootstrap#pred"
+    ],
+    [
+      "\/detalion\/cedalion#diffList",
+      {
+        "id": 2$$
+      },
+      {
+        "id": 2$$
+      }
+    ],
+    [
+      "\/detalion\/cedalion#diffList",
+      [
+        ".",
+        {
+          "id": 3$$
+        },
+        {
+          "id": 4$$
+        }
+      ],
+      [
+        "[]"
+      ]
+    ]
+  ],
+  [
+    "\/detalion#conj",
+    [
+      "\/detalion#conj",
+      [
+        "\/detalion#eq",
+        [
+          "::",
+          [
+            "\/detalion\/cedalion#diffList",
+            [
+              ".",
+              {
+                "id": 3$$
+              },
+              {
+                "id": 4$$
+              }
+            ],
+            [
+              "[]"
+            ]
+          ],
+          {
+            "id": 5$$
+          }
+        ],
+        [
+          "::",
+          [
+            "\/detalion\/cedalion#diffList",
+            {
+              DiffList3_4
+            },
+            {
+              EmptyList
+            }
+          ],
+          {
+            "id": 5$$
+          }
+        ]
+      ],
+      [
+        "\/detalion#true"
+      ]
+    ],
+    [
+      "\/detalion#conj",
+      [
+        "\/detalion#conj",
+        [
+          "\/detalion#eq",
+          [
+            "::",
+            [
+              "\/detalion\/cedalion#diffList",
+              {
+                "id": 2$$
+              },
+              {
+                "id": 2$$
+              }
+            ],
+            {
+              "id": 8$$
+            }
+          ],
+          [
+            "::",
+            [
+              "\/detalion\/cedalion#diffList",
+              {
+                "id": 2$$
+              },
+              {
+                "id": 2$$
+              }
+            ],
+            {
+              "id": 8$$
+            }
+          ]
+        ],
+        [
+          "\/detalion#true"
+        ]
+      ],
+      [
+        "\/detalion#if",
+        [
+          "\/detalion#conj",
+          [
+            "\/detalion#eq",
+            [
+              "::",
+              {
+                DiffList2_12
+              },
+              [
+                "\/detalion\/cedalion#diffList",
+                [
+                  "\/bootstrap#pred"
+                ]
+              ]
+            ],
+            [
+              "::",
+              [
+                "\/detalion\/cedalion#diffList",
+                {
+                  "id": 2$$
+                },
+                {
+                  "id": 12$$
+                }
+              ],
+              [
+                "\/detalion\/cedalion#diffList",
+                [
+                  "\/bootstrap#pred"
+                ]
+              ]
+            ]
+          ],
+          [
+            "\/detalion#eval",
+            [
+              "\/detalion#true"
+            ],
+            [
+              "\/detalion\/cedalion#diffList",
+              {
+                "id": 13$$
+              },
+              {
+                "id": 13$$
+              }
+            ],
+            [
+              "\/detalion\/cedalion#diffList",
+              [
+                "\/bootstrap#pred"
+              ]
+            ],
+            {
+              "id": 14$$
+            }
+          ]
+        ],
+        [
+          "\/detalion\/cedalion#evalClauses",
+          [
+            ".",
+            [
+              ":-",
+              [
+                "\/Functional#eval",
+                [
+                  "\/Functional#wrap",
+                  {
+                    "id": 15$$
+                  }
+                ],
+                {
+                  "id": 16$$
+                },
+                {
+                  "id": 17$$
+                }
+              ],
+              [
+                "builtin#if",
+                [
+                  "builtin#compound",
+                  [
+                    "::",
+                    {
+                      "id": 15$$
+                    },
+                    {
+                      "id": 16$$
+                    }
+                  ]
+                ],
+                [
+                  "builtin#if",
+                  [
+                    "=",
+                    [
+                      "::",
+                      {
+                        "id": 15$$
+                      },
+                      {
+                        "id": 16$$
+                      }
+                    ],
+                    [
+                      "::",
+                      [
+                        "\/Functional#unwrap",
+                        {
+                          "id": 18$$
+                        }
+                      ],
+                      {
+                        "id": 16$$
+                      }
+                    ]
+                  ],
+                  [
+                    "\/Functional#eval",
+                    {
+                      "id": 18$$
+                    },
+                    {
+                      "id": 16$$
+                    },
+                    {
+                      "id": 17$$
+                    }
+                  ],
+                  [
+                    ",",
+                    [
+                      "\/bootstrap#safeParseTerm",
+                      [
+                        "::",
+                        {
+                          "id": 15$$
+                        },
+                        {
+                          "id": 16$$
+                        }
+                      ],
+                      {
+                        "id": 19$$
+                      },
+                      {
+                        "id": 20$$
+                      }
+                    ],
+                    [
+                      ",",
+                      [
+                        "\/Functional#evalArgs",
+                        {
+                          "id": 20$$
+                        },
+                        {
+                          "id": 21$$
+                        }
+                      ],
+                      [
+                        "builtin#parseTerm",
+                        [
+                          "::",
+                          {
+                            "id": 17$$
+                          },
+                          {
+                            "id": 16$$
+                          }
+                        ],
+                        {
+                          "id": 19$$
+                        },
+                        {
+                          "id": 21$$
+                        }
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "=",
+                  [
+                    "::",
+                    {
+                      "id": 17$$
+                    },
+                    {
+                      "id": 16$$
+                    }
+                  ],
+                  [
+                    "::",
+                    {
+                      "id": 15$$
+                    },
+                    {
+                      "id": 16$$
+                    }
+                  ]
+                ]
+              ]
+            ],
+            [
+              "[]"
+            ]
+          ],
+          [
+            "\/Functional#eval",
+            [
+              "\/Functional#wrap",
+              3
+            ],
+            [
+              "\/bootstrap#number"
+            ],
+            {
+              TheNumber3
+            }
+          ],
+          [
+            "\/detalion\/cedalion#goalInst",
+            [
+              "builtin#greaterThen",
+              2,
+              {
+                TheNumber3
+              }
+            ],
+            [
+              "\/detalion\/cedalion#term",
+              [
+                "\/Functional#gt",
+                [
+                  "\/Functional#wrap",
+                  2
+                ],
+                [
+                  "\/Functional#wrap",
+                  3
+                ],
+                [
+                  "\/bootstrap#number"
+                ]
+              ]
+            ]
+          ],
+          [
+            "\/bootstrap#pred"
+          ],
+          [
+            "\/detalion\/cedalion#diffList",
+            {
+              "id": 2$$
+            },
+            {
+              "id": 12$$
+            }
+          ],
+          [
+            "\/detalion\/cedalion#diffList",
+            {
+              DiffList3_4
+            },
+            {
+              EmptyList
+            }
+          ]
+        ],
+        [
+          "\/detalion\/cedalion#evalClauses",
+          [
+            ".",
+            [
+              ":-",
+              [
+                "\/Functional#eval",
+                [
+                  "\/Functional#wrap",
+                  {
+                    "id": 15$$
+                  }
+                ],
+                {
+                  "id": 16$$
+                },
+                {
+                  "id": 17$$
+                }
+              ],
+              [
+                "builtin#if",
+                [
+                  "builtin#compound",
+                  [
+                    "::",
+                    {
+                      "id": 15$$
+                    },
+                    {
+                      "id": 16$$
+                    }
+                  ]
+                ],
+                [
+                  "builtin#if",
+                  [
+                    "=",
+                    [
+                      "::",
+                      {
+                        "id": 15$$
+                      },
+                      {
+                        "id": 16$$
+                      }
+                    ],
+                    [
+                      "::",
+                      [
+                        "\/Functional#unwrap",
+                        {
+                          "id": 18$$
+                        }
+                      ],
+                      {
+                        "id": 16$$
+                      }
+                    ]
+                  ],
+                  [
+                    "\/Functional#eval",
+                    {
+                      "id": 18$$
+                    },
+                    {
+                      "id": 16$$
+                    },
+                    {
+                      "id": 17$$
+                    }
+                  ],
+                  [
+                    ",",
+                    [
+                      "\/bootstrap#safeParseTerm",
+                      [
+                        "::",
+                        {
+                          "id": 15$$
+                        },
+                        {
+                          "id": 16$$
+                        }
+                      ],
+                      {
+                        "id": 19$$
+                      },
+                      {
+                        "id": 20$$
+                      }
+                    ],
+                    [
+                      ",",
+                      [
+                        "\/Functional#evalArgs",
+                        {
+                          "id": 20$$
+                        },
+                        {
+                          "id": 21$$
+                        }
+                      ],
+                      [
+                        "builtin#parseTerm",
+                        [
+                          "::",
+                          {
+                            "id": 17$$
+                          },
+                          {
+                            "id": 16$$
+                          }
+                        ],
+                        {
+                          "id": 19$$
+                        },
+                        {
+                          "id": 21$$
+                        }
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "=",
+                  [
+                    "::",
+                    {
+                      "id": 17$$
+                    },
+                    {
+                      "id": 16$$
+                    }
+                  ],
+                  [
+                    "::",
+                    {
+                      "id": 15$$
+                    },
+                    {
+                      "id": 16$$
+                    }
+                  ]
+                ]
+              ]
+            ],
+            [
+              "[]"
+            ]
+          ],
+          [
+            "\/Functional#eval",
+            [
+              "\/Functional#wrap",
+              3
+            ],
+            [
+              "\/bootstrap#number"
+            ],
+            {
+              TheNumber3
+            }
+          ],
+          [
+            "\/detalion\/cedalion#goalInst",
+            [
+              "builtin#greaterThen",
+              2,
+              {
+                TheNumber3
+              }
+            ],
+            [
+              "\/detalion\/cedalion#term",
+              [
+                "\/Functional#gt",
+                [
+                  "\/Functional#wrap",
+                  2
+                ],
+                [
+                  "\/Functional#wrap",
+                  3
+                ],
+                [
+                  "\/bootstrap#number"
+                ]
+              ]
+            ]
+          ],
+          [
+            "\/bootstrap#pred"
+          ],
+          [
+            "\/detalion\/cedalion#diffList",
+            {
+              "id": 2$$
+            },
+            {
+              "id": 2$$
+            }
+          ],
+          [
+            "\/detalion\/cedalion#diffList",
+            {
+              DiffList3_4
+            },
+            {
+              EmptyList
+            }
+          ]
+        ]
+      ]
+    ]
+  ]
+]

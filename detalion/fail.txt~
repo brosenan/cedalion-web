@@ -1,0 +1,136 @@
+[
+  "\/detalion\/cedalion#instantiate",
+  [
+    "\/detalion\/cedalion#goalInst",
+    [
+      ",",
+      [
+        "\/Functional#eval",
+        [
+          "\/Functional#applyBinOpList",
+          [
+            "\/Functional#const",
+            [
+              "[]"
+            ]
+          ],
+          [
+            "\/Functional#numPlus"
+          ],
+          [
+            "\/Functional#const",
+            [
+              "[]"
+            ]
+          ]
+        ],
+        [
+          "\/bootstrap#list",
+          [
+            "\/bootstrap#number"
+          ]
+        ],
+        {
+          "id": 1
+        }
+      ],
+      [
+        "\/Functional#eval",
+        [
+          "\/Functional#applyBinOp",
+          [
+            "\/Functional#const",
+            2
+          ],
+          [
+            "\/Functional#numPlus"
+          ],
+          [
+            "\/Functional#const",
+            4
+          ]
+        ],
+        [
+          "\/bootstrap#number"
+        ],
+        {
+          "id": 2
+        }
+      ]
+    ],
+    [
+      "\/detalion\/cedalion#goalInst",
+      [
+        "\/Functional#eval",
+        [
+          "\/Functional#const",
+          [
+            ".",
+            {
+              "id": 2
+            },
+            {
+              "id": 1
+            }
+          ]
+        ],
+        [
+          "\/bootstrap#list",
+          [
+            "\/bootstrap#number"
+          ]
+        ],
+        {
+          "id": 3
+        }
+      ],
+      [
+        "\/detalion\/cedalion#term",
+        [
+          ".",
+          [
+            ".",
+            2,
+            [
+              "[]"
+            ]
+          ],
+          [
+            ".",
+            [
+              ".",
+              4,
+              [
+                "[]"
+              ]
+            ],
+            [
+              "[]"
+            ]
+          ]
+        ]
+      ]
+    ]
+  ],
+  {
+    "id": 4
+  },
+  [
+    "\/detalion\/cedalion#diffList",
+    {
+      "id": 5
+    },
+    {
+      "id": 5
+    }
+  ],
+  [
+    "\/detalion\/cedalion#diffList",
+    {
+      "id": 5
+    },
+    {
+      "id": 5
+    }
+  ]
+]

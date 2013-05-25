@@ -1,2 +1,3 @@
 '/bootstrap':signature(encloseGoal(Goal,GoalPrime,Seed,ClIn,ClOut)::'/detalion':pred,[Goal::'/detalion':pred,GoalPrime::'/detalion':pred,Seed::'/bootstrap':string,ClIn::'/bootstrap':list('/bootstrap':statement),ClOut::'/bootstrap':list('/bootstrap':statement)]).
-'/detalion':clause(encloseGoal(Goal,GoalPrime,Seed,ClIn,['/detalion':clause(GoalPrime,Goal1)|ClIn]),'/detalion':conj(unmarkDynamic(Goal::'/detalion':pred,Goal1::'/detalion':pred),'/detalion':hashGoal(Goal1,Seed,GoalPrime))).
+'/detalion':clause(encloseGoal(Goal,Head,Seed,ClIn,[Statement|ClIn]),'/detalion':conj('/detalion':hashGoal(Goal,Seed,Head),unmarkDynamic('/detalion':clause(Head,Goal)::'/bootstrap':statement,Statement::'/bootstrap':statement))).
+'/bootstrap':disabled('/detalion':clause(encloseGoal(Goal,Goal,Seed,ClIn,ClIn),'/detalion':true)).

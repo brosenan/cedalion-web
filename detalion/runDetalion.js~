@@ -14,9 +14,14 @@ app.on(["detalion", "program"], function() {
 	}
 	eval(app.program);
 	var jit;
-	jit = new Jit({lifting: 2});
+	jit = new Jit({XXlifting: 1});
 	var det = new Interpreter(program, jit);
 	createBuiltins(det);
+	app.setValue('det', det);
+});
+
+app.on(['det'], function() {
+	var det = app.det;
 
 /*	var Y = det.heapAllocate();
 	if(!det.call(['test#fib', 10, Y])) {
@@ -24,6 +29,7 @@ app.on(["detalion", "program"], function() {
 	}
 	console.log('fib emitted ' + JSON.stringify(det.deref(Y)));*/
 
+/*
 	try {
 		var X = det.heapAllocate();
 		var Y = det.heapAllocate();
@@ -42,7 +48,7 @@ app.on(["detalion", "program"], function() {
 		console.error(e.stack);
 		throw e;
 	}
-
+//*/
 /*	var L = det.heapAllocate();
 	var X = det.heapAllocate();
 	if(!det.call(['/detalion/cedalion#map', det.arrayToList([1, 2, 3]), X, ['/bootstrap#number'], L, ['x', X], ['foo']])) {
@@ -65,16 +71,16 @@ app.on(["detalion", "program"], function() {
 	}
 	console.log('fib emitted ' + JSON.stringify(det.deepDeref(X)));
 */
-/*
+//*
 	{
 		var unitTests = det.program.findAllMatches([":-",["/detalion/export#statement",["/detalion#unitTest", '_']], '_'], det).map(function(x) {
 			return x.st[1][1][1];
 		});
-		for(var i = 0; i < 10; i++) {
+		for(var i = 0; i < 1; i++) {
 			var num = 0;
 			unitTests.forEach(function(x) {
 				num++;
-				//if(num != 3) return;
+				//if(num != 13) return;
 				det.resetRegs();
 				x = det.unifyRead(x);
 				console.log('[' + num + '] Running unit: ' + JSON.stringify(x));
@@ -84,22 +90,22 @@ app.on(["detalion", "program"], function() {
 		}		
 	}
 //*/
-//*
+/*
 	try {
 		var unitTests = det.program.findAllMatches([":-",["/detalion/export#statement",["/bootstrap#unitTest", '_']], '_'], det).map(function(x) {
 			return x.st[1][1][1];
 		});
-		for(var i = 0; i < 2; i++) {
+		for(var i = 0; i < 1; i++) {
 			var num = 0;
 			unitTests.forEach(function(x) {
 				num++;
-				//if(num != 12) return;
+				if(num != 2) return;
 				det.resetRegs();
 				x = det.unifyRead(x);
 				//var L = det.heapAllocate();
 				var W = det.heapAllocate();
 				console.log('[' + num + '] Running unit: ' + JSON.stringify(x));
-				var success = det.call([PREFIX + 'eval', 
+				var success = det.call(['/detalion#eval', 
 					['/detalion/cedalion#cedalion', 
 						x, 
 						['/detalion/cedalion#dummyInst'], 
@@ -108,6 +114,7 @@ app.on(["detalion", "program"], function() {
 						['/detalion/cedalion#diffList', ['.', det.heapAllocate(), det.heapAllocate()], ['[]']]], 0, 0, det.heapAllocate()]);
 				console.log('[' + num + '] ' + (success ? "PASS" : "FAIL"));
 			});
+			det.jit.thresholds.lifting = 100000;
 		}
 	} catch(e) {
 		console.error(e);
@@ -115,3 +122,62 @@ app.on(["detalion", "program"], function() {
 	}
 //*/
 });
+
+app.readStream(fs.createReadStream(__dirname + "/case8d.txt"), "log");
+/*
+app.on(["detalion", "program", "log"], function() {
+	// Create an interpreter without jit
+	eval(app.detalion);
+	var program = new ProgramDatabase();
+	function detalionStatement(s) {
+		program.store(s);
+	}
+	eval(app.program);
+	var det = new Interpreter(program);
+	createBuiltins(det);
+	// Parse the log
+	app.log += '{}'
+	var log = app.log.split('\n').map(JSON.parse);
+	for(var i = 0; i < log.length; i++) {
+		//if(i != 43) continue;
+		console.log(i);
+		if(!log[i].goal) {
+			return;
+		}
+		var entry = log[i];
+		det.resetRegs();
+		var goal = det.unifyRead(entry.goal);
+		//console.log('Goal: ' + JSON.stringify(goal));
+
+		det.resetRegs();
+		det.unifyWrite(entry.orig[1], goal);
+		var origClause = det.unifyRead(entry.orig);
+		var origGoalAssignment = det.heapAllocate();
+		var origRes = det.call(['/detalion#eval', origClause[2], goal, det.heapAllocate(), origGoalAssignment]);
+		var origGoalText = JSON.stringify(det.toPrototype(origGoalAssignment));
+		
+		det.resetRegs();
+		det.unifyWrite(entry.lifted[1], goal);
+		var liftedClause = det.unifyRead(entry.lifted);
+		var liftedGoalAssignment = det.heapAllocate();
+		var liftedRes = det.call(['/detalion#eval', liftedClause[2], goal, det.heapAllocate(), liftedGoalAssignment]);
+		var liftedGoalText = JSON.stringify(det.toPrototype(liftedGoalAssignment));
+
+		if(liftedRes != origRes) {
+			throw Error('Lifted and original clauses differ in result: lifted ' + (liftedRes?'succeeded':'failed') + ' while original ' + (origRes?'succeeded':'failed') +
+//				'\n\tGoal: ' + JSON.stringify(entry.goal) + '\n\tLifted: ' + JSON.stringify(det.toPrototype(liftedClause)) + '\n\tOriginal: ' + JSON.stringify(det.toPrototype(origClause)));
+				'\n\tGoal: ' + JSON.stringify(entry.goal) + '\n\tLifted: ' + JSON.stringify(entry.lifted) + '\n\tOriginal: ' + JSON.stringify(entry.orig));
+		}
+		if(liftedGoalText != origGoalText) {
+			throw Error('Lifted and original clauses differ in variable assignments:' +
+				'\n\tGoal: ' + JSON.stringify(entry.goal) + '\n\tLifted: ' + liftedGoalText + '\n\tOriginal: ' + origGoalText);
+		}
+
+		console.log(liftedRes ? 'T' : 'F');
+		if(liftedRes && JSON.stringify(entry.goal) == liftedGoalText) {
+			console.log('Goal succeeded without binding any variables');
+		}
+	}
+});
+//*/
+

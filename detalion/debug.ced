@@ -1,3 +1,6 @@
 '/bootstrap':signature(trace(Goal)::pred,[Goal::pred]).
 '/bootstrap':projection(trace(Goal)::pred,'/bootstrap':horiz(['/bootstrap':halfSize('/bootstrap':label(!'[trace]')),'/bootstrap':vis(Goal::pred)])).
 clause(trace(Goal),conj(debug(!'trace-in',Goal::pred),conj(Goal,debug(!'trace-out',Goal::pred)))).
+'/bootstrap':contextMenuEntry([unitTest(Test)|Next]::'/bootstrap':list('/bootstrap':statement),VNs,Path,!'Create sub-tests','/bootstrap':foreach((findSubTests(Test,Next,SubtestsAndNext),'/debugging':completeVarNames(SubtestsAndNext::'/bootstrap':list('/bootstrap':statement),VNs,VNsPrime)),'/bootstrap':doProc(cpi:edit(Path,[unitTest(Test)|SubtestsAndNext]::'/bootstrap':list('/bootstrap':statement),VNsPrime)))).
+'/bootstrap':signature(findSubTests(Test,Next,SubtestsAndNext)::'/bootstrap':pred,[Test::pred,Next::'/bootstrap':list('/bootstrap':statement),SubtestsAndNext::'/bootstrap':list('/bootstrap':statement)]).
+findSubTests(Test,Next,SubtestsAndNext):-builtin:findall(unitTest(SubTest),'/bootstrap':statement,builtin:loadedStatement(_,clause(Test,SubTest),_),SubTests),'/bootstrap':append(SubTests,Next,SubtestsAndNext,'/bootstrap':statement).

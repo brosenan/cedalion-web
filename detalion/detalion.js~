@@ -13,6 +13,7 @@ function ProgramDatabase() {
 
 	this.store = function(statement) {
 //console.log('Storing: ' + JSON.stringify(statement));
+		var depth = 0;
 		var node = this.db;
 		var term = statement;
 		if(!node['*']) {
@@ -27,10 +28,11 @@ function ProgramDatabase() {
 			node['*'].push({st: statement});
 			var key = term[0] + '/' + (term.length - 1);
 			if(!node[key]) {
-				node[key] = {};
+				node[key] = {depth: depth};
 			}
 			node = node[key];
 			term = term[1];
+			depth++;
 		}
 		// Add a match for an equally or more specific term
 		if(!node['.']) {
@@ -70,10 +72,14 @@ function ProgramDatabase() {
 			term = det.deref(term[1]);
 		}
 		if(Array.isArray(prevTerm) && !node && !fallback.fixed) {
+			if(fallback['##' +key]) {
+				return fallback['##' +key];
+			}
 			var lifted = det.lift(fallback, prevTerm[0], prevTerm.length-1);
 			if(lifted) {
-				var newNode = {'.': [{'st': lifted}]};
-				fallback[prevTerm[0] + '/' + (prevTerm.length - 1)] = newNode;
+				var key = prevTerm[0] + '/' + (prevTerm.length - 1);
+				var newNode = {'.': [{st: lifted, base: fallback['.'][0].st}]};
+				fallback[key] = newNode;
 				return newNode;
 			}
 		}
@@ -82,6 +88,9 @@ function ProgramDatabase() {
 	
 	this.findMostSpecific = function(pattern, det) {
 		var node = this.findMostSpecificNode(pattern, det);
+		if(!node['.'] && node['*']) {
+			throw Error('Ambiguous result for pattern ' + JSON.stringify(pattern));
+		}
 		return node['.'] || [];
 	};
 	
@@ -324,8 +333,9 @@ function Interpreter(program, jit) {
 			this.push(goal);
 			while(this.S > baseline) {
 				goal = this.pop();
-//console.log(this.deepDeref(goal));
-//console.log(this.termToDot(goal));
+//if(goal[0] == 'det#specialize') 
+//console.log(JSON.stringify(this.deepDeref(goal)));
+console.log(this.termToDot(goal));
 				var nodes = this.program.findMostSpecific([PREFIX + 'clause', goal, '_'], this);
 				if(nodes.length == 0) {
 					this.fail();
@@ -336,6 +346,7 @@ function Interpreter(program, jit) {
 					}
 					throw Error("Ambiguous goal: " + JSON.stringify(this.deepDeref(goal)));
 				}
+				logClause(this.toPrototype(goal), nodes[0]);
 				var clause = nodes[0].st;
 				var head = clause[1];
 				var body = clause[2];
@@ -347,7 +358,7 @@ function Interpreter(program, jit) {
 				var func = null;
 				if(nodes[0].builtins) {
 					var mode = this.calcMode();
-	//console.log(mode);
+//console.log(mode);
 					func = nodes[0].builtins[mode];
 				}
 				if(func) {
@@ -808,11 +819,35 @@ function createBuiltins(det) {
 		'IOI': function(source, target, type) {
 			this.bind(target.ref, this.copyTerm(source));
 		},
+		'IOO': function(source, target, type) {
+			this.bind(target.ref, this.copyTerm(source));
+		},
+		'OOI': function(source, target, type) {
+			this.bind(target.ref, this.copyTerm(source));
+		},
+		'OOO': function(source, target, type) {
+			this.bind(target.ref, this.copyTerm(source));
+		},
 		'III': function(source, target, type) {
 			if(!this.unify(target, this.copyTerm(source))) {
 				this.fail();
 			}
-		}
+		},
+		'IIO': function(source, target, type) {
+			if(!this.unify(target, this.copyTerm(source))) {
+				this.fail();
+			}
+		},
+		'OII': function(source, target, type) {
+			if(!this.unify(target, this.copyTerm(source))) {
+				this.fail();
+			}
+		},
+		'OIO': function(source, target, type) {
+			if(!this.unify(target, this.copyTerm(source))) {
+				this.fail();
+			}
+		},
 	});
 
 	function evalPred(goal, term, type, result) {
@@ -1161,7 +1196,13 @@ function createBuiltins(det) {
 			}
 			var moreSpecCount = 0;
 			if(node['*']) {
-				moreSpecCount = node['*'].length;
+				var subterm = pattern;
+				for(var i = 0; i < node.depth; i++) {
+					subterm = subterm[1];
+				}
+				if(Array.isArray(subterm) && subterm.length == 2 && subterm[0] == '$$$dynamic$$$') {
+					moreSpecCount = node['*'].length;
+				}
 			}
 			if(!this.unify(numMoreSpecific, moreSpecCount)) {
 				this.fail();
@@ -1196,6 +1237,81 @@ function createBuiltins(det) {
 				this.fail();
 			}
 		},
+	});
+
+	function markDynamic(term) {
+		term = this.deref(term);
+		if(term.ref) {
+			this.bind(term.ref, ['$$$dynamic$$$', this.heapAllocate()]);
+		} else if(Array.isArray(term) && term[0] != '$$$dynamic$$$') {
+			for(var i = 1; i < term.length; i++) {
+				markDynamic.call(this, term[i]);
+			}
+		}
+	}
+	det.addBuiltin('markDynamic', 2, {
+		'II': markDynamic,
+		'IO': markDynamic,
+		'OI': markDynamic,
+		'OO': markDynamic,
+	});
+
+	function getUnmarked(det, term) {
+		term = det.deref(term);
+		if(Array.isArray(term) && term[0] == '$$$dynamic$$$') {
+			return term[1];
+		} else if(Array.isArray(term)) {
+			var newTerm = Array(term.length);
+			newTerm[0] = term[0];
+			for(var i = 1; i < term.length; i++) {
+				newTerm[i] = getUnmarked(det, term[i]);
+			}
+			return newTerm;
+		} else {
+			return term;
+		}
+	}
+
+	function unmarkDynamic(t1, t2) {
+		var unmarked = getUnmarked(this, t1);
+//		console.log(JSON.stringify(this.deepDeref(t1)));
+//		console.log(JSON.stringify(unmarked));
+		if(!this.unify(t2, unmarked)) {
+			this.fail();
+		}
+	}
+
+	det.addBuiltin('unmarkDynamic', 3, {
+		'OOI': unmarkDynamic,
+		'OOO': unmarkDynamic,
+		'OII': unmarkDynamic,
+		'OIO': unmarkDynamic,
+		'IOI': unmarkDynamic,
+		'IOO': unmarkDynamic,
+		'III': unmarkDynamic,
+		'IIO': unmarkDynamic,
+	});
+
+	function isDynamic(term, type, v) {
+		term = this.deref(term);
+		if(Array.isArray(term) && term[0] == '$$$dynamic$$$') {
+			if(!this.unify(v, term[1])) {
+				this.fail();
+			}
+		} else {
+			this.fail();
+		}
+	}
+	
+	det.addBuiltin('isDynamic', 3, {
+		'III': isDynamic,
+		'IIO': isDynamic,
+		'IOI': isDynamic,
+		'IOO': isDynamic,
+		'OII': isDynamic,
+		'OIO': isDynamic,
+		'OOI': isDynamic,
+		'OOO': isDynamic,
 	});
 
 	det.program.store([PREFIX + 'clause', [PREFIX + '=', {id:1}, {id:1}], [TRUE]]);
@@ -1259,25 +1375,27 @@ function Jit(thresholds) {
 			} else {
 				return;
 			}
-console.log('Lifting: ' + JSON.stringify(det.deepDeref(clause[1])));
+//console.log('Lifting: ' + JSON.stringify(det.deepDeref(clause[1])));
+//console.log('<');
 			// Specialize the body
 			var specialized = det.heapAllocate();
 			var newClauses = det.heapAllocate();
 			var b = det.call(['det#specialize', clause, specialized, newClauses]);
+//console.log('>');
 			if(b) {
 				newClauses = det.listToArray(newClauses);
 				for(var i = 0; i < newClauses.length; i++) {
 					var key = det.deref(det.deref(newClauses[i])[1])[0];
 					if(!this.cached[key]) {
 						this.cached[key] = true;
-console.log('Added enclosed: ' + JSON.stringify(det.toPrototype(newClauses[i])));
+//console.log('Added enclosed: ' + JSON.stringify(det.toPrototype(newClauses[i])));
 						det.program.store(det.toPrototype(newClauses[i]));
 					}
 				}
-console.log('Added: ' + JSON.stringify(det.deepDeref(specialized)));
+//console.log('Added: ' + JSON.stringify(det.deepDeref(specialized)));
 				return det.toPrototype(specialized);
 			} else {
-console.log('specialization failed');
+//console.log('specialization failed');
 /*console.log('Added: ' + JSON.stringify(det.deepDeref(clause[1])) + ' :- FAIL');*/
 				return det.toPrototype([PREFIX + 'clause', clause[1], [FAIL]]);
 				return;
@@ -1288,4 +1406,10 @@ console.log('specialization failed');
 	};
 }
 
+function logClause(goal, node) {
+	if(!node.base) {
+		return;
+	}
+//	console.log('###@@' + JSON.stringify({goal: goal, orig: node.base, lifted: node.st}));
+}
 

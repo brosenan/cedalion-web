@@ -9,9 +9,4 @@ fib(s(s(X)),N):-fib(X,N1),fib(s(X),N2),builtin:plus(N1,N2,N).
 toPeano(N,P):-builtin:if(builtin:greaterThen(N,0), (builtin:minus(N,1,N1),toPeano(N1,P1),P::peano=s(P1)::peano),P::peano=zero::peano).
 '/bootstrap':signature('fib2'(N,Fib)::'/bootstrap':pred,[N::'/bootstrap':number,Fib::'/bootstrap':number]).
 'fib2'(N,Fib):-toPeano(N,P),fib(P,Fib).
-test(X):-builtin:if('/bootstrap':append(V1,[2|V2],[1,2,3],'/bootstrap':number),builtin:true,builtin:fail).
-'/bootstrap':unitTest('/javascript/optimization':isBuiltin(builtin:succ(V0,V1))).
-'/bootstrap':unitTest(builtin:parseTerm(builtin:succ(V2,V3)::'/bootstrap':pred,V4,V5)).
-'/bootstrap':unitTest(builtin:charCodes(!'builtin#succ',V4)).
-'/bootstrap':unitTest(builtin:charCodes(!'#',[V1])).
-'/bootstrap':unitTest(builtin:if('/bootstrap':append(V1,[35|V2],[98,117,105,108,116,105,110,35,115,117,99,99],'/bootstrap':number),builtin:charCodes(!builtin,V1),builtin:true)).
+test([V4,V6]):-'/Functional':eval('/Functional':const([1,2]),'/bootstrap':list('/bootstrap':number),[V3|V4]),'/Functional':eval('/Functional':const([3,4]),'/bootstrap':list('/bootstrap':number),[V5|V6]),'/Functional':eval('/Functional':applyBinOpList('/Functional':const(V4),'/Functional':numPlus,'/Functional':const(V6)),'/bootstrap':list('/bootstrap':number),V2).

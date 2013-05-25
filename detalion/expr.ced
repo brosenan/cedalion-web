@@ -8,8 +8,8 @@ clause(applyOp('/Functional':times,'/bootstrap':number,A,B,V),mult(A,B,V)).
 clause(applyOp('/Functional':divBy,'/bootstrap':number,A,B,V),div(A,B,V)).
 clause(applyOp('/Functional':concat,'/bootstrap':string,A,B,V),strcat(A,B,V)).
 '/bootstrap':signature(unitTest(Test)::'/bootstrap':statement,[Test::pred]).
-unitTest(eval('/Functional':applyBinOp('/Functional':const(2),'/Functional':numPlus,'/Functional':const(3)),'/bootstrap':number,5)).
-unitTest(eval('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':const(1),'/Functional':times,'/Functional':const(3)),'/Functional':minus,'/Functional':const(2)),'/bootstrap':number,1)).
+unitTest(conj(eval('/Functional':applyBinOp('/Functional':const(2),'/Functional':numPlus,'/Functional':const(3)),'/bootstrap':number,Five),equals(Five,5,'/bootstrap':number))).
+unitTest(conj(eval('/Functional':applyBinOp('/Functional':applyBinOp('/Functional':const(1),'/Functional':times,'/Functional':const(3)),'/Functional':minus,'/Functional':const(2)),'/bootstrap':number,One),equals(One,1,'/bootstrap':number))).
 unitTest('/detalion/cedalion':cedalion('/bootstrap':safeParseTerm(builtin:succ(Y,X)::'/bootstrap':pred,Name,Args),'/detalion/cedalion':term('/Functional':pair(Name,Args)),'/Functional':pairType('/bootstrap':string,'/bootstrap':list('/bootstrap':typedTerm)),'/detalion/cedalion':diffList(L,L),'/detalion/cedalion':diffList(['/Functional':pair(_,_)],[]))).
 '/bootstrap':defAtom(foo::'/bootstrap':type).
 '/bootstrap':signature('t1'(X,Y)::pred,[X::foo,Y::'/bootstrap':string]).

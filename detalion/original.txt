@@ -1,0 +1,87 @@
+[
+  "\/detalion#clause",
+  [
+    "\/detalion\/cedalion#cedalion",
+    [
+      "\/Functional#eval",
+      {
+        "id": 1
+      },
+      {
+        "id": 2
+      },
+      {
+        "id": 3
+      }
+    ],
+    {
+      "id": 4
+    },
+    {
+      "id": 5
+    },
+    {
+      "id": 6
+    },
+    {
+      "id": 7
+    }
+  ],
+  [
+    "\/detalion#conj",
+    [
+      "\/detalion#findAllMatches",
+      [
+        ":-",
+        [
+          "\/Functional#eval",
+          {
+            "id": 1
+          },
+          {
+            "id": 2
+          },
+          {
+            "id": 3
+          }
+        ],
+        {
+          "id": 8
+        }
+      ],
+      {
+        "id": 9
+      }
+    ],
+    [
+      "\/detalion\/cedalion#evalClauses",
+      {
+        "id": 9
+      },
+      [
+        "\/Functional#eval",
+        {
+          "id": 1
+        },
+        {
+          "id": 2
+        },
+        {
+          "id": 3
+        }
+      ],
+      {
+        "id": 4
+      },
+      {
+        "id": 5
+      },
+      {
+        "id": 6
+      },
+      {
+        "id": 7
+      }
+    ]
+  ]
+]

@@ -1,4 +1,4 @@
 '/bootstrap':signature(traceSpec(Goal)::'/detalion':pred,[Goal::'/detalion':pred]).
 '/bootstrap':projection(traceSpec(Goal)::'/detalion':pred,'/bootstrap':horiz(['/bootstrap':halfSize('/bootstrap':label(!'[trace spec]')),'/bootstrap':vis(Goal::'/detalion':pred)])).
 '/detalion':clause(traceSpec(Goal),Goal).
-'/detalion':clause(det:specialize(traceSpec(Goal),GoalPrime,ClIn,ClOut,Caller),'/detalion':conj('/detalion':debug(!'trace spec',Goal::'/detalion':pred),'/detalion':conj(det:specialize(Goal,GoalPrime,ClIn,ClOut,Caller),'/detalion':debug(!specialized,GoalPrime::'/detalion':pred)))).
+'/detalion':clause(specialize(traceSpec(Goal),GoalPrime,ClIn,ClOut),'/detalion':conj('/detalion':debug(!'trace spec',Goal::'/detalion':pred),'/detalion':conj(specialize(Goal,GoalPrime,ClIn,ClOut),'/detalion':debug(!specialized,GoalPrime::'/detalion':pred)))).

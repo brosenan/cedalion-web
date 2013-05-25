@@ -20,3 +20,6 @@
 '/bootstrap':signature(error(Str)::pred,[Str::'/bootstrap':string]).
 '/bootstrap':signature(hashGoal(Goal,Seed,GoalPrime)::pred,[Goal::pred,Seed::'/bootstrap':string,GoalPrime::pred]).
 '/bootstrap':signature(shareVariables(TTerm1,TTerm2)::pred,[TTerm1::'/bootstrap':typedTerm,TTerm2::'/bootstrap':typedTerm]).
+'/bootstrap':signature(markDynamic(Term,Type)::pred,[Term::Type,Type::'/bootstrap':type]).
+'/bootstrap':signature(unmarkDynamic(Term1,Term2,Type)::pred,[Term1::Type,Term2::Type,Type::'/bootstrap':type]).
+'/bootstrap':signature(isDynamic(Term,Type,V)::pred,[Term::Type,Type::'/bootstrap':type,V::Type]).
