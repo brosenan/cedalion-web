@@ -39,7 +39,7 @@ vows.describe('detalion').addBatch({
             assert.deepEqual(matches[0].st, ['clause', ['a', ['c', 'X']], ['b', 'X']]);
 		},
 		'findMostSpecific() should only return matches that are as or less specific than the pattern': function(db) {
-			var matches = db.findMostSpecific(['clause', ['a' 'X'], 'Y'], new Interpreter(db));
+			var matches = db.findMostSpecific(['clause', ['a', 'X'], 'Y'], new Interpreter(db));
             assert.equal(matches.length, 1);
 		},
 		'When there is a generic and a specific answer, findMostSpecific() should return the generic one': function(db) {
@@ -95,6 +95,17 @@ vows.describe('detalion').addBatch({
 			var X = det.heapAllocate();
 			var Y = det.heapAllocate();
 			assert.equal(det.termHash(['a', X, ['b', Y, X]]), 187489);
+		},
+		'Failure of execution should undo all bindings (when no choicepoint is present)': function(det) {
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			assert.isTrue(det.unify(X, 1));
+			assert.isTrue(det.unify(Y, 2));
+			assert.equal(det.deref(X), 1);
+			assert.equal(det.deref(Y), 2);
+			det.call([FAIL]);
+			assert.notEqual(det.deref(X),1);
+			assert.notEqual(det.deref(Y),2);
 		},
 	},
 	'A simple program': {

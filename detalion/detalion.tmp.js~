@@ -6,11 +6,10 @@ var NUM_REG = 17;
 var PREFIX = '/detalion#';
 var TRUE = PREFIX + 'true';
 var FAIL = PREFIX + 'fail';
-var DYNAMIC = '$$$dynamic$$$';
 
 /// A trie containing a program
 function ProgramDatabase() {
-	this.db = {depth: 0};
+	this.db = {};
 
 	this.store = function(statement) {
 //console.log('Storing: ' + JSON.stringify(statement));
@@ -22,7 +21,6 @@ function ProgramDatabase() {
 		}
 		node['*'].push({st: statement});
 		while(Array.isArray(term)) {
-			depth++;
 			// Add matches for more general terms
 			if(!node['*']) {
 				node['*'] = [];
@@ -34,6 +32,7 @@ function ProgramDatabase() {
 			}
 			node = node[key];
 			term = term[1];
+			depth++;
 		}
 		// Add a match for an equally or more specific term
 		if(!node['.']) {
@@ -46,7 +45,7 @@ function ProgramDatabase() {
 		var results = [];
 		var node = this.db;
 		var term = det.deref(pattern);
-		while(Array.isArray(term) && node && term[0] != DYNAMIC) {
+		while(Array.isArray(term) && node) {
 			if(node['.'])
 				results = results.concat(node['.']);
 			node = node[term[0] + '/' + (term.length - 1)];
@@ -64,7 +63,7 @@ function ProgramDatabase() {
 		var fallback = node;
 		var term = det.deref(pattern);
 		var prevTerm = term;
-		while(Array.isArray(term) && node && term[0] != DYNAMIC) {
+		while(Array.isArray(term) && node) {
 			if(node['.']) {
 				fallback = node;
 				prevTerm = term;
@@ -72,7 +71,10 @@ function ProgramDatabase() {
 			node = node[term[0] + '/' + (term.length - 1)];
 			term = det.deref(term[1]);
 		}
-		if(Array.isArray(prevTerm) && prevTerm[0] != DYNAMIC && !node && !fallback.fixed) {
+		if(Array.isArray(prevTerm) && !node && !fallback.fixed) {
+			if(fallback['##' +key]) {
+				return fallback['##' +key];
+			}
 			var lifted = det.lift(fallback, prevTerm[0], prevTerm.length-1);
 			if(lifted) {
 				var key = prevTerm[0] + '/' + (prevTerm.length - 1);
@@ -87,11 +89,7 @@ function ProgramDatabase() {
 	this.findMostSpecific = function(pattern, det) {
 		var node = this.findMostSpecificNode(pattern, det);
 		if(!node['.'] && node['*']) {
-			if(node['*'].length == 1) {
-				return node['*'];
-			} else {
-				throw Error('Ambiguous result for pattern ' + JSON.stringify(pattern) + ' at depth ' + node.depth);
-			}
+			throw Error('Ambiguous result for pattern ' + JSON.stringify(pattern));
 		}
 		return node['.'] || [];
 	};
@@ -331,11 +329,15 @@ function Interpreter(program, jit) {
 	// The interpreter
 	this.call = function(goal) {
 		try {
+console.log(this.S);
+			var cp = this.createChoicePoint();
+console.log(cp);
+console.log(this.FS);
 			var baseline = this.S;
 			this.push(goal);
 			while(this.S > baseline) {
 				goal = this.pop();
-//if(goal[0] == '/detalion/specialization#specialize') 
+//if(goal[0] == 'det#specialize') 
 //console.log(JSON.stringify(this.deepDeref(goal)));
 //console.log(this.termToDot(goal));
 				var nodes = this.program.findMostSpecific([PREFIX + 'clause', goal, '_'], this);
@@ -369,7 +371,11 @@ function Interpreter(program, jit) {
 					this.push(this.unifyRead(body));
 				}
 			}
-			return !this.inFailure();
+			if(this.inFailure()) {
+				cp.rollbackChoicePoint();
+				return false;
+			}
+			return true;
 		} catch(e) {
 			this.trace(e);
 			throw e;
@@ -406,7 +412,7 @@ function Interpreter(program, jit) {
 	this.createChoicePoint = function() {
 		var cp = { H: this.H, T: this.T, BH: this.BH, FS : this.FS};
 		this.BH = this.H;
-		this.FS = this.S;
+		this.FS = this.S + 1;
 		return cp;
 	};
 
@@ -692,9 +698,7 @@ function createBuiltins(det) {
 	det.addBuiltin('if', 3, {
 		'III': function(cond, then, els) {			
 //console.log(JSON.stringify(['if', cond, then, els]));
-			var newGoal = [PREFIX + '__thenElse', then, els];
-			this.push(newGoal);
-			newGoal.push(this.createChoicePoint());
+			this.push([PREFIX + '__thenElse', then, els, this.createChoicePoint()]);
 			this.push(cond);
 		}
 	});
@@ -855,9 +859,7 @@ function createBuiltins(det) {
 	});
 
 	function evalPred(goal, term, type, result) {
-		var newGoal = [PREFIX + '__evalTerm', term, type, result];
-		this.push(newGoal);
-		newGoal.push(this.createChoicePoint());
+		this.push([PREFIX + '__evalTerm', term, type, result, this.createChoicePoint()]);
 		this.push(goal);
 	}
 
@@ -1202,11 +1204,11 @@ function createBuiltins(det) {
 			}
 			var moreSpecCount = 0;
 			if(node['*']) {
-				var subterm = this.deref(pattern);
+				var subterm = pattern;
 				for(var i = 0; i < node.depth; i++) {
-					subterm = this.deref(subterm[1]);
+					subterm = subterm[1];
 				}
-				if(Array.isArray(subterm) && subterm.length == 2 && subterm[0] == DYNAMIC) {
+				if(Array.isArray(subterm) && subterm.length == 2 && subterm[0] == '$$$dynamic$$$') {
 					moreSpecCount = node['*'].length;
 				}
 			}
@@ -1248,8 +1250,8 @@ function createBuiltins(det) {
 	function markDynamic(term) {
 		term = this.deref(term);
 		if(term.ref) {
-			this.bind(term.ref, [DYNAMIC, this.heapAllocate()]);
-		} else if(Array.isArray(term) && term[0] != DYNAMIC) {
+			this.bind(term.ref, ['$$$dynamic$$$', this.heapAllocate()]);
+		} else if(Array.isArray(term) && term[0] != '$$$dynamic$$$') {
 			for(var i = 1; i < term.length; i++) {
 				markDynamic.call(this, term[i]);
 			}
@@ -1264,7 +1266,7 @@ function createBuiltins(det) {
 
 	function getUnmarked(det, term) {
 		term = det.deref(term);
-		if(Array.isArray(term) && term[0] == DYNAMIC) {
+		if(Array.isArray(term) && term[0] == '$$$dynamic$$$') {
 			return term[1];
 		} else if(Array.isArray(term)) {
 			var newTerm = Array(term.length);
@@ -1300,7 +1302,7 @@ function createBuiltins(det) {
 
 	function isDynamic(term, type, v) {
 		term = this.deref(term);
-		if(Array.isArray(term) && term[0] == DYNAMIC) {
+		if(Array.isArray(term) && term[0] == '$$$dynamic$$$') {
 			if(!this.unify(v, term[1])) {
 				this.fail();
 			}
@@ -1384,13 +1386,11 @@ function Jit(thresholds) {
 //console.log('Lifting: ' + JSON.stringify(det.deepDeref(clause[1])));
 //console.log('<');
 			// Specialize the body
-			var cp = det.createChoicePoint();
 			var specialized = det.heapAllocate();
 			var newClauses = det.heapAllocate();
 			var b = det.call(['det#specialize', clause, specialized, newClauses]);
 //console.log('>');
 			if(b) {
-				det.commitChoicePoint(cp);
 				newClauses = det.listToArray(newClauses);
 				for(var i = 0; i < newClauses.length; i++) {
 					var key = det.deref(det.deref(newClauses[i])[1])[0];
@@ -1403,7 +1403,6 @@ function Jit(thresholds) {
 //console.log('Added: ' + JSON.stringify(det.deepDeref(specialized)));
 				return det.toPrototype(specialized);
 			} else {
-				det.rollbackChoicePoint(cp);
 //console.log('specialization failed');
 /*console.log('Added: ' + JSON.stringify(det.deepDeref(clause[1])) + ' :- FAIL');*/
 				return det.toPrototype([PREFIX + 'clause', clause[1], [FAIL]]);
@@ -1421,4 +1420,329 @@ function logClause(goal, node) {
 	}
 	console.log('###@@' + JSON.stringify({goal: goal, orig: node.base, lifted: node.st}));
 }
+
+var vows = require('vows'),
+    assert = require('assert');
+
+vows.describe('detalion').addBatch({
+    'In ProgramDatabase': {
+        topic: new ProgramDatabase(),
+
+        'findAllMatches() should retrieve a stored statement': function (db) {
+			db.store(['clause', ['a', 'X'], ['b', 'X']]);
+			var matches = db.findAllMatches(['clause', ['a', 'X'], 'Y'], new Interpreter(db));
+            assert.equal(matches.length, 1);
+            assert.deepEqual(matches[0].st, ['clause', ['a', 'X'], ['b', 'X']]);
+        },
+		'findAllMatches() should only retrieve matching statements': function(db) {
+			db.store(['clause', ['b', 'X'], ['c', 'X']]);
+			var matches = db.findAllMatches(['clause', ['a', 'X'], 'Y'], new Interpreter(db));
+            assert.equal(matches.length, 1);
+            assert.deepEqual(matches[0].st, ['clause', ['a', 'X'], ['b', 'X']]);
+		},
+		'findAllMatches() should provide all that matches' : function(db) {
+			var matches = db.findAllMatches(['clause', 'X', 'Y'], new Interpreter(db));
+            assert.equal(matches.length, 2);
+		},
+		'findAllMatches() should address the case where the pattern is more specific' : function(db) {
+			var matches = db.findAllMatches(['clause', ['a', ['d', 'X']], ['b', 'X']], new Interpreter(db));
+            assert.equal(matches.length, 1);
+            assert.deepEqual(matches[0].st, ['clause', ['a', 'X'], ['b', 'X']]);
+		},
+		'findAllMatches() should provide all answers if there are different levels of specificity' : function(db) {
+			db.store(['clause', ['a', ['c', 'X']], ['b', 'X']]);
+			var matches = db.findAllMatches(['clause', ['a', 'X'], 'Y'], new Interpreter(db));
+            assert.equal(matches.length, 2);
+            assert.deepEqual(matches[0].st, ['clause', ['a', 'X'], ['b', 'X']]);
+            assert.deepEqual(matches[1].st, ['clause', ['a', ['c', 'X']], ['b', 'X']]);
+		},
+		'findMostSpecific() should only return the most specific answer': function(db) {
+			var matches = db.findMostSpecific(['clause', ['a', ['c', 'X']], 'Y'], new Interpreter(db));
+            assert.equal(matches.length, 1);
+            assert.deepEqual(matches[0].st, ['clause', ['a', ['c', 'X']], ['b', 'X']]);
+		},
+		'findMostSpecific() should only return matches that are as or less specific than the pattern': function(db) {
+			var matches = db.findMostSpecific(['clause', ['a', 'X'], 'Y'], new Interpreter(db));
+            assert.equal(matches.length, 1);
+		},
+		'When there is a generic and a specific answer, findMostSpecific() should return the generic one': function(db) {
+			var matches = db.findMostSpecific(['clause', ['a', 'Z'], 'Y'], new Interpreter(db));
+            assert.equal(matches.length, 1);
+            assert.deepEqual(matches[0].st, ['clause', ['a', 'X'], ['b', 'X']]);
+		},
+		'findMostSpecific() should fall back to the more generic match if no specific one is found': function(db) {
+			var matches = db.findMostSpecific(['clause', ['a', ['d', 'X']], ['b', 'X']], new Interpreter(db));
+            assert.equal(matches.length, 1);
+            assert.deepEqual(matches[0].st, ['clause', ['a', 'X'], ['b', 'X']]);
+		},
+		'In the case of where there is no generic answer, just more specific ones, findMostSpecific() should throw an exception': function(db) {
+			assert.throws(function() {
+				db.findMostSpecific(['clause', 'X', 'Y'], new Interpreter(db));
+			}, Error);
+		}
+    },
+	'The interpreter': {
+		topic: (function() {
+			var program = new ProgramDatabase();
+			return new Interpreter(program);
+		})(),
+		'Unification of a(1, X) and a(Y, 2) should succeed': function(det) {
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			assert.isTrue(det.unify(['a', 1, X], ['a', Y, 2]));
+			assert.equal(det.deref(X), 2);
+			assert.equal(det.deref(Y), 1);
+		},
+		'Unification of a(1, X) and a(2, Y) should fail': function(det) {
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			assert.isFalse(det.unify(['a', 1, X], ['a', 2, Y]));
+		},
+		'Writing a(2, 7) into a(X, Y) shoud turn p(X, 1, Y) into p(2, 1, 7)': function(det) {
+			assert.isTrue(det.unifyWrite(['a', {id:1}, {id:2}], ['a', 2, 7]));
+			assert.deepEqual(det.unifyRead(['p', {id:1}, 1, {id:2}]), ['p', 2, 1, 7]);
+		},
+		'toPrototype(a(X, b(Y, X))) should run correctly': function(det) {
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			assert.deepEqual(det.toPrototype(['a', X, ['b', Y, X]]), ['a', {id:1}, ['b', {id:2}, {id:1}]]);
+		},
+		'collectTermVars(a(X, b(Y, X))) collect X and Y': function(det) {
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			var vars = [];
+			det.collectTermVars(['a', X, ['b', Y, X]], vars, {})
+			assert.deepEqual(vars, [X, Y]);
+		},
+		'termHash(a(X, b(Y, X))) should run correctly': function(det) {
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			assert.equal(det.termHash(['a', X, ['b', Y, X]]), 187489);
+		},
+		'Failure of execution should undo all bindings (when no choicepoint is present)': function(det) {
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			assert.isTrue(det.unify(X, 1));
+			assert.isTrue(det.unify(Y, 2));
+			assert.equal(det.deref(X), 1);
+			assert.equal(det.deref(Y), 2);
+			det.call([FAIL]);
+			assert.notEqual(det.deref(X),1);
+			assert.notEqual(det.deref(Y),2);
+		},
+	},
+	'A simple program': {
+		topic: (function() {
+			var program = new ProgramDatabase();
+			program.store([PREFIX + 'clause', ['a', {id: 1}, 'one'], [TRUE]]);
+			program.store([PREFIX + 'clause', ['a', ['b'], 'two'], [TRUE]]);
+			program.store([PREFIX + 'clause', ['a', ['c'], 'three'], [FAIL]]);
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
+		})(),
+		'true should succeed': function(det) {
+			assert.isTrue(det.call([TRUE]));
+		},
+		'fail should succeed': function(det) {
+			assert.isFalse(det.call([FAIL]));
+		},
+		'evaluating a(Y, X) should emit X=one': function(det) {
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			assert.isTrue(det.call(['a', Y, X]));
+			assert.equal(det.deref(X), 'one');
+		},
+		'evaluating a(b, X) should emit X=two': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call(['a', ['b'], X]));
+			assert.equal(det.deref(X), 'two');
+		},
+		'evaluating a(c, X) should fail': function(det) {
+			var X = det.heapAllocate();
+			assert.isFalse(det.call(['a', ['c'], X]));
+		},
+		'evaluating a(d, X) should emit X=one': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call(['a', ['d'], X]));
+			assert.equal(det.deref(X), 'one');
+		}
+	},
+	'List concatenation': {
+		// concat([], X, X) :- true.
+		// concat([A|X], Y, [A|Z]) :- concat(X, Y, Z).
+		topic: (function() {
+			var program = new ProgramDatabase();
+			program.store([PREFIX + 'clause', ['concat', ['[]'], {id:1}, {id:1}], [TRUE]]);
+			program.store([PREFIX + 'clause', ['concat', ['.', {id:1}, {id:2}], {id:3}, ['.', {id:1}, {id:4}]], 
+				['concat', {id:2}, {id:3}, {id:4}]]);
+			var det = new Interpreter(program, new Jit({lifting: 0}));
+			createBuiltins(det);
+			return det;
+		})(),
+		'concat([1], [2], X) should succeed, emitting X=[1, 2]': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call(['concat', ['.', 1, ['[]']], ['.', 2, ['[]']], X]));
+			assert.deepEqual(det.deepDeref(X), ['.', 1, ['.', 2, ['[]']]]);
+		},
+		'concat([3], X, [3, 4]) should succeed, emitting X=[4]': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call(['concat', ['.', 3, ['[]']], X, ['.', 3, ['.', 4, ['[]']]]]));
+			assert.deepEqual(det.deepDeref(X), ['.', 4, ['[]']]);
+		},
+		'concat([1], X, [3, 4]) should fail': function(det) {
+			var X = det.heapAllocate();
+			assert.isFalse(det.call(['concat', ['.', 1, ['[]']], X, ['.', 3, ['.', 4, ['[]']]]]));
+		}
+	},
+	'Builtin Predicate': {
+		topic :(function() {
+			var program = new ProgramDatabase();
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
+		})(),
+		'strcat("hello, ", "world", X) should succeed, emitting X = "hello, world"': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call([PREFIX + 'strcat', 'hello, ', 'world', X]));
+			assert.equal(det.deref(X), 'hello, world');
+		},
+		'strcat("hello, ", X, "hello, world") should succeed, emitting X = "world"': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call([PREFIX + 'strcat', 'hello, ', X, 'hello, world']));
+			assert.equal(det.deref(X), 'world');
+		},
+		'strcat(X, "world", "hello, world") should succeed, emitting X = "hello, "': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call([PREFIX + 'strcat', X, 'world', 'hello, world']));
+			assert.equal(det.deref(X), 'hello, ');
+		},
+		'strcat(X, "mondi", "hello, world") should fail': function(det) {
+			var X = det.heapAllocate();
+			assert.isFalse(det.call([PREFIX + 'strcat', X, 'mondi', 'hello, world']));
+		}
+	},
+	'peano numbers' : {
+		topic :(function() {
+			// p(zero, 0) :- true.
+			// p(s(X), Y) :- p(X, Y1), plus(Y1, 1, Y).
+			var program = new ProgramDatabase();
+			program.store([PREFIX + 'clause', ['p', ['zero'], 0], [TRUE]]);
+			program.store([PREFIX + 'clause', ['p', ['s', {id:1}], {id:2}], [PREFIX + 'conj', ['p', {id:1}, {id:3}], [PREFIX+'plus', {id:3}, 1, {id:2}]]]);
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
+		})(),
+		'zero = 0': function(det) {
+			var Y = det.heapAllocate();
+			assert.isTrue(det.call(['p', ['zero'], Y]));
+			assert.equal(det.deref(Y), 0);
+		},
+		's(s(zero)) = 2': function(det) {
+			var Y = det.heapAllocate();
+			assert.isTrue(det.call(['p', ['s', ['s', ['zero']]], Y]));
+			assert.equal(det.deref(Y), 2);
+		}
+	},
+	'Fibonacci Sequence': {
+		topic :(function() {
+			// fib(X, Y) :- if(X < 2,
+			//	Y = 1,
+			//	(
+			//		minus(X, 1, X1),
+			//		fib(X1, Y1),
+			//		minus(X, 2, X2),
+			//		fib(X2, Y2),
+			//		plus(Y1, Y2, Y)
+			//	).
+			var program = new ProgramDatabase();
+			program.store([PREFIX + 'clause', ['fib', {id:1}, {id:2}], [PREFIX + 'if', [PREFIX + 'lt', {id:1}, 2], 
+				[PREFIX + '=', {id:2}, 1],
+				[PREFIX + 'conj', [PREFIX + 'minus', {id:1}, 1, {id:3}], 
+				[PREFIX + 'conj', [PREFIX + 'minus', {id:1}, 2, {id:4}], 
+				[PREFIX + 'conj', ['fib', {id:3}, {id:5}],
+				[PREFIX + 'conj', ['fib', {id:4}, {id:6}],
+				[PREFIX + 'plus', {id:5}, {id:6}, {id:2}]]]]]]]);
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
+		})(),
+		'fib(2) = 2': function(det) {
+			var Y = det.heapAllocate();
+			assert.isTrue(det.call(['fib', 2, Y]));
+			assert.equal(det.deref(Y), 2);
+		},
+		'fib(5) = 8': function(det) {
+			var Y = det.heapAllocate();
+			assert.isTrue(det.call(['fib', 5, Y]));
+			assert.equal(det.deref(Y), 8);
+		},
+		'fib(11) = 144': function(det) {
+			var Y = det.heapAllocate();
+			assert.isTrue(det.call(['fib', 11, Y]));
+			assert.equal(det.deref(Y), 144);
+		},
+	},
+	'parseTerm': {
+		topic :(function() {
+			var program = new ProgramDatabase();
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
+		})(),
+		'parseTerm(a(b, c)::_, Name, Args)' : function(det) {
+			var Name = det.heapAllocate();
+			var Args = det.heapAllocate();
+			assert.isTrue(det.call([PREFIX + 'parseTerm', ['::', ['a', ['b'], ['c']], det.heapAllocate()], Name, Args]));
+			assert.equal(det.deref(Name), 'a');
+			assert.deepEqual(det.deepDeref(Args), ['.', ['::', ['b'], {ref:4}], ['.', ['::', ['c'], {ref:5}], ['[]']]]);
+		},
+		'parseTerm(a(b, c)::_, Name, Args) with the term being referenced' : function(det) {
+			var Name = det.heapAllocate();
+			var Args = det.heapAllocate();
+			var Term = det.heapAllocate();
+			det.bind(Term.ref, ['a', ['b'], ['c']]);
+			assert.isTrue(det.call([PREFIX + 'parseTerm', ['::', Term, det.heapAllocate()], Name, Args]));
+			assert.equal(det.deref(Name), 'a');
+			assert.deepEqual(det.deepDeref(Args), ['.', ['::', ['b'], {ref:10}], ['.', ['::', ['c'], {ref:11}], ['[]']]]);
+		},
+		'parseTerm(a(b, c)::_, Name, Args) where b is referenced' : function(det) {
+			var Name = det.heapAllocate();
+			var Args = det.heapAllocate();
+			var Term = det.heapAllocate();
+			det.bind(Term.ref, ['b']);
+			assert.isTrue(det.call([PREFIX + 'parseTerm', ['::', ['a', Term, ['c']], det.heapAllocate()], Name, Args]));
+			assert.equal(det.deref(Name), 'a');
+			assert.deepEqual(det.deepDeref(Args), ['.', ['::', ['b'], {ref:16}], ['.', ['::', ['c'], {ref:17}], ['[]']]]);
+		},
+		'parseTerm(a(b, c)::_, "a", [b::_, c::_]) ' : function(det) {
+			assert.isTrue(det.call([PREFIX + 'parseTerm', ['::', ['a', ['b'], ['c']], det.heapAllocate()], 
+				'a', ['.', ['::', ['b'], det.heapAllocate()], ['.', ['::', ['c'], det.heapAllocate()], ['[]']]]]));
+		},
+		'parseTerm(a(b, c)::_, "a", [b::_, c::_]) with the term referenced' : function(det) {
+			var Term = det.heapAllocate();
+			det.bind(Term.ref, ['a', ['b'], ['c']]);
+			assert.isTrue(det.call([PREFIX + 'parseTerm', ['::', Term, det.heapAllocate()], 
+				'a', ['.', ['::', ['b'], det.heapAllocate()], ['.', ['::', ['c'], det.heapAllocate()], ['[]']]]]));
+		},
+	},
+	'charCodes': {
+		topic :(function() {
+			var program = new ProgramDatabase();
+			var det = new Interpreter(program);
+			createBuiltins(det);
+			return det;
+		})(),
+		'charCodes("ABC", X)': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call([PREFIX + 'charCodes', 'ABC', X]));
+			assert.deepEqual(det.listToArray(X), [65, 66, 67]);
+		},
+		'charCodes(X, [65, 66, 67])': function(det) {
+			var X = det.heapAllocate();
+			assert.isTrue(det.call([PREFIX + 'charCodes', X, det.arrayToList([65, 66, 67])]));
+			assert.equal(det.deref(X), 'ABC');
+		},
+	},
+}).run();
 

@@ -96,6 +96,17 @@ vows.describe('detalion').addBatch({
 			var Y = det.heapAllocate();
 			assert.equal(det.termHash(['a', X, ['b', Y, X]]), 187489);
 		},
+/*		'Failure of execution should undo all bindings (when no choicepoint is present)': function(det) {
+			var X = det.heapAllocate();
+			var Y = det.heapAllocate();
+			assert.isTrue(det.unify(X, 1));
+			assert.isTrue(det.unify(Y, 2));
+			assert.equal(det.deref(X), 1);
+			assert.equal(det.deref(Y), 2);
+			det.call([FAIL]);
+			assert.notEqual(det.deref(X),1);
+			assert.notEqual(det.deref(Y),2);
+		},*/
 	},
 	'A simple program': {
 		topic: (function() {

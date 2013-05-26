@@ -14,7 +14,7 @@ app.on(["detalion", "program"], function() {
 	}
 	eval(app.program);
 	var jit;
-	jit = new Jit({XXlifting: 1});
+	jit = new Jit({lifting: 1});
 	var det = new Interpreter(program, jit);
 	createBuiltins(det);
 	app.setValue('det', det);
@@ -124,7 +124,7 @@ app.on(['det'], function() {
 });
 
 app.readStream(fs.createReadStream(__dirname + "/case8d.txt"), "log");
-/*
+//*
 app.on(["detalion", "program", "log"], function() {
 	// Create an interpreter without jit
 	eval(app.detalion);
@@ -165,12 +165,13 @@ app.on(["detalion", "program", "log"], function() {
 
 		if(liftedRes != origRes) {
 			throw Error('Lifted and original clauses differ in result: lifted ' + (liftedRes?'succeeded':'failed') + ' while original ' + (origRes?'succeeded':'failed') +
-//				'\n\tGoal: ' + JSON.stringify(entry.goal) + '\n\tLifted: ' + JSON.stringify(det.toPrototype(liftedClause)) + '\n\tOriginal: ' + JSON.stringify(det.toPrototype(origClause)));
-				'\n\tGoal: ' + JSON.stringify(entry.goal) + '\n\tLifted: ' + JSON.stringify(entry.lifted) + '\n\tOriginal: ' + JSON.stringify(entry.orig));
+//				'\n\t{"Goal": ' + JSON.stringify(entry.goal) + '\n\t,"Lifted": ' + JSON.stringify(det.toPrototype(liftedClause)) + '\n\t,"Original": ' + JSON.stringify(det.toPrototype(origClause)) + '}');
+				'\n\t{"Goal": ' + JSON.stringify(entry.goal) + '\n\t,"Lifted": ' + JSON.stringify(entry.lifted) + '\n\t,"Original": ' + JSON.stringify(entry.orig) + '}');
 		}
 		if(liftedGoalText != origGoalText) {
 			throw Error('Lifted and original clauses differ in variable assignments:' +
-				'\n\tGoal: ' + JSON.stringify(entry.goal) + '\n\tLifted: ' + liftedGoalText + '\n\tOriginal: ' + origGoalText);
+				'\n\t{"Goal": ' + JSON.stringify(entry.goal) + '\n\t,"Lifted": ' + liftedGoalText + '\n\t,"Original": ' + origGoalText + 
+				'\n\t,"LiftedClause": ' + JSON.stringify(entry.lifted) + '\n\t,"OrigClause": ' + JSON.stringify(entry.orig) + '}');
 		}
 
 		console.log(liftedRes ? 'T' : 'F');
