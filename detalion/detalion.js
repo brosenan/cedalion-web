@@ -335,8 +335,8 @@ function Interpreter(program, jit) {
 			this.push(goal);
 			while(this.S > baseline) {
 				goal = this.pop();
-//if(goal[0] == '/detalion/specialization#specialize') 
-//console.log(JSON.stringify(this.deepDeref(goal)));
+if(goal[0] == '/detalion/specialization#specialize') 
+console.log('#SPEC ' + JSON.stringify(this.deepDeref(this.toPrototype(goal))));
 //console.log(this.termToDot(goal));
 				var nodes = this.program.findMostSpecific([PREFIX + 'clause', goal, '_'], this);
 				if(nodes.length == 0) {
@@ -348,7 +348,7 @@ function Interpreter(program, jit) {
 					}
 					throw Error("Ambiguous goal: " + JSON.stringify(this.deepDeref(goal)));
 				}
-				logClause(this.toPrototype(goal), nodes[0]);
+				logClause(this, goal, nodes[0]);
 				var clause = nodes[0].st;
 				var head = clause[1];
 				var body = clause[2];
@@ -1381,7 +1381,8 @@ function Jit(thresholds) {
 			} else {
 				return;
 			}
-//console.log('Lifting: ' + JSON.stringify(det.deepDeref(clause[1])));
+if(clause[1][0] != '/detalion/specialization#specialize' || clause[1][1][0] != '/detalion#conj') return;
+console.log('* Lifting: ' + JSON.stringify(det.deepDeref(clause[1])));
 //console.log('<');
 			// Specialize the body
 			var cp = det.createChoicePoint();
@@ -1400,12 +1401,13 @@ function Jit(thresholds) {
 						det.program.store(det.toPrototype(newClauses[i]));
 					}
 				}
-//console.log('Added: ' + JSON.stringify(det.deepDeref(specialized)));
+console.log('* Added: ' + JSON.stringify(det.deepDeref(specialized)));
 				return det.toPrototype(specialized);
 			} else {
 				det.rollbackChoicePoint(cp);
-//console.log('specialization failed');
-/*console.log('Added: ' + JSON.stringify(det.deepDeref(clause[1])) + ' :- FAIL');*/
+console.log('* specialization failed');
+console.log('Added: ' + JSON.stringify(det.deepDeref(clause[1])) + ' :- FAIL');
+console.log('Failed: ' + JSON.stringify(det.deepDeref(clause[2])));
 				return det.toPrototype([PREFIX + 'clause', clause[1], [FAIL]]);
 				return;
 			}
@@ -1415,10 +1417,10 @@ function Jit(thresholds) {
 	};
 }
 
-function logClause(goal, node) {
+function logClause(det, goal, node) {
 	if(!node.base) {
 		return;
 	}
-	console.log('###@@' + JSON.stringify({goal: goal, orig: node.base, lifted: node.st}));
+	console.log('###@@' + JSON.stringify({goal: det.toPrototype(goal), orig: node.base, lifted: node.st}));
 }
 

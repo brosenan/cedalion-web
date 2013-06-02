@@ -1,6 +1,6 @@
 '/bootstrap':signature(eval(Expr,T,Val)::pred,[Expr::'/Functional':expr(T),T::'/bootstrap':type,Val::T]).
 clause(eval('/Functional':const(X),T,X),true).
-clause(eval('/Functional':applyBinOp(A,Op,B),T,V),conj(eval(A,T,APrime),conj(eval(B,T,BPrime),eval(applyOp(Op,T,APrime,BPrime,VPrime),VPrime,T,V)))).
+clause(eval('/Functional':applyBinOp(A,Op,B),T,V),conj(eval(A,T,APrime),conj(eval(B,T,BPrime),if(eval(applyOp(Op,T,APrime,BPrime,VPrime),VPrime,T,V),true,fail)))).
 '/bootstrap':signature(applyOp(Op,T,A,B,V)::pred,[Op::'/Functional':binOp(T),T::'/bootstrap':type,A::T,B::T,V::T]).
 clause(applyOp('/Functional':numPlus,'/bootstrap':number,A,B,V),plus(A,B,V)).
 clause(applyOp('/Functional':minus,'/bootstrap':number,A,B,V),minus(A,B,V)).

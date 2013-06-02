@@ -1,0 +1,8 @@
+'/bootstrap':signature(alwaysTrue(CondPrime)::'/detalion':pred,[CondPrime::'/detalion':pred]).
+'/detalion':clause(alwaysTrue(_),'/detalion':fail).
+'/detalion':clause(alwaysTrue('/detalion':true),'/detalion':true).
+'/detalion':clause(alwaysTrue('/detalion':conj(A,B)),'/detalion':conj(alwaysTrue(A),alwaysTrue(B))).
+'/detalion':clause(alwaysTrue('/detalion':if(C,T,E)),'/detalion':if(alwaysTrue(C),alwaysTrue(T),'/detalion':if(not(specialize(C,_,[],_)),alwaysTrue(E),'/detalion':conj(alwaysTrue(T),alwaysTrue(E))))).
+'/detalion':clause(alwaysTrue('/detalion':eq(A::T,B::T)),not(not(specializeUnification(A::T,B::T,'/detalion':true,'/detalion':true)))).
+'/detalion':clause(alwaysTrue('/detalion':debug(_,_::_)),'/detalion':true).
+'/detalion':clause(alwaysTrue('/detalion':equals(A,B,T)),'/detalion':equals(A,B,T)).
