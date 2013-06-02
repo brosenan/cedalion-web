@@ -14,7 +14,7 @@ app.on(["detalion", "program"], function() {
 	}
 	eval(app.program);
 	var jit;
-	jit = new Jit({XXlifting: 1});
+	jit = new Jit({lifting: 1});
 	var det = new Interpreter(program, jit);
 	createBuiltins(det);
 	app.setValue('det', det);
@@ -82,7 +82,7 @@ app.on(['det'], function() {
 			var num = 0;
 			unitTests.forEach(function(x) {
 				num++;
-				//if(num != 22) return;
+				//if(num != 9) return;
 				det.resetRegs();
 				x = det.unifyRead(x);
 				console.log('[' + num + '] Running unit: ' + JSON.stringify(x));
