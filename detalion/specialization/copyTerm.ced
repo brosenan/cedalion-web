@@ -1,0 +1,7 @@
+'/bootstrap':disabled(annotation:shrink('/detalion':clause(specialize('/detalion':copyTerm(Source,Target,Type),'/detalion':copyTerm(Source,Target,Type),Cls,Cls),specializeCopy(Source,Target,Type)))).
+'/bootstrap':signature(specializeCopy(Source,Target,Type)::'/detalion':pred,[Source::Type,Target::Type,Type::'/bootstrap':type]).
+'/detalion':clause(specializeCopy(Source,Target,Type),'/detalion':if(or('/detalion':isDynamic(Source,Type,_),or('/detalion':isDynamic(Target,Type,_),'/detalion':var(Source,Type))),'/detalion':true,'/detalion':if('/detalion':compound(Source,Type),'/detalion':conj('/detalion':parseTerm(Source::Type,Name,SourceArgs),'/detalion':conj(specialCopyList(SourceArgs,TargetArgs),'/detalion':parseTerm(Target::Type,Name,TargetArgs))),'/detalion':eq(Source::Type,Target::Type)))).
+'/bootstrap':signature(specialCopyList(SourceArgs,TargetArgs)::'/detalion':pred,[SourceArgs::'/bootstrap':list('/bootstrap':typedTerm),TargetArgs::'/bootstrap':list('/bootstrap':typedTerm)]).
+'/detalion':clause(specialCopyList([],[]),'/detalion':true).
+'/detalion':clause(specialCopyList([Source::Type|SourceArgs],[Target::Type|TargetArgs]),'/detalion':conj(specializeCopy(Source,Target,Type),specialCopyList(SourceArgs,TargetArgs))).
+'/detalion':clause(alwaysTrue('/detalion':copyTerm(Source,Target,Type)),alwaysTrue('/detalion':eq(Source::Type,Target::Type))).

@@ -1,0 +1,4 @@
+'/bootstrap':defAtom(copyTriplet::'/bootstrap':type).
+'/bootstrap':signature(copy(Src,Tgt,Type)::copyTriplet,[Src::Type,Tgt::Type,Type::'/bootstrap':type]).
+'/bootstrap':signature(copyTerms(Triplets)::pred,[Triplets::'/bootstrap':list(copyTriplet)]).
+clause(copyTerm(Src,Tgt,Type),copyTerms([copy(Src,Tgt,Type)])).

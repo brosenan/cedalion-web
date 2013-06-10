@@ -1,0 +1,1 @@
+clause(eval(Goal,Source,Type,Target),conj(copyTerm(annotation:parentheses('/Functional':pair(Goal,Source)),annotation:parentheses('/Functional':pair(GoalPrime,Target)),'/Functional':pairType(pred,Type)),GoalPrime)).

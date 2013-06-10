@@ -1,3 +1,3 @@
 '/bootstrap':signature(normalize(Goal,GoalPrime)::'/detalion':pred,[Goal::'/detalion':pred,GoalPrime::'/detalion':pred]).
-'/detalion':clause(normalize(annotation:parentheses('/detalion':conj('/detalion':conj(A,B),C)),annotation:parentheses('/detalion':conj(APrime,'/detalion':conj(BPrime,C)))),normalize(annotation:parentheses('/detalion':conj(A,B)),annotation:parentheses('/detalion':conj(APrime,BPrime)))).
+'/bootstrap':disabled('/detalion':clause(normalize(annotation:parentheses('/detalion':conj('/detalion':conj(A,B),C)),annotation:parentheses('/detalion':conj(APrime,'/detalion':conj(BPrime,C)))),normalize(annotation:parentheses('/detalion':conj(A,B)),annotation:parentheses('/detalion':conj(APrime,BPrime))))).
 '/detalion':clause(normalize(X,X),'/detalion':true).

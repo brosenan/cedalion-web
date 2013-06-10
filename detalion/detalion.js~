@@ -335,8 +335,8 @@ function Interpreter(program, jit) {
 			this.push(goal);
 			while(this.S > baseline) {
 				goal = this.pop();
-if(goal[0] == '/detalion/specialization#specialize') 
-console.log('#SPEC ' + JSON.stringify(this.deepDeref(this.toPrototype(goal[1]))));
+//if(goal[0] == '/detalion/specialization#specialize') 
+//console.log('#SPEC ' + JSON.stringify(this.deepDeref(this.toPrototype(goal))));
 //console.log(this.termToDot(goal));
 				var nodes = this.program.findMostSpecific([PREFIX + 'clause', goal, '_'], this);
 				if(nodes.length == 0) {
@@ -353,6 +353,7 @@ console.log('#SPEC ' + JSON.stringify(this.deepDeref(this.toPrototype(goal[1])))
 				var head = clause[1];
 				var body = clause[2];
 				this.resetRegs();
+//console.log(JSON.stringify(head));
 				if(!this.unifyWrite(head, goal)) {
 					this.fail();
 					continue;
@@ -686,6 +687,10 @@ function createBuiltins(det) {
 		'II': function(first, rest) {
 			this.push(rest);
 			this.push(first);
+		},
+		'IO': function(first, rest) {
+			this.push(rest);
+			this.push(first);
 		}
 	});
 
@@ -819,7 +824,7 @@ function createBuiltins(det) {
 		}
 	});
 
-	det.addBuiltin('copyTerm', 3, {
+/*	det.addBuiltin('copyTerm', 3, {
 		'IOI': function(source, target, type) {
 			this.bind(target.ref, this.copyTerm(source));
 		},
@@ -853,7 +858,20 @@ function createBuiltins(det) {
 			}
 		},
 	});
-
+*/
+	det.addBuiltin('copyTerms', 1, {
+		'I': function(triplets) {
+			var map = {};
+			while(Array.isArray(triplets) && triplets.length == 3) {
+				var triplet = this.deref(triplets[1]);
+				if(!this.unify(this.copyTerm(triplet[1], map), triplet[2])) {
+					this.fail();
+					return;
+				}
+				triplets = this.deref(triplets[2]);
+			}
+		}
+	});
 	function evalPred(goal, term, type, result) {
 		var newGoal = [PREFIX + '__evalTerm', term, type, result];
 		this.push(newGoal);
@@ -861,7 +879,7 @@ function createBuiltins(det) {
 		this.push(goal);
 	}
 
-	det.addBuiltin('eval', 4, {
+/*	det.addBuiltin('eval', 4, {
 		'IIIO': evalPred,
 		'IOIO': evalPred,
 		'IIII': evalPred,
@@ -871,7 +889,7 @@ function createBuiltins(det) {
 		'IIOI': evalPred,
 		'IOOI': evalPred,
 	});
-	
+*/	
 	function evalTermPred(term, type, result, cp) {
 		term = this.deepDeref(term);
 		this.rollbackChoicePoint(cp);
@@ -898,7 +916,7 @@ function createBuiltins(det) {
 
 	det.addBuiltin('debug', 2, {
 		'II': function(title, value) {
-			console.log("[DBG] [" + title + "] " + JSON.stringify(this.deepDeref(value[1])));
+//			console.log("[DBG] [" + title + "] " + JSON.stringify(this.deepDeref(value[1])));
 //console.log(this.termToDot(value[1]));
 		},
 	});
@@ -1381,8 +1399,8 @@ function Jit(thresholds) {
 			} else {
 				return;
 			}
-if(clause[1][0] != '/detalion/specialization#specialize' || clause[1][1][0] != '/detalion#conj') return;
-console.log('* Lifting: ' + JSON.stringify(det.deepDeref(clause[1])));
+//if(clause[1][0] != '/detalion/specialization#specialize' || clause[1][1][0] != '/detalion#conj') return;
+//console.log('* Lifting: ' + JSON.stringify(det.deepDeref(clause[1])));
 //console.log('<');
 			// Specialize the body
 			var cp = det.createChoicePoint();
@@ -1401,13 +1419,13 @@ console.log('* Lifting: ' + JSON.stringify(det.deepDeref(clause[1])));
 						det.program.store(det.toPrototype(newClauses[i]));
 					}
 				}
-console.log('* Added: ' + JSON.stringify(det.deepDeref(specialized)));
+//console.log('* Added: ' + JSON.stringify(det.deepDeref(specialized)));
 				return det.toPrototype(specialized);
 			} else {
 				det.rollbackChoicePoint(cp);
-console.log('* specialization failed');
-console.log('Added: ' + JSON.stringify(det.deepDeref(clause[1])) + ' :- FAIL');
-console.log('Failed: ' + JSON.stringify(det.deepDeref(clause[2])));
+//console.log('* specialization failed');
+//console.log('Added: ' + JSON.stringify(det.deepDeref(clause[1])) + ' :- FAIL');
+//console.log('Failed: ' + JSON.stringify(det.deepDeref(clause[2])));
 				return det.toPrototype([PREFIX + 'clause', clause[1], [FAIL]]);
 				return;
 			}
@@ -1421,6 +1439,6 @@ function logClause(det, goal, node) {
 	if(!node.base) {
 		return;
 	}
-	console.log('###@@' + JSON.stringify({goal: det.toPrototype(goal), orig: node.base, lifted: node.st}));
+//	console.log('###@@' + JSON.stringify({goal: det.toPrototype(goal), orig: node.base, lifted: node.st}));
 }
 

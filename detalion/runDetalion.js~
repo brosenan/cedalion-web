@@ -1,3 +1,5 @@
+
+
 var DI = require('../cedalionWeb/node-util').DI;
 var fs = require('fs');
 
@@ -79,16 +81,19 @@ app.on(['det'], function() {
 			return x.st[1][1][1];
 		});
 		for(var i = 0; i < 1; i++) {
+			var start = (new Date()).getTime();
 			var num = 0;
 			unitTests.forEach(function(x) {
 				num++;
-				if(num != 9) return;
+				//if(num != 24) return;
 				det.resetRegs();
 				x = det.unifyRead(x);
 				console.log('[' + num + '] Running unit: ' + JSON.stringify(x));
 				var success = det.call(x);
 				console.log('[' + num + '] ' + (success ? "PASS" : "FAIL"));
 			});
+			var end = (new Date()).getTime();
+			console.log('Iteration time: ' + (end - start) + ' ms');
 		}		
 	}
 //*/
@@ -97,11 +102,12 @@ app.on(['det'], function() {
 		var unitTests = det.program.findAllMatches([":-",["/detalion/export#statement",["/bootstrap#unitTest", '_']], '_'], det).map(function(x) {
 			return x.st[1][1][1];
 		});
-		for(var i = 0; i < 1; i++) {
+		for(var i = 0; i < 3; i++) {
+			var start = (new Date()).getTime();
 			var num = 0;
 			unitTests.forEach(function(x) {
 				num++;
-				if(num != 2) return;
+				if(num != 15) return;
 				det.resetRegs();
 				x = det.unifyRead(x);
 				//var L = det.heapAllocate();
@@ -116,6 +122,8 @@ app.on(['det'], function() {
 						['/detalion/cedalion#diffList', ['.', det.heapAllocate(), det.heapAllocate()], ['[]']]], 0, 0, det.heapAllocate()]);
 				console.log('[' + num + '] ' + (success ? "PASS" : "FAIL"));
 			});
+			var end = (new Date()).getTime();
+			console.log('Iteration time: ' + (end - start) + ' ms');
 			//det.jit.thresholds.lifting = 100000;
 		}
 	} catch(e) {
