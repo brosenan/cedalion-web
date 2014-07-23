@@ -71,7 +71,6 @@ cedalion-web provides some libraries for common web-related tasks. Since it also
 on top of those.
 
 ### Development status
-cedalion-web is currently under active development. We have one [demo] (http://train.cedalion.org/) online, and we plan to publish
-more examples and tutorials.
+Development of cedalion-web is currently on hold, as we are currently persuing other research direction (see http://github.com/brosenan/vercast).  At one point we plan to go back and combine these new ideas with cedalion-web to create a real useful web framework.
 
 Please feel free to contact us for more information.
